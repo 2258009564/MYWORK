@@ -3,6 +3,4 @@ never try to find out why did i push such a shit to github
 
 
 <!--START_SECTION:waka-->
-
-
 <!--END_SECTION:waka-->

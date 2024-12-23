@@ -5,5 +5,3 @@ never try to find out why did i push such a shit to github
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=2258009564)
 
-<!--START_SECTION:waka-->
-<!--END_SECTION:waka-->

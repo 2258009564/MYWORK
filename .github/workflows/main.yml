@@ -1,0 +1,30 @@
+name: Waka Readme
+
+# 定时触发任务，每天自动更新README
+on:
+  schedule:
+    # 每天的UTC时间00:30执行，等于北京时间08:30
+    - cron: '30 0 * * *'
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    name: Update README with WakaTime Stats
+    runs-on: ubuntu-latest
+
+    steps:
+      # 获取仓库代码
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # 使用 waka-readme-stats 工具
+      - name: Update Waka Readme Stats
+        uses: anmol098/waka-readme-stats@master
+        with:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}  # 从 GitHub secrets 中获取 WakaTime API 密钥
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # 从 GitHub secrets 中获取 GitHub Token
+          SHOW_OS: 'true'  # 显示操作系统信息
+          SHOW_PROJECTS: 'false'  # 不显示项目统计
+          SHOW_LANGUAGE: 'true'  # 显示编程语言统计
+          SHOW_TIMEZONE: 'true'  # 显示时区信息

@@ -1,0 +1,1 @@
+{"name":"Luogu_B4000","url":"https://www.luogu.com.cn/problem/B4000","memoryLimit":524288,"timeLimit":1000,"tests":[{"input":"12\n59\n59\n10","output":"13 0 9","id":1731054174331}],"group":"luogu","srcPath":"d:\\Desktop\\LEETCODE\\Luogu_B_4000.cpp"}

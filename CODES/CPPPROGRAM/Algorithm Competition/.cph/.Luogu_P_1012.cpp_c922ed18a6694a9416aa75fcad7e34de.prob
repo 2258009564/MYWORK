@@ -1,0 +1,1 @@
+{"name":"Luogu_P1012","url":"https://www.luogu.com.cn/problem/P1012","memoryLimit":131072,"timeLimit":1000,"tests":[{"input":"3\n13 312 343\n","output":"34331213\n","id":1730811989603},{"input":"4\n7 13 4 246","output":"7424613","id":1730811989610}],"group":"luogu","srcPath":"d:\\Desktop\\Algorithm Competition\\Luogu_P_1012.cpp"}

@@ -1,0 +1,1 @@
+{"name":"Luogu_P7883","url":"https://www.luogu.com.cn/problem/P7883","memoryLimit":524288,"timeLimit":350,"tests":[{"input":"2\n-10000000 -10000000\n10000000 10000000","output":"800000000000000","id":1732023775465},{"input":"5\n1 1\n1 9\n9 1\n9 9\n0 10","output":"2","id":1732023775513}],"group":"luogu","srcPath":"d:\\Desktop\\NEWCODER\\Luogu_P_7883.cpp"}

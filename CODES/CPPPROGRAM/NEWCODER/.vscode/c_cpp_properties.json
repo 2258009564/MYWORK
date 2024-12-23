@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/x86_64-w64-mingw32",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include/c++/backward",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/include-fixed",
+                "C:/Users/22580/AppData/Roaming/w64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\Users\\22580\\AppData\\Roaming\\w64\\mingw64\\bin\\g++.exe",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}

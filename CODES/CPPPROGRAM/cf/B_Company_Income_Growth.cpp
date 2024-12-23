@@ -45,28 +45,40 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
-void solve()
-{
+void solve() {
+    // 读取数组长度
     int n;
     cin >> n;
+    // 声明并读取长度为n的数组
     vi v(n);
     cin >> v;
 
-    vi v1;
-    int curmoney = 1;
-    for (int i = 0; i < n; i++)
-    {
-        if (v[i] == curmoney)
-        {
-            curmoney++;
-            v1.push_back(2000 + i + 1);
+    // 存储符合条件年份的数组
+    vi years;
+    // startindex用于追踪当前需要匹配的值
+    int startindex = 1;
+    
+    // 遍历输入数组
+    for (int i = 0; i < v.size(); i++) {
+        // 如果当前值等于startindex，说明找到了一个符合条件的年份
+        if (v[i] == startindex) {
+            // 将对应年份(2001+i)加入结果数组
+            years.push_back(2001 + i);
+            // 更新下一个需要匹配的值
+            startindex++;
         }
     }
-    cout << v1.size() << endl;
-    if (v1.size())
-    {
-        cout << v1;
+
+    // 如果没有找到符合条件的年份
+    if (years.empty()) {
+        cout << 0;
+        return;
     }
+    
+    // 输出符合条件的年份数量
+    cout << years.size() << endl;
+    // 输出所有符合条件的年份
+    cout << years;
 }
 
 signed main()

@@ -28,3 +28,7 @@ jobs:
           SHOW_PROJECTS: 'true'  # 显示项目统计
           SHOW_LANGUAGE: 'true'  # 显示编程语言统计
           SHOW_TIMEZONE: 'true'  # 显示时区信息
+          SECTION_NAME: 'ALISA'
+          COMMIT_BY_ME: 'ture'
+          SHOW_UPDATED_DATE: 'ture'
+          SHOW_LINES_OF_CODE: 'ture'

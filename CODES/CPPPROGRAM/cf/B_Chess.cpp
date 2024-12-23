@@ -50,53 +50,56 @@ void solve()
     string s1, s2;
     cin >> s1 >> s2;
 
-    pair<int, int> d1, d2;
+    pii d1, d2;
     d1.first = s1[0] - 'a', d1.second = s1[1] - '1';
     d2.first = s2[0] - 'a', d2.second = s2[1] - '1';
-    vvi used(8, vi(8, 0));
-    
+
+    vvi used(8, vi(8, 0)); // 8x8 的棋盘
+
+    used[d1.first][d1.second] = 1; // 标记 d1 的位置
+    used[d2.first][d2.second] = 1; // 标记 d2 的位置
+
+    // 标记 d1 的行列
     for (int i = 0; i < 8; i++)
     {
-        used[d1.second][i] = 1;  
-        used[i][d1.first] = 1;   
+        used[d1.first][i] = 1; // 标记同行所有格子
+        used[i][d1.second] = 1;  // 标记同列所有格子
     }
 
-    int knight_moves[8][2] = {
-        {-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
+    // 马的移动方式
+    vpii xy = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}};
 
-    for (auto &move : knight_moves)
+    // 马能打到车 那么把车想象成马 它能到达的地方马就去不了
+
+    // 标记马1的攻击范围
+    for (auto &&[x, y] : xy)
     {
-        int new_row = d2.second + move[0];
-        int new_col = d2.first + move[1];
-        if (new_row >= 0 && new_row < 8 && new_col >= 0 && new_col < 8)
+        int curx = d1.first + x, cury = d1.second + y;
+        if (curx >= 0 and curx < 8 and cury >= 0 and cury < 8)
         {
-            used[new_row][new_col] = 1;  
+            used[curx][cury] = 1;
         }
     }
 
-    for (auto &move : knight_moves)
+    // 标记马2的攻击范围
+    for (auto &&[x, y] : xy)
     {
-        int new_row = d1.second + move[0];
-        int new_col = d1.first + move[1];
-        if (new_row >= 0 && new_row < 8 && new_col >= 0 && new_col < 8)
+        int curx = d2.first + x, cury = d2.second + y;
+        if (curx >= 0 and curx < 8 and cury >= 0 and cury < 8)
         {
-            used[new_row][new_col] = 1; 
+            used[curx][cury] = 1;
         }
     }
 
-    int count = 0;
-    for (int row = 0; row < 8; row++)
+    int N = 64;
+
+    // 计算未被标记的格子数
+    for (auto &&v : used)
     {
-        for (int col = 0; col < 8; col++)
-        {
-            if (!used[row][col] && (row != d1.second || col != d1.first) && (row != d2.second || col != d2.first))
-            {
-                count++;
-            }
-        }
+        N -= accumulate(all(v), 0ll); // 对每一行进行累加
     }
 
-    cout << count << endl;
+    cout << N; // 输出结果
 }
 
 signed main()

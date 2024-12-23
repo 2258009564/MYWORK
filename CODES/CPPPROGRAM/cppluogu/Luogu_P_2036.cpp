@@ -25,7 +25,8 @@ typedef map<char, int> mci;
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
-istream &operator>>(istream &in, vector<T> &v) {
+istream &operator>>(istream &in, vector<T> &v)
+{
     for (auto &x : v)
     {
         in >> x;
@@ -35,12 +36,29 @@ istream &operator>>(istream &in, vector<T> &v) {
 
 // 通用版本的 << 重载，用于任意类型的 std::vector<T>
 template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v) {
+ostream &operator<<(ostream &out, const vector<T> &v)
+{
     for (const auto &x : v)
     {
         out << x << ' ';
     }
     return out;
+}
+
+int result = INT_MAX;
+
+void backtracking(vi &s, vi &b, int startindex, int curs, int curb, bool selected)
+{
+    result = (selected ? min(result, abs(curs - curb)) : result);
+    if (startindex == s.size())
+    {
+        return;
+    }
+
+    for (int i = startindex; i < s.size(); i++)
+    {
+        backtracking(s, b, i + 1, curs * s[i], curb + b[i], 1);
+    }
 }
 
 void solve()
@@ -54,7 +72,15 @@ void solve()
         cin >> s[i] >> b[i];
     }
 
-    
+    if (n == 1)
+    {
+        cout << abs(s.back() - b.back());
+        return;
+    }
+
+    backtracking(s, b, 0, 1, 0, 0);
+
+    cout << result;
 }
 
 signed main()

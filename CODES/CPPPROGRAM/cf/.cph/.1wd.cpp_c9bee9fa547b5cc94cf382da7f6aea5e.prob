@@ -1,0 +1,1 @@
+{"name":"Local: 1wd","url":"d:\\Desktop\\c++\\1wd.cpp","tests":[{"id":1733817589283,"input":"5\n1\n2\n3\n4\n5\n0 1\n1 3","output":"3\n9"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\c++\\1wd.cpp","group":"local","local":true}

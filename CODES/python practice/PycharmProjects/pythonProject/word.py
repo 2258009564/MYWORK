@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def extract_content(cell_value):
     """
     提取单元格内最后一个英文逗号和倒数第二个英文逗号之间的内容。

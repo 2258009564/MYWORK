@@ -65,8 +65,7 @@ void solve()
     int n;
     cin >> n;
     vector<Watermelon> v(n);
-    double maxV = INT_MIN;
-    double minV = INT_MAX;
+    double maxV = INT_MIN, minV = INT_MAX;
     for (auto &&i : v)
     {
         cin >> i.size >> i.color >> i.sound;

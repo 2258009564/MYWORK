@@ -50,41 +50,32 @@ void solve()
     int n;
     cin >> n;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
-    {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
+    int fen5 = 5, fen2 = 2, fen1 = 1;
 
-    while (!v[l])
+    vi v = {5, 2, 1};
+    int count = 0;
+    for (int i = 1; i <= n; i++)
     {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
+        for (int j = 1; j * 2 + i <= n; j++)
         {
-            cout << 2 << endl;
-            return;
+            for (int k = 1; k * 5 + j * 2 + i <= n; k++)
+            {
+                if (k * 5 + j * 2 + i == n)
+                {
+                    cout << "fen5:" << k << ",fen2:" << j << ",fen1:" << i << ",total:" << i + j + k << endl;
+                    count++;
+                }
+            }
         }
     }
-    cout << 1 << endl;
-    return;
+    cout << "count=" << count;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

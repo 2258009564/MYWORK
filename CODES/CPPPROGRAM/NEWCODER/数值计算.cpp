@@ -25,8 +25,7 @@ typedef map<char, int> mci;
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
-istream &operator>>(istream &in, vector<T> &v)
-{
+istream &operator>>(istream &in, vector<T> &v) {
     for (auto &x : v)
     {
         in >> x;
@@ -36,8 +35,7 @@ istream &operator>>(istream &in, vector<T> &v)
 
 // 通用版本的 << 重载，用于任意类型的 std::vector<T>
 template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v)
-{
+ostream &operator<<(ostream &out, const vector<T> &v) {
     for (const auto &x : v)
     {
         out << x << ' ';
@@ -47,44 +45,19 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
-    {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
+    int result = ((a + b) % d * c % d) % d;
 
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
-        {
-            cout << 2 << endl;
-            return;
-        }
-    }
-    cout << 1 << endl;
-    return;
+    cout << result;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

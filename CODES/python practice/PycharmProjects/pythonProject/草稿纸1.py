@@ -1,20 +1,34 @@
-import pandas as pd
+import math
 
-# 读取Excel文件
-# 假设Excel文件名为'data.xlsx'，并且数据在第一个sheet中
-df = pd.read_excel('C:\\Users\\22580\\Desktop\\龙凤微讯10-1~12-31.xlsx')
 
-# 使用正则表达式来匹配"源"、"来源"或"供稿"以及它们后面跟随的所有字符
-pattern = r'(源：|来源：|供稿/|来源:|源:)\s*(.*)'
+# 检查数字是否能被某个奇数整除
+def is_divisible_by(n, d):
+    return n % d == 0
 
-# 应用正则表达式到E列，并提取包含关键词在内的文本信息
-# 注意：第五列的索引是4，而不是5
-df['Extracted'] = df.iloc[:, 4].str.extract(pattern)[0] + df.iloc[:, 4].str.extract(pattern)[1]
 
-# 指定输出文件的路径
-output_path = 'a1-666.xlsx'
+def solve():
+    # 读取输入
+    n, d = map(int, input().split())
 
-# 将DataFrame保存到Excel文件
-df.to_excel(output_path, index=False)
+    # 计算阶乘 n!
+    factorial_n = math.factorial(n)
 
-print(f"Data has been saved to {output_path}")
+    # 生成由数字 d 重复 n! 次的数字
+    repeated_number = int(str(d) * factorial_n)
+
+    # 存储结果
+    result = []
+
+    # 检查能被 1, 3, 5, 7, 9 整除的数字
+    for digit in [1, 3, 5, 7, 9]:
+        if is_divisible_by(repeated_number, digit):
+            result.append(digit)
+
+    # 输出结果
+    print(" ".join(map(str, result)))
+
+
+# 处理多个测试用例
+t = int(input())  # 测试用例数量
+for _ in range(t):
+    solve()

@@ -1,47 +1,35 @@
-import pandas as pd
-
-def extract_content(cell_value):
-    """
-    提取单元格内最后一个英文逗号和倒数第二个英文逗号之间的内容。
-    """
-    if pd.isna(cell_value):
-        return cell_value
-
-    # 将单元格内容拆分为部分，以英文逗号为分隔符
-    parts = cell_value.split(',')
-
-    # 如果逗号的数量少于两个，则返回空字符串
-    if len(parts) < 3:
-        return ""
-
-    # 提取倒数第二个和最后一个逗号之间的内容
-    return ','.join(parts[-2:-1])
+import math
 
 
-def process_excel(file_path, column_index, output_path):
-    """
-    处理指定的 Excel 文件，对指定列的内容进行提取，并保存到新的文件。
-    """
-    # 读取 Excel 文件
-    df = pd.read_excel(file_path)
-
-    # 确保指定的列索引在范围内
-    if column_index >= len(df.columns):
-        raise ValueError(f"列索引 {column_index} 超出范围。")
-
-    # 获取列名
-    column_name = df.columns[column_index]
-
-    # 对指定列的每个单元格进行处理
-    df[column_name] = df[column_name].apply(extract_content)
-
-    # 将处理后的数据保存到新的 Excel 文件
-    df.to_excel(output_path, index=False)
+# 检查数字是否能被某个奇数整除
+def is_divisible_by(n, d):
+    return n % d == 0
 
 
-# 示例用法
-input_file = "D:\\EdgeDownload\\modified_21年11月.xlsx" # 输入文件路径
-output_file = 'C:\\Users\\22580\\Desktop\\modified_21年11月.xlsx' # 输出文件路径
-column_index = 2  # 第三列的索引（从0开始）
+def solve():
+    # 读取输入
+    n, d = map(int, input().split())
 
-process_excel(input_file, column_index, output_file)
+    # 计算阶乘 n!
+    factorial_n = math.factorial(n)
+
+    # 获取 n! 的最后一位
+    last_digit_of_factorial = factorial_n % 10
+    last_digit_of_factorial *= d
+
+    # 存储结果
+    result = []
+
+    # 检查能否被 1, 3, 5, 7, 9 整除的奇数
+    for digit in [1, 3, 5, 7, 9]:
+        if is_divisible_by(factorial_n, digit):
+            result.append(digit)
+
+    # 输出结果
+    print(" ".join(map(str, result)))
+
+
+# 处理多个测试用例
+t = int(input())  # 测试用例数量
+for _ in range(t):
+    solve()

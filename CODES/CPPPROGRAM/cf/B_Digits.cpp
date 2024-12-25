@@ -47,37 +47,35 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    int n;
-    cin >> n;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    int n, d;
+    cin >> n >> d;
+    vi result;
+    for (int i : {1, 3, 5, 7, 9})
     {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
+        // 如果n >= i，那么n!一定能被i整除
+        // 或者检查重复数字是否能被i整除
+        int num = 0;
+        int cur = 1;
+        for (int j = 0; j < n; j++)
         {
-            cout << 2 << endl;
-            return;
+            num = (num + d * cur) % i;
+            cur = (cur * 10) % i;
+        }
+        if (num == 0)
+        {
+            result.push_back(i);
         }
     }
-    cout << 1 << endl;
-    return;
+
+    // 输出结果
+    for (int i = 0; i < result.size(); i++)
+    {
+        if (i > 0)
+            cout << " ";
+        cout << result[i];
+    }
+    cout << "\n";
 }
 
 signed main()

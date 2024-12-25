@@ -47,44 +47,38 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, m;
+    cin >> n >> m;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    vvi v(n, vi(m));
+    for (auto &&i : v)
     {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
+        cin >> i;
     }
 
-    for (int i = l; i <= r; i++)
+    pii max_pos = {0, 0};
+    int max_height = v[0][0];
+
+    for (int i = 0; i < n; i++)
     {
-        if (!v[i])
+        for (int j = 0; j < m; j++)
         {
-            cout << 2 << endl;
-            return;
+            if (v[i][j] > max_height)
+            {
+                max_height = v[i][j];
+                max_pos = {i + 1, j + 1};
+            }
         }
     }
-    cout << 1 << endl;
-    return;
+
+    cout << max_pos.first << " " << max_pos.second << endl;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

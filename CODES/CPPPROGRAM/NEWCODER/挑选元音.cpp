@@ -47,44 +47,22 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    int n;
-    cin >> n;
+    char c;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    while (cin >> c)
     {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
+        if (c == 'a' or c == 'e' or c == 'i' or c == 'o' or c == 'u')
         {
-            cout << 2 << endl;
-            return;
+            cout << c;
         }
     }
-    cout << 1 << endl;
-    return;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

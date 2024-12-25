@@ -47,19 +47,25 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-
-    int n, d;
-    cin >> n >> d;
-
-    int total = 0;
+    string s;
     
+    while (cin >> s)
+    {
+        int total = 0;
+        while (!s.empty())
+        {
+            total += 7 * (s.back() - '0');
+            s.pop_back();
+        }
+        cout << (total % 7 == 0) << endl;
+    }
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

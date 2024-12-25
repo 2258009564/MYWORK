@@ -1,46 +1,82 @@
-// #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
-typedef pair<int, int> pii;
-typedef pair<double, double> pdd;
-typedef vector<string> vs;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef vector<vvi> vvvi;
-typedef vector<pii> vpii;
-typedef vector<vpii> vvpii;
-typedef vector<pdd> vpdd;
-typedef vector<double> vd;
-typedef vector<vd> vvd;
-typedef vector<char> vc;
-typedef vector<vc> vvc;
-typedef vector<vvc> vvvc;
-typedef map<int, int> mii;
-typedef map<char, int> mci;
-#define endl '\n'
-#define T     \
-    int T;    \
-    cin >> T; \
-    while (T--)
-#define all(v) v.begin(), v.end()
-#define sall(x) sort(all(x))
-#define pb push_back
-#define qb pop_back
-#define pf push_front
-#define qf pop_front
 
-signed main()
+// 学生节点结构体
+struct Student
 {
-    ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    while (1)
+    string id;
+    string name;
+    int score;
+    Student *next;
+
+    Student(string id, string name, int score)
+        : id(id), name(name), score(score), next(nullptr) {}
+};
+
+// 链表类
+class StudentList
+{
+private:
+    Student *head;
+
+public:
+    StudentList() : head(nullptr) {}
+
+    // 在链表尾部插入新节点
+    void insert(string id, string name, int score)
     {
-        string s;
-        getline(cin, s);
-        if (s[0] == '0')
+        Student *newStudent = new Student(id, name, score);
+        if (!head)
         {
-            return 0;
+            head = newStudent;
+            return;
         }
-        cout << s << endl;
+        Student *current = head;
+        while (current->next)
+        {
+            current = current->next;
+        }
+        current->next = newStudent;
     }
+
+    // 打印所有学生信息
+    void print()
+    {
+        Student *current = head;
+        while (current)
+        {
+            cout << current->id << " "
+                 << current->name << " "
+                 << current->score << endl;
+            current = current->next;
+        }
+    }
+
+    // 析构函数释放内存
+    ~StudentList()
+    {
+        while (head)
+        {
+            Student *temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+int main()
+{
+    StudentList list;
+    string id, name;
+    int score;
+
+    // 读取学生信息直到id为0
+    while (cin >> id && id != "0")
+    {
+        cin >> name >> score;
+        list.insert(id, name, score);
+    }
+
+    list.print();
+    return 0;
 }

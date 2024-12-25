@@ -1,7 +1,7 @@
 // #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 typedef pair<int, int> pii;
 typedef pair<double, double> pdd;
 typedef vector<string> vs;
@@ -45,48 +45,29 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
-void solve()
+long long getFactorCount(long long n)
 {
-    int n;
-    cin >> n;
-
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    long long total = 0;
+    for (long long i = 1; i <= n / i; i++)
     {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
+        if (n % i == 0)
         {
-            cout << 2 << endl;
-            return;
+            total++;
+            long long another = n / i;
+            if (another != i)
+            {
+                total++;
+            }
         }
     }
-    cout << 1 << endl;
-    return;
+    return total;
 }
 
-signed main()
+int main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
-    int TT = 1;
-    cin >> TT;
-    while (TT--)
-    {
-        solve();
-    }
+
+    long long n;
+    cin >> n;
+    cout << getFactorCount(n) << endl;
 }

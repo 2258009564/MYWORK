@@ -45,39 +45,23 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
+int maxCoins(long long n)
+{
+    int coins = 1;
+    while (n > 3)
+    {
+        int newc = n / 4;
+        coins *= 2;
+        n = newc;
+    }
+    return coins;
+}
+
 void solve()
 {
     int n;
     cin >> n;
-
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
-    {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
-        {
-            cout << 2 << endl;
-            return;
-        }
-    }
-    cout << 1 << endl;
-    return;
+    cout << maxCoins(n) << endl;
 }
 
 signed main()

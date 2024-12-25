@@ -45,46 +45,46 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
+struct Watermelon
+{
+    double size, color, sound, score;
+};
+
+double computeScore(Watermelon *w)
+{
+    return w->size * w->color / w->sound;
+}
+
+double computeNormalizedScore(Watermelon *w, double maxV, double minV)
+{
+    return (w->score - minV) * 100 / (maxV - minV);
+}
+
 void solve()
 {
     int n;
     cin >> n;
-
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    vector<Watermelon> v(n);
+    double maxV = INT_MIN;
+    double minV = INT_MAX;
+    for (auto &&i : v)
     {
-        cout << 0 << endl;
-        return;
+        cin >> i.size >> i.color >> i.sound;
+        i.score = computeScore(&i);
+        maxV = max(maxV, i.score);
+        minV = min(minV, i.score);
     }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
+    for (auto &&i : v)
     {
-        l++;
+        cout << fixed << setprecision(2) << computeNormalizedScore(&i, maxV, minV) << endl;
     }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
-        {
-            cout << 2 << endl;
-            return;
-        }
-    }
-    cout << 1 << endl;
-    return;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

@@ -25,8 +25,7 @@ typedef map<char, int> mci;
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
-istream &operator>>(istream &in, vector<T> &v)
-{
+istream &operator>>(istream &in, vector<T> &v) {
     for (auto &x : v)
     {
         in >> x;
@@ -36,8 +35,7 @@ istream &operator>>(istream &in, vector<T> &v)
 
 // 通用版本的 << 重载，用于任意类型的 std::vector<T>
 template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v)
-{
+ostream &operator<<(ostream &out, const vector<T> &v) {
     for (const auto &x : v)
     {
         out << x << ' ';
@@ -47,44 +45,38 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int a, b, p;
+    char op;
+    cin >> a >> b >> p >> op;
 
-    vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    int result;
+    switch (toupper(op))
     {
-        cout << 0 << endl;
+    case 'A':
+        result = (a + b >= p) ? (a + b - p) : (a + b);
+        break;
+    case 'S':
+        result = (a >= b) ? (a - b) : (a + p - b);
+        break;
+    case 'M':
+        result = ((a * b) < p) ? (a * b) : (a * b - (a * b / p) * p);
+        break;
+    case 'D':
+        result = (a % 2 == 0) ? (a / 2) : ((a + p) / 2);
+        break;
+    default:
+        cout << "Wrong operator!" << endl;
         return;
     }
-    int l = 0, r = n - 1;
 
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
-        {
-            cout << 2 << endl;
-            return;
-        }
-    }
-    cout << 1 << endl;
-    return;
+    cout << result << endl;
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

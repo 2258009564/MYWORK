@@ -49,42 +49,37 @@ void solve()
 {
     int n;
     cin >> n;
-
     vi v(n);
-    cin >> v;
-    if (count(all(v), 0ll) == n)
+    int total60 = 0;
+    for (int i = 0; i < n; i++)
     {
-        cout << 0 << endl;
-        return;
-    }
-    int l = 0, r = n - 1;
-
-    while (!v[l])
-    {
-        l++;
-    }
-    while (!v[r])
-    {
-        r--;
-    }
-
-    for (int i = l; i <= r; i++)
-    {
-        if (!v[i])
+        cin >> v[i];
+        if (v[i] < 60)
         {
-            cout << 2 << endl;
-            return;
+            total60++;
         }
     }
-    cout << 1 << endl;
-    return;
+    if (total60 * 1.0 / n >= 0.6)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            cout << (int)(sqrt(v[i]) * 10) << ": "[i == n - 1];
+        }
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            cout << v[i] << ": "[i == n - 1];
+        }
+    }
 }
 
 signed main()
 {
     ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

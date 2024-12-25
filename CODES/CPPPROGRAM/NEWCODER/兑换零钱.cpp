@@ -50,8 +50,7 @@ void solve()
     int n;
     cin >> n;
 
-    int fen5 = 5, fen2 = 2, fen1 = 1;
-
+    vvi result;
     vi v = {5, 2, 1};
     int count = 0;
     for (int i = 1; i <= n; i++)
@@ -62,13 +61,33 @@ void solve()
             {
                 if (k * 5 + j * 2 + i == n)
                 {
-                    cout << "fen5:" << k << ",fen2:" << j << ",fen1:" << i << ",total:" << i + j + k << endl;
-                    count++;
+                    // cout << "fen5:" << k << ",fen2:" << j << ",fen1:" << i << ",total:" << i + j + k << endl;
+                    // count++;
+                    result.push_back({k, j, i});
                 }
             }
         }
     }
-    cout << "count=" << count;
+    // cout << "count=" << count;
+
+    sort(all(result), [](vi a, vi b)
+         {
+        if (a[0]!= b[0])
+        {
+            return a[0] > b[0];
+        }
+        if (a[1] != b[1])
+        {
+            return a[1] > b[1];
+        }
+        return a[2] > b[2]; });
+
+    for (auto &&v1 : result)
+    {
+        cout << "fen5:" << v1[0] << ",fen2:" << v1[1] << ",fen1:" << v1[2] << ",total:" << v1[0] + v1[1] + v1[2] << endl;
+    }
+
+    cout << "count=" << result.size();
 }
 
 signed main()

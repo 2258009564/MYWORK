@@ -50,48 +50,49 @@ class Person
 public:
     virtual void eat() = 0;
     virtual void pay() = 0;
-    virtual ~Person() {}
+    virtual ~Person() {};
 };
+
 class Chinese : public Person
 {
 public:
-    Chinese() { cout << "中国人进入餐厅" << endl; }
-    ~Chinese() { cout << "中国人离开餐厅" << endl; }
-    void eat() override { cout << "中国人用筷子吃饭" << endl; }
-    void pay() override { cout << "中国人用微信支付" << endl; }
+    Chinese() { cout << "chinese come in" << endl; }
+    ~Chinese() { cout << "chinese go out" << endl; }
+    void eat() override { cout << "chinese eat" << endl; }
+    void pay() override { cout << "chinese pay by wechat" << endl; }
 };
 
 class American : public Person
 {
 public:
-    American() { cout << "美国人进入餐厅" << endl; }
-    ~American() { cout << "美国人离开餐厅" << endl; }
-    void eat() override { cout << "美国人用叉子吃饭" << endl; }
-    void pay() override { cout << "美国人用信用卡支付" << endl; }
+    American() { cout << "american come in " << endl; }
+    ~American() { cout << "american go out" << endl; }
+    void eat() override { cout << "american eat" << endl; }
+    void pay() override { cout << "american pay by paypel" << endl; }
 };
 
 class Indian : public Person
 {
 public:
-    Indian() { cout << "印度人进入餐厅" << endl; }
-    ~Indian() { cout << "印度人离开餐厅" << endl; }
-    void eat() override { cout << "印度人用手吃饭" << endl; }
-    void pay() override { cout << "印度人用现金支付" << endl; }
+    Indian() { cout << "Indian come in" << endl; }
+    ~Indian() { cout << "Indian go out" << endl; }
+    void eat() override { cout << "indian eat" << endl; }
+    void pay() override { cout << "indian pay by shit" << endl; }
 };
-void processMeal(Person &p)
+
+void personeat(Person& p)
 {
     p.eat();
-    p.pay();
 }
+
 void solve()
 {
     Chinese c;
     American a;
     Indian i;
-
-    processMeal(c);
-    processMeal(a);
-    processMeal(i);
+    personeat(c);
+    personeat(a);
+    personeat(i);
 }
 
 signed main()

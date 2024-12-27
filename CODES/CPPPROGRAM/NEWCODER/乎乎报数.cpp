@@ -49,13 +49,13 @@ void solve()
 {
     int n, k;
     cin >> n >> k;
+
     for (int i = 1; i <= n; i++)
     {
-        if (i % k == 0)
+        if (i % k != 0)
         {
-            continue;
+            cout << i << endl;
         }
-        cout << i << endl;
     }
 }
 

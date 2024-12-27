@@ -22,11 +22,18 @@ public:
         stack<int> indexstk;
 
         indexstk.push(0);
-        vector<int> result;
+        vector<int> result(temperatures.size(), 0);
 
         for (int i = 1; i < temperatures.size(); i++)
         {
-            if ()
+            if (temperatures[i] <= temperatures[indexstk.top()])
+            {
+                indexstk.push(i);
+            }
+            else
+            {
+                while (!indexstk.empty() and )
+            }
         }
     }
 };

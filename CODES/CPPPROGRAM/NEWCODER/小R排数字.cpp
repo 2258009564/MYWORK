@@ -47,7 +47,39 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    
+    string s;
+    cin >> s;
+    if (stoll(s) % 4 == 0)
+    {
+        cout << "YES" << endl;
+        return;
+    }
+    int len = s.length();
+
+    bool possible = false;
+
+    for (int i = 0; i < len; ++i)
+    {
+        for (int j = i + 1; j < len; ++j)
+        {
+            int num1 = (s[i] - '0') * 10 + (s[j] - '0');
+            int num2 = (s[j] - '0') * 10 + (s[i] - '0');
+
+            if (num1 % 4 == 0 || num2 % 4 == 0)
+            {
+                possible = true;
+                break;
+            }
+        }
+        if (possible)
+            break;
+    }
+
+    if (possible)
+        cout << "YES" << endl;
+    else
+        cout << "NO" << endl;
+}
 
 signed main()
 {

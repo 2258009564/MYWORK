@@ -47,7 +47,44 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    
+    int x, y;
+    cin >> x >> y;
+
+    if (y == 0)
+    {
+        cout << 0 << endl;
+        return;
+    }
+
+    int l = 0, r = 2e9;
+    while (l <= r)
+    {
+        int mid = l + (r - l) / 2;
+        int sum = 0;
+        if (mid % 2 == 0)
+        {
+            sum = mid / 2 * (1 + x);  
+        }
+        else
+        {
+            sum = (mid / 2) * (1 + x) + 1;
+        }
+        if (sum < y)
+        {
+            l = mid + 1;
+        }
+        else if (sum > y)
+        {
+            r = mid - 1;
+        }
+        else
+        {
+            cout << mid << endl;
+            return;
+        }
+    }
+    cout << l << endl;
+}
 
 signed main()
 {

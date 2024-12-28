@@ -47,7 +47,20 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    mii mp;
+    vi v(n);
+
+    for (auto &&i : v)
+    {
+        cin >> i;
+        mp[i]++;
+    }
+
+    cout << mp.size() << endl;
+}
 
 signed main()
 {

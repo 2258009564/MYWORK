@@ -19,22 +19,20 @@ class Solution
 public:
     vector<int> dailyTemperatures(vector<int> &temperatures)
     {
-        stack<int> indexstk;
+        stack<int> stk;
 
-        indexstk.push(0);
         vector<int> result(temperatures.size(), 0);
 
-        for (int i = 1; i < temperatures.size(); i++)
+        for (int i = 0; i < temperatures.size(); i++)
         {
-            if (temperatures[i] <= temperatures[indexstk.top()])
+            while (!stk.empty() and temperatures[stk.top()] < temperatures[i])
             {
-                indexstk.push(i);
+                result[stk.top()] = i - stk.top();
+                stk.pop();
             }
-            else
-            {
-                while (!indexstk.empty() and )
-            }
+            stk.push(i);
         }
+        return result;
     }
 };
 // @lc code=end

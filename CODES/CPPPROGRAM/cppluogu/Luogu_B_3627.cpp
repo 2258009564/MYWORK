@@ -50,29 +50,31 @@ void solve()
     int n;
     cin >> n;
 
-    int l = 1, r = 1e5 + 5;
-    int ans = l;
-    while (l <= r)
-    {
-        int mid = l + (r - l) / 2;
-        int mid3 = mid * mid * mid;
-        int mid33 = (mid + 1) * (mid + 1) * (mid + 1);
+    // int l = 1, r = 1e5 + 5;
+    // int ans = l;
+    // while (l <= r)
+    // {
+    //     int mid = l + (r - l) / 2;
+    //     int mid3 = mid * mid * mid;
+    //     int mid33 = (mid + 1) * (mid + 1) * (mid + 1);
 
-        if (mid3 > n)
-        {
-            r = mid - 1;
-        }
-        else if (mid33 < n)
-        {
-            l = mid + 1;
-        }
-        else
-        {
+    //     if (mid3 > n)
+    //     {
+    //         r = mid - 1;
+    //     }
+    //     else if (mid33 < n)
+    //     {
+    //         l = mid + 1;
+    //     }
+    //     else
+    //     {
 
-            cout << (mid33 == n ? mid + 1 : mid);
-            return;
-        }
-    }
+    //         cout << (mid33 == n ? mid + 1 : mid);
+    //         return;
+    //     }
+    // }
+
+    cout << (int)cbrt(n);
 }
 
 signed main()

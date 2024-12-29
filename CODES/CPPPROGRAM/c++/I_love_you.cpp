@@ -1,7 +1,6 @@
 // #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
-#define BUFF ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 #define int long long
 typedef pair<int, int> pii;
 typedef pair<double, double> pdd;
@@ -19,19 +18,11 @@ typedef vector<vd> vvd;
 typedef vector<char> vc;
 typedef vector<vc> vvc;
 typedef vector<vvc> vvvc;
-typedef vector<bool> vb;
-typedef vector<vb> vvb;
-typedef vector<vvb> vvvb;
 typedef map<int, int> mii;
 typedef map<char, int> mci;
 #define endl '\n'
-#define ts    \
-    int T;    \
-    cin >> T; \
-    while (T--)
 #define all(v) v.begin(), v.end()
-#define sall(x) sort(all(x))
-#define re(v) reverse(all(v))
+#define sall(v, x) sort(all(v), x)
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
@@ -55,81 +46,75 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
-string s1 = "0iloveyou";
+const int mod = 1e9 + 7;
 
-int mod = 20010905;
+map<int, mii> result;
+vi path;
 
-signed main()
+void backtracking(int startindex, map<int, vvi> mp, int sum, int n)
 {
-    // BUFF;
-    // int total = 0;
-    // string s;
-    // cin >> s;
-    // int sz = s.size();
-    // vi dp(sz, 0);
-
-    // // dp[i]: 以s[i]为末尾的 子序列总数
-    // unordered_map<char, int> mp;
-    // for (int i = 0; i < s1.size(); i++)
-    // {
-    //     mp[s1[i]] = i;
-    // }
-
-    // for (int i = 0; i < sz; i++)
-    // {
-    //     if (isalpha(s[i]))
-    //     {
-    //         s[i] = tolower(s[i]);
-    //     }
-
-    //     char cur = s[i];
-
-    //     if (mp[cur])
-    //     {
-    //         if (mp[cur] == 1)
-    //         {
-    //             dp[i] = 1;
-    //         }
-    //         else
-    //         {
-    //             for (int j = 0; j < i; j++)
-    //             {
-    //                 if (mp[s[j]] == mp[cur] - 1)
-    //                 {
-    //                     dp[i] += dp[j];
-    //                 }
-    //             }
-    //         }
-    //         if (mp[cur] == 8)
-    //         {
-    //             total += dp[i];
-    //             total %= mod;
-    //         }
-    //     }
-    // }
-    // cout << total;
-
-    BUFF;
-    string s;
-    cin >> s;
-    int sz = s.size();
-    vi dp(9, 0);
-    dp[0] = 1; // 初始化
-    // dp[i]: s[i]为末尾的 子序列的 个数
-    for (int i = 0; i < sz; i++)
+    if (startindex == n)
     {
-        if (isalpha(s[i]))
+        for (auto &&i : path)
         {
-            s[i] = tolower(s[i]);
+            result[sum][i] = 1; // 标记总和为sum的时候 最短路径包含了i
         }
-        for (int k = 8; k >= 1; k--)
+        return;
+    }
+
+    for (auto &&v : mp[startindex])
+    {
+        auto money = v[1], cur = v[0], index = v.back();
+
+        path.push_back(index);
+        backtracking(cur, mp, sum + money, n);
+        path.pop_back();
+    }
+}
+
+void solve()
+{
+    result.clear();
+    path.clear();
+    int n, m;
+    cin >> n >> m;
+
+    map<int, vvi> mp;
+    int u, v, w;
+
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> u >> v >> w;
+        mp[u].push_back({v, w, i}); // 另一个节点， 价格， 第i条路
+    }
+
+    backtracking(1, mp, 0, n);
+
+    int minsum = 0;
+
+    for (auto &&[k, v] : result)
+    {
+        if (!v.empty())
         {
-            if (s[i] == s1[k])
-            {
-                dp[k] = (dp[k] + dp[k - 1]) % mod;
-            }
+            minsum = k;
+            break;
         }
     }
 
-    cout << dp[8];
+    for (int i = 1; i <= m; i++)
+    {
+        cout << result[minsum][i];
+    }
+}
+
+signed main()
+{
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int TT = 1;
+    cin >> TT;
+    while (TT--)
+    {
+        solve();
+        cout << endl;
+    }
 }

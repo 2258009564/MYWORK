@@ -82,7 +82,30 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n, k;
+    cin >> n >> k;
+
+    vi v(n);
+    cin >> v;
+    int minnum = *min_element(all(v));
+    int maxnum = *max_element(all(v));
+
+    for (auto &&i : v)
+    {
+        if (i < k)
+        {
+            cout << minnum;
+        }
+        else if (i > k)
+        {
+            cout << maxnum;
+        }
+        else
+        {
+            cout << k;
+        }
+        cout << ' ';
+    }
 }
 
 signed main()

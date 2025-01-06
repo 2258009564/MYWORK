@@ -82,14 +82,32 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    string s;
+    cin >> s;
+
+    if (s.empty())
+    {
+        cout << "";
+    }
+    else if (s.size() & 1)
+    {
+        cout << -1;
+    }
+    else if (s.size() == 2)
+    {
+        cout << "()";
+    }
+    else
+    {
+        cout << "There are multiple solutions";
+    }
 }
 
 signed main()
 {
     ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

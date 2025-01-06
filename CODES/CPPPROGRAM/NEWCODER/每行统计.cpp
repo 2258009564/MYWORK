@@ -82,7 +82,24 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int m, n;
+    cin >> m >> n;
+    int num;
+
+    for (int i = 0; i < m; i++)
+    {
+        int tot = 0;
+        for (int j = 0; j < n; j++)
+        {
+            cin >> num;
+
+            if (num < 0)
+            {
+                tot++;
+            }
+        }
+        cout << tot << endl;
+    }
 }
 
 signed main()

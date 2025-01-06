@@ -80,9 +80,43 @@ const int INF = 1e9;     // 无穷大
 const int INF_LL = 1e18; // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 
+vi isprime(3000010, 1);
+vi primes;
+void isPrime()
+{
+    isprime[0] = isprime[1] = 0; // 素数的定义 别忘了
+
+    for (int i = 2; i < isprime.size(); i++)
+    {
+        if (isprime[i])
+        {
+            for (int j = i * i; j < isprime.size(); j += i)
+            {
+                isprime[j] = 0;
+            }
+            primes.push_back(i);
+        }
+    }
+}
+
 void solve()
 {
-    
+    isPrime();
+    int n;
+    cin >> n;
+    bool found = 0;
+    for (int i = 2; i + 2 <= n; i++)
+    {
+        if (isprime[i] and isprime[i + 2])
+        {
+            cout << i << ' ' << i + 2 << endl;
+            found = 1;
+        }
+    }
+    if (!found)
+    {
+        cout << "none";
+    }
 }
 
 signed main()

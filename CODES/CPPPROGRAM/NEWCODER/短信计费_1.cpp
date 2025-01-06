@@ -82,7 +82,21 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    if (n <= 70)
+    {
+        cout << 0.1;
+    }
+    else
+    {
+        int m = n / 67;
+        if (n % 67 != 0)
+        {
+            m++;
+        }
+        cout << m * 0.1;
+    }
 }
 
 signed main()

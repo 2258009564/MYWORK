@@ -82,7 +82,13 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+
+    for (auto alp = 'A'; alp <= 'Z'; alp++)
+    {
+        cout << (char)((alp - 'A' + n) % 26 + 'A');
+    }
 }
 
 signed main()

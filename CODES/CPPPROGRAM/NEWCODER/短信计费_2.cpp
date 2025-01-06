@@ -82,7 +82,25 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    double total = 0;
+    int num;
+    while (cin >> num)
+    {
+        if (num <= 70)
+        {
+            total += 0.1;
+        }
+        else
+        {
+            int tot = num / 70;
+            tot += (num % 70 ? 1 : 0);
+
+            total += tot * 0.1;
+        }
+    }
+    cout << total;
 }
 
 signed main()

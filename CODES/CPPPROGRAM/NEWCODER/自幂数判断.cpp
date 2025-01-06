@@ -82,7 +82,20 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int m;
+    cin >> m;
+    string s;
+    while (cin >> s)
+    {
+        int tot = 0;
+        int num1 = stoll(s), num2 = 0;
+        int exp = s.size();
+        for (auto &&i : s)
+        {
+            num2 += pow(i - '0', exp);
+        }
+        cout << (num1 == num2 ? 'T' : 'F') << endl;
+    }
 }
 
 signed main()

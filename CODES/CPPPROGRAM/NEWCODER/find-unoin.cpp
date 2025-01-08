@@ -80,6 +80,31 @@ const int INF = 1e9;     // 无穷大
 const int INF_LL = 1e18; // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 
+vi parent;
+vi treeheight;
+
+void init(int n)
+{
+    parent.resize(n);
+    treeheight.resize(n, 0);
+
+    for (int i = 0; i < n; i++)
+        parent[i] = i;
+}
+
+int Find(int x)
+{
+    if (parent[x] != x)
+        parent[x] = Find(parent[x]);
+
+    return parent[x];
+}
+
+bool connected(int x, int y)
+{
+    return Find(x) == Find(y);
+}
+
 void solve()
 {
     

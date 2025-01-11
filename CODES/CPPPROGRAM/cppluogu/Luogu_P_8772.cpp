@@ -82,7 +82,19 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    vi v(n), pre(n);
+    cin >> v;
+
+    partial_sum(all(v), pre.begin());
+
+    int tot = 0;
+    for (int i = 0; i < n; i++)
+    {
+        tot += v[i] * (pre[n - 1] - pre[i]);
+    }
+    cout << tot;
 }
 
 signed main()

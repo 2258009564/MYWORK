@@ -82,7 +82,23 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    vi v(n);
+    cin >> v;
+
+    vi diff(n);
+    diff[0] = v[0]; // diff[i] means differ between v[i] and v[i - 1]
+    for (int i = 1; i < v.size(); i++)
+    {
+        diff[i] = v[i] - v[i - 1];
+    }
+
+    auto maxnum = *max_element(all(diff));
+    auto minnum = *min_element(all(diff));
+
+    cout << 
+
 }
 
 signed main()

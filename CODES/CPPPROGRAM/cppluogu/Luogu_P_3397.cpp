@@ -82,7 +82,18 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n, m;
+    cin >> n >> m;
+
+    vvi v(n + 1, vi(n + 1, 0));
+
+    int x1, x2, y1, y2;
+    while(m--)
+    {
+        cin >> x1 >> y1 >> x2 >> y2;
+
+        
+    }
 }
 
 signed main()

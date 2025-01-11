@@ -82,7 +82,33 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n, p;
+    cin >> n >> p;
+    vi v(n);
+    cin >> v;
+    vi diff(n);
+    diff[0] = v[0];
+    for (int i = 1; i < n; i++)
+    {
+        diff[i] = v[i] - v[i - 1];
+    }
+
+    int x, y, z;
+    while (p--)
+    {
+        cin >> x >> y >> z;
+        x--, y--;
+
+        diff[x] += z;
+        if (y + 1 < n)
+        {
+            diff[y + 1] -= z;
+        }
+    }
+
+    vi pre(n);
+    partial_sum(all(diff), pre.begin());
+    cout << *min_element(all(pre));
 }
 
 signed main()

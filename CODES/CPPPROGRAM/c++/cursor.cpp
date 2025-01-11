@@ -47,14 +47,8 @@ void solve()
 {
     int n;
     cin >> n;
-    vi a(n);
-    cin >> a;
-    
-    vi pre(n);
-    
-    partial_sum(all(a), pre.begin());
-
-    cout << pre << endl;
+    for (int i = 0; i < n; i++)
+        cout << i << ' ';
 }
 
 signed main()

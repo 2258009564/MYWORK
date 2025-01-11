@@ -1,7 +1,6 @@
 // #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
-#define BUFF ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 #define int long long
 typedef pair<int, int> pii;
 typedef pair<double, double> pdd;
@@ -19,23 +18,11 @@ typedef vector<vd> vvd;
 typedef vector<char> vc;
 typedef vector<vc> vvc;
 typedef vector<vvc> vvvc;
-typedef vector<bool> vb;
-typedef vector<vb> vvb;
-typedef vector<vvb> vvvb;
 typedef map<int, int> mii;
 typedef map<char, int> mci;
 #define endl '\n'
-#define ts    \
-    int T;    \
-    cin >> T; \
-    while (T--)
 #define all(v) v.begin(), v.end()
-#define sall(x) sort(all(x))
-#define re(v) reverse(all(v))
-#define pb push_back
-#define qb pop_back
-#define pf push_front
-#define qf pop_front
+#define sall(v, x) sort(all(v), x)
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
@@ -59,20 +46,49 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
-signed main()
+// 快速幂取模运算
+// @param a: 底数
+// @param b: 指数
+// @param mod: 模数
+// @return: (a^b) % mod
+int QuickPowMod(int a, int b, int mod)
 {
-    BUFF;
+    if (mod <= 0)
+    {
+        return -1; // 模数必须为正
+    }
+    if (b < 0)
+    {
+        return -1; // 指数必须非负
+    }
+
+    int result = 1;
+    a %= mod;
+    while (b)
+    {
+        if (b & 1)
+        {
+            result = (result * a) % mod;
+        }
+        a = (a * a) % mod;
+        b >>= 1; // 使用位运算替代除法
+    }
+    return result;
+}
+
+const int INF = 1e9;     // 无穷大
+const int INF_LL = 1e18; // 长整型无穷大
+const int MOD = 1e9 + 7; // 模数
+
+void solve()
+{
     int n;
     cin >> n;
     vi v(n);
     cin >> v;
 
-    vi prefix(n);
-    prefix[0] = v[0];
-    for (int i = 1; i < n; i++)
-    {
-        prefix[i] = prefix[i - 1] + v[i];
-    }
+    vi pre(n);
+    partial_sum(all(v), pre.begin());
 
     int m;
     cin >> m;
@@ -80,7 +96,19 @@ signed main()
     {
         int l, r;
         cin >> l >> r;
-        r--, l-= 2;
-        cout << prefix[r] - (l < 0 ? 0 : prefix[l]) << endl;
+        l--, r--;
+        cout << pre[r] - (l - 1 >= 0 ? pre[l - 1] : 0) << endl;
+    }
+}
+
+signed main()
+{
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int TT = 1;
+    // cin >> TT;
+    while (TT--)
+    {
+        solve();
+        cout << endl;
     }
 }

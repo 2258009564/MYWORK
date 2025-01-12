@@ -22,6 +22,7 @@ typedef map<int, int> mii;
 typedef map<char, int> mci;
 #define endl '\n'
 #define all(v) v.begin(), v.end()
+#define sall(v, x) sort(all(v), x)
 
 // 通用版本的 >> 重载，用于任意类型的 std::vector<T>
 template <typename T>
@@ -45,29 +46,75 @@ ostream &operator<<(ostream &out, const vector<T> &v)
     return out;
 }
 
+// 快速幂取模运算
+// @param a: 底数
+// @param b: 指数
+// @param mod: 模数
+// @return: (a^b) % mod
+int QuickPowMod(int a, int b, int mod)
+{
+    if (mod <= 0)
+    {
+        return -1; // 模数必须为正
+    }
+    if (b < 0)
+    {
+        return -1; // 指数必须非负
+    }
+
+    int result = 1;
+    a %= mod;
+    while (b)
+    {
+        if (b & 1)
+        {
+            result = (result * a) % mod;
+        }
+        a = (a * a) % mod;
+        b >>= 1; // 使用位运算替代除法
+    }
+    return result;
+}
+
+const int INF = 1e9;     // 无穷大
+const int INF_LL = 1e18; // 长整型无穷大
+const int MOD = 1e9 + 7; // 模数
+
 void solve()
 {
-    string s;
-    
-    while (cin >> s)
+    int n, x;
+    cin >> n >> x;
+    vi v(n);
+    for (int i = 0; i < n; i++)
     {
-        int total = 0;
-        while (!s.empty())
-        {
-            total += 7 * (s.back() - '0');
-            s.pop_back();
-        }
-        cout << (total % 7 == 0) << endl;
+        cin >> v[i];
+        v[i] -= x;
     }
+
+    int max_save = 0, cur_sum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        cur_sum += v[i];
+        if (cur_sum < 0)
+        {
+            cur_sum = 0;
+        }
+        max_save = max(max_save, cur_sum);
+    }
+    max_save = max(max_save, cur_sum);
+
+    cout << max_save << endl;
 }
 
 signed main()
 {
-    ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
     int TT = 1;
     // cin >> TT;
     while (TT--)
     {
         solve();
+        cout << endl;
     }
 }

@@ -25,7 +25,6 @@ void backtracking()
     for (int i = startindex; i < v.size(); i++)
     {
         path.push_back(i);
-
     }
 }
 

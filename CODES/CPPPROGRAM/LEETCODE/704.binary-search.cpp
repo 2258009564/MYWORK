@@ -16,24 +16,26 @@ class Solution
 public:
     int search(vector<int> &nums, int target)
     {
-        int r = nums.size() - 1, l = 0, m;
-        while (l <= r)
-        {
-            m = l + (r - l) / 2;
-            if (nums[m] == target)
-            {
-                return m;
-            }
-            else if (nums[m] > target)
-            {
-                r = m - 1;
-            }
-            else
-            {
-                l = m + 1;
-            }
-        }
-        return -1;
+        // int r = nums.size() - 1, l = 0, m;
+        // while (l <= r)
+        // {
+        //     m = l + (r - l) / 2;
+        //     if (nums[m] == target)
+        //     {
+        //         return m;
+        //     }
+        //     else if (nums[m] > target)
+        //     {
+        //         r = m - 1;
+        //     }
+        //     else
+        //     {
+        //         l = m + 1;
+        //     }
+        // }
+        // return -1;
+        auto num = ranges::lower_bound(nums, target) - nums.begin();
+        return (num != nums.size() and nums[num] == target ? num : -1);
     }
 };
 // @lc code=end

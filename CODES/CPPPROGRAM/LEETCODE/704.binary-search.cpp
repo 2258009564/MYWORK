@@ -16,17 +16,21 @@ class Solution
 public:
     int search(vector<int> &nums, int target)
     {
-        // 双指针
-        int lf = 0, ri = nums.size() - 1;
-        while(lf<=ri){
-            //设置的是闭区间 所以=有意义
-            int mid = lf + (ri - lf) / 2;
-            if(nums[mid]>target){
-                ri = mid - 1;
-            }else if(nums[mid]<target){
-                lf = mid + 1;
-            }else{
-                return mid;
+        int r = nums.size() - 1, l = 0, m;
+        while (l <= r)
+        {
+            m = l + (r - l) / 2;
+            if (nums[m] == target)
+            {
+                return m;
+            }
+            else if (nums[m] > target)
+            {
+                r = m - 1;
+            }
+            else
+            {
+                l = m + 1;
             }
         }
         return -1;

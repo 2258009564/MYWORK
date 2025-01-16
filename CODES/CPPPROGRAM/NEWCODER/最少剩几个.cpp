@@ -105,14 +105,7 @@ void solve()
     else
     {
         odd -= even;
-        if (odd & 1)
-        {
-            cout << 1;
-        }
-        else
-        {
-            cout << 0;
-        }
+        cout << (odd & 1 ? 1 : 0);
     }
 }
 

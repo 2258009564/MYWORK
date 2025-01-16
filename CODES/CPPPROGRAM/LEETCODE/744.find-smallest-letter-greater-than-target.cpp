@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define int long long
+#define endl '\n'
 
 /*
- * @lc app=leetcode.cn id=35 lang=cpp
- * @lcpr version=20001
+ * @lc app=leetcode.cn id=744 lang=cpp
+ * @lcpr version=20004
  *
- * [35] 搜索插入位置
+ * [744] 寻找比目标字母大的最小字母
  */
 
 // @lcpr-template-start
@@ -15,19 +17,15 @@ using namespace std;
 class Solution
 {
 public:
-    int searchInsert(vector<int> &nums, int target)
+    char nextGreatestLetter(vector<char> &letters, char target)
     {
-        auto n = nums.size();
-        int l = 0, r = n - 1, m, ans;
+        int r = letters.size() - 1, l = 0, m, ans = -1;
         while (l <= r)
         {
             m = l + (r - l) / 2;
-            if (nums[m] == target)
+            if (letters[m] > target)
             {
-                return m;
-            }
-            else if (nums[m] > target)
-            {
+                ans = m;
                 r = m - 1;
             }
             else
@@ -35,22 +33,22 @@ public:
                 l = m + 1;
             }
         }
-        return l;
+        return (ans == -1 ? letters[0] : letters[ans]);
     }
 };
 // @lc code=end
 
 /*
 // @lcpr case=start
-// [1,3,5,6]\n5\n
+// ["c", "f"\n"a"\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [1,3,5,6]\n2\n
+// ["c","f","j"]\n"c"\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [1,3,5,6]\n7\n
+// ["x","x","y","y"]\n"z"\n
 // @lcpr case=end
 
  */

@@ -17,54 +17,41 @@ class Solution
 public:
     vector<int> searchRange(vector<int> &nums, int target)
     {
-        // 找到第一个 >= target 的元素
-        // auto lower = lower_bound(nums.begin(), nums.end(), target);
-        // // 找到第一个 > target 的元素
-        // auto upper = upper_bound(nums.begin(), nums.end(), target);
-
-        // // 检查目标值是否存在
-        // if (lower == nums.end() || *lower != target)
-        // {
-        //     return {-1, -1};
-        // }
-
-        // // 计算起始和结束位置
-        // int start = distance(nums.begin(), lower);
-        // int end = distance(nums.begin(), upper) - 1;
-
-        // return {start, end};
-
-        int lf = 0, ri = nums.size() - 1;
-        while (lf <= ri)
+        // 先用二分找到一个
+        auto n = nums.size();
+        int l = 0, r = n - 1, m, ll, rr;
+        bool found = 0;
+        while (l <= r)
         {
-            int mid = lf + (ri - lf) / 2;
-            if (nums[mid] > target)
+            m = l + (r - l) / 2;
+
+            if (nums[m] == target)
             {
-                ri = mid - 1;
+                found = 1;
+                break;
             }
-            else if (nums[mid] < target)
+            else if (nums[m] > target)
             {
-                lf = mid + 1;
+                // 找更小的
+                r = m - 1;
             }
             else
             {
-                // 找到目标值后，分别向左和向右扩展，找到边界
-                int start = mid, end = mid;
-
-                // 向左扩展查找起始位置
-                while (start > 0 && nums[start - 1] == target)
-                {
-                    start--;
-                }
-
-                // 向右扩展查找结束位置
-                while (end < nums.size() - 1 && nums[end + 1] == target)
-                {
-                    end++;
-                }
-
-                return {start, end};
+                l = m + 1;
             }
+        }
+        if (found)
+        {
+            ll = m, rr = m;
+            while (ll - 1 >= 0 and nums[ll - 1] == target)
+            {
+                ll--;
+            }
+            while (rr + 1 < n and nums[rr + 1] == target)
+            {
+                rr++;
+            }
+            return {ll, rr};
         }
         return {-1, -1};
     }

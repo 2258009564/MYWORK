@@ -4,10 +4,10 @@ using namespace std;
 #define endl '\n'
 
 /*
- * @lc app=leetcode.cn id=875 lang=cpp
+ * @lc app=leetcode.cn id=275 lang=cpp
  * @lcpr version=20004
  *
- * [875] 爱吃香蕉的珂珂
+ * [275] H 指数 II
  */
 
 // @lcpr-template-start
@@ -17,34 +17,35 @@ using namespace std;
 class Solution
 {
 public:
-    int f(vector<int> &piles, int h, int m)
+    bool f(vector<int> &citations, int m)
     {
         int ans = 0;
-        for (auto &&p : piles)
+        for (auto &&i : citations)
         {
-            ans += (p + m - 1) / m;
-            if (ans > h)
+            ans += (i >= m);
+            if (ans >= m)
             {
-                return 0;
+                return 1;
             }
         }
-        return 1;
+        return 0;
     }
 
-    int minEatingSpeed(vector<int> &piles, int h)
+    int hIndex(vector<int> &citations)
     {
-        int l = 1, r = ranges::max(piles), m, ans;
+        int l = 0, r = ranges::max(citations), m, ans;
+
         while (l <= r)
         {
             m = l + (r - l) / 2;
 
-            if (f(piles, h, m))
+            if (f(citations, m))
             {
-                ans = m, r = m - 1;
+                ans = m, l = m + 1;
             }
             else
             {
-                l = m + 1;
+                r = m - 1;
             }
         }
         return ans;
@@ -54,15 +55,11 @@ public:
 
 /*
 // @lcpr case=start
-// [3,6,7,11]\n8\n
+// [0,1,3,5,6]\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n5\n
-// @lcpr case=end
-
-// @lcpr case=start
-// [30,11,23,4,20]\n6\n
+// [1,2,100]\n
 // @lcpr case=end
 
  */

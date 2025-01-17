@@ -4,10 +4,10 @@ using namespace std;
 #define endl '\n'
 
 /*
- * @lc app=leetcode.cn id=875 lang=cpp
+ * @lc app=leetcode.cn id=1011 lang=cpp
  * @lcpr version=20004
  *
- * [875] 爱吃香蕉的珂珂
+ * [1011] 在 D 天内送达包裹的能力
  */
 
 // @lcpr-template-start
@@ -17,28 +17,34 @@ using namespace std;
 class Solution
 {
 public:
-    int f(vector<int> &piles, int h, int m)
+    bool f(vector<int> &weights, int days, int m)
     {
-        int ans = 0;
-        for (auto &&p : piles)
+        int ans = 1 /* 注意 起码需要一天！ */, sum = 0;
+        for (auto &&i : weights)
         {
-            ans += (p + m - 1) / m;
-            if (ans > h)
+            sum += i;
+            if (sum > m)
+            {
+                ans++;
+                sum = i;
+            }
+
+            if (ans > days)
             {
                 return 0;
             }
         }
         return 1;
     }
-
-    int minEatingSpeed(vector<int> &piles, int h)
+    int shipWithinDays(vector<int> &weights, int days)
     {
-        int l = 1, r = ranges::max(piles), m, ans;
+        // 二分能力
+        int l = ranges::max(weights), r = accumulate(weights.begin(), weights.end(), 0ll), m, ans;
+
         while (l <= r)
         {
             m = l + (r - l) / 2;
-
-            if (f(piles, h, m))
+            if (f(weights, days, m))
             {
                 ans = m, r = m - 1;
             }
@@ -54,15 +60,15 @@ public:
 
 /*
 // @lcpr case=start
-// [3,6,7,11]\n8\n
+// [1,2,3,4,5,6,7,8,9,10]\n5\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n5\n
+// [3,2,2,4,1,4]\n3\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n6\n
+// [1,2,3,1,1]\n4\n
 // @lcpr case=end
 
  */

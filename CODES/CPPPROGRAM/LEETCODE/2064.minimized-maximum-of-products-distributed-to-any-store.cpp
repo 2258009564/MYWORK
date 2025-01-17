@@ -4,10 +4,10 @@ using namespace std;
 #define endl '\n'
 
 /*
- * @lc app=leetcode.cn id=875 lang=cpp
+ * @lc app=leetcode.cn id=2064 lang=cpp
  * @lcpr version=20004
  *
- * [875] 爱吃香蕉的珂珂
+ * [2064] 分配给商店的最多商品的最小值
  */
 
 // @lcpr-template-start
@@ -17,13 +17,13 @@ using namespace std;
 class Solution
 {
 public:
-    int f(vector<int> &piles, int h, int m)
+    int f(int n, vector<int> &quantities, int m)
     {
         int ans = 0;
-        for (auto &&p : piles)
+        for (auto &&i : quantities)
         {
-            ans += (p + m - 1) / m;
-            if (ans > h)
+            ans += (i + m - 1) / m;
+            if (ans > n)
             {
                 return 0;
             }
@@ -31,14 +31,15 @@ public:
         return 1;
     }
 
-    int minEatingSpeed(vector<int> &piles, int h)
+    int minimizedMaximum(int n, vector<int> &quantities)
     {
-        int l = 1, r = ranges::max(piles), m, ans;
+        int l = 1, r = ranges::max(quantities), m, ans;
+
         while (l <= r)
         {
             m = l + (r - l) / 2;
 
-            if (f(piles, h, m))
+            if (f(n, quantities, m))
             {
                 ans = m, r = m - 1;
             }
@@ -54,15 +55,15 @@ public:
 
 /*
 // @lcpr case=start
-// [3,6,7,11]\n8\n
+// 6\n[11,6]\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n5\n
+// 7\n[15,10,10]\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n6\n
+// 1\n[100000]\n
 // @lcpr case=end
 
  */

@@ -4,10 +4,10 @@ using namespace std;
 #define endl '\n'
 
 /*
- * @lc app=leetcode.cn id=875 lang=cpp
+ * @lc app=leetcode.cn id=1870 lang=cpp
  * @lcpr version=20004
  *
- * [875] 爱吃香蕉的珂珂
+ * [1870] 准时到达的列车最小时速
  */
 
 // @lcpr-template-start
@@ -17,13 +17,13 @@ using namespace std;
 class Solution
 {
 public:
-    int f(vector<int> &piles, int h, int m)
+    bool f(vector<int> &dist, double hour, int m)
     {
         int ans = 0;
-        for (auto &&p : piles)
+        for (auto &&d : dist)
         {
-            ans += (p + m - 1) / m;
-            if (ans > h)
+            ans += (d + m - 1) / m;
+            if (ans > hour)
             {
                 return 0;
             }
@@ -31,14 +31,18 @@ public:
         return 1;
     }
 
-    int minEatingSpeed(vector<int> &piles, int h)
+    int minSpeedOnTime(vector<int> &dist, double hour)
     {
-        int l = 1, r = ranges::max(piles), m, ans;
+        if (hour < dist.size())
+        {
+            return -1;
+        }
+        // 对 时速 二分
+        int l = 1, r = 1e7 + 1, m, ans = -1;
         while (l <= r)
         {
             m = l + (r - l) / 2;
-
-            if (f(piles, h, m))
+            if (f(dist, hour, m))
             {
                 ans = m, r = m - 1;
             }
@@ -54,15 +58,15 @@ public:
 
 /*
 // @lcpr case=start
-// [3,6,7,11]\n8\n
+// [1,3,2]\n6\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n5\n
+// [1,3,2]\n2.7\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [30,11,23,4,20]\n6\n
+// [1,3,2]\n1.9\n
 // @lcpr case=end
 
  */

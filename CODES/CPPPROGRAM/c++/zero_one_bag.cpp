@@ -1,55 +1,144 @@
+// #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
+#define int long long
+typedef pair<int, int> pii;
+typedef pair<double, double> pdd;
+typedef vector<string> vs;
+typedef vector<vs> vvs;
+typedef vector<vvs> vvvs;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef vector<vvi> vvvi;
+typedef vector<pii> vpii;
+typedef vector<vpii> vvpii;
+typedef vector<pdd> vpdd;
+typedef vector<double> vd;
+typedef vector<vd> vvd;
+typedef vector<char> vc;
+typedef vector<vc> vvc;
+typedef vector<vvc> vvvc;
+typedef map<int, int> mii;
+typedef map<char, int> mci;
+#define endl '\n'
+#define all(v) v.begin(), v.end()
+#define sall(v, x) sort(all(v), x)
 
-int main()
+// 通用版本的 >> 重载，用于任意类型的 std::vector<T>
+template <typename T>
+istream &operator>>(istream &in, vector<T> &v)
 {
-    // 01背包
-    // dp的含义：dp[i][j]表示当前背包容量为j 从0~i中任取的最大价值
-    /*
-    状态转移方程：
-    dp[i][j]=
-    1 不拿i 那么就是dp[i-1][j]
-    2 拿i 那么就要在背包里腾出i的位置
-    记i的重量为weight[i],i的价值为value[i]
-    那么有 此时的价值为 dp[i-1][j-weight[i]]+value[i]
-    综合以上 状态转移：
-    dp[i][j]=max(dp[i-1][j],dp[i-1][j-weight[i]]+value[i])
-    */
-    // 初始化
-    int m, n;
-    cin >> m >> n;
-    vector<int> weight(m), value(m);
-    for (auto &num : weight)
+    for (auto &x : v)
     {
-        cin >> num;
+        in >> x;
     }
-    for (auto &num : value)
+    return in;
+}
+
+// 通用版本的 << 重载，用于任意类型的 std::vector<T>
+template <typename T>
+ostream &operator<<(ostream &out, const vector<T> &v)
+{
+    for (const auto &x : v)
     {
-        cin >> num;
+        out << x << ' ';
     }
-    vector<vector<int>> dp(m, vector<int>(n + 1, 0));
-    // m行n列
-    for (int i = weight[0]; i <= n; i++)
-    { // dp[0][i]表示的是价值 所以都是第一件的价值
-        dp[0][i] = value[0];
+    return out;
+}
+
+// 快速幂取模运算
+// @param a: 底数
+// @param b: 指数
+// @param mod: 模数
+// @return: (a^b) % mod
+int QuickPowMod(int a, int b, int mod)
+{
+    if (mod <= 0)
+    {
+        return -1; // 模数必须为正
+    }
+    if (b < 0)
+    {
+        return -1; // 指数必须非负
     }
 
-    for (int i = 1; i < m; i++)
-    { // m是行 说的是行李箱的每一个物品
-        for (int j = 0; j <= n; j++)
-        { // n是列 说的是行李箱的容量
-            if (
-                // 装不下 就继承上一个的价值
-                j < weight[i])
+    int result = 1;
+    a %= mod;
+    while (b)
+    {
+        if (b & 1)
+        {
+            result = (result * a) % mod;
+        }
+        a = (a * a) % mod;
+        b >>= 1; // 使用位运算替代除法
+    }
+    return result;
+}
+
+const int INF = 1e9;     // 无穷大
+const int INF_LL = 1e18; // 长整型无穷大
+const int MOD = 1e9 + 7; // 模数
+
+bool ok(vector<vector<int>> &grid)
+{
+    vector<int> rows(9, 0), cols(9, 0), boxes(9, 0);
+
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            int num = grid[i][j];
+            int bit = 1 << num;
+
+            if (rows[i] & bit or cols[j] & bit or boxes[(i / 3) * 3 + j / 3] & bit)
             {
-                dp[i][j] = dp[i - 1][j];
-                // 注意 上一个的价值是i-1
+                return 0;
             }
-            else
-            {
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
-            }
+
+            // mark it down
+            rows[i] |= bit;
+            cols[j] |= bit;
+            boxes[(i / 3) * 3 + j / 3] |= bit;
         }
     }
-    cout << dp[m - 1][n];
+    return 1;
+}
+
+void solve()
+{
+    // 暴力搜一遍？位运算是不是能简化一下
+    // 其实 3 * 81 变成 81 应该没啥区别
+    // 写一个压位器吧
+    vector<vector<int>> grid(9, vector<int>(9));
+    bool check = 0;
+    for (auto &&v : grid)
+    {
+        for (auto &&i : v)
+        {
+            cin >> i;
+            if (i < 1 or i > 9)
+            {
+                check = 1;
+            }
+        }
+        }
+    if (check)
+    {
+        cout << 0;
+        return;
+    }
+    cout << ok(grid);
+}
+
+signed main()
+{
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int TT = 1;
+    cin >> TT;
+    while (TT--)
+    {
+        solve();
+        cout << endl;
+    }
 }

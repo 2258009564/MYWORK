@@ -59,48 +59,52 @@ void solve()
 {
     int n, m;
     cin >> n >> m;
-    // FU begin
-    vector<int> father;
-    auto init = [&](int n)
-    {
-        father.resize(n);
-        iota(all(father), 0);
-    };
-
-    function<int(int)> ffind = [&](int i)
-    {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
-    };
-
-    auto funion = [&](int i, int j)
-    {
-        auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
-        {
-            father[ri] = rj;
-        }
-    };
-
-    auto issame = [&](int i, int j)
-    {
-        return ffind(i) == ffind(j);
-    };
-
-    // FU end
-    init(n);
-    int a, b, c;
+    unordered_map<int, vector<int>> adj; // 邻接表
+    vector<int> indegree(n, 0);          // 统计入度
+    vector<int> result;                  // 结果集合
+    int s, t;
     while (m--)
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        cin >> s >> t;
+        indegree[t]++;
+        adj[s].push_back(t);
+    }
+
+    queue<int> que;
+    for (int i = 0; i < n; i++)
+    {
+        // 入度为0 可以作为开头 加入队列
+        if (!indegree[i])
         {
-            funion(b, c);
+            que.push(i);
         }
-        else
+    }
+
+    while (que.size())
+    {
+        auto cur = que.front();
+        que.pop();
+        result.push_back(cur);
+
+        if (adj[cur].size())
         {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
+            for (auto &&i : adj[cur])
+            {
+                indegree[i]--;
+                if (indegree[i] == 0)
+                {
+                    que.push(i);
+                }
+            }
         }
+    }
+    if (result.size() - n)
+    {
+        cout << -1;
+    }
+    else
+    {
+        cout << result;
     }
 }
 

@@ -57,50 +57,63 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    // FU begin
-    vector<int> father;
-    auto init = [&](int n)
-    {
-        father.resize(n);
-        iota(all(father), 0);
-    };
+    int n;
+    cin >> n;
+    int num;
 
-    function<int(int)> ffind = [&](int i)
-    {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
-    };
+    // 没有边权的邻接表
+    unordered_map<int, vector<int>> adj;
+    // 入度
+    vector<int> indegree(n + 1, 0); // 1 based
+    vector<int> result;
 
-    auto funion = [&](int i, int j)
+    for (int i = 1; i <= n; i++)
     {
-        auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
+        adj[i];
+        while (cin >> num)
         {
-            father[ri] = rj;
+            if (num == 0)
+            {
+                break;
+            }
+            adj[i].push_back(num);
+            indegree[num]++; // 入度， 入度！
         }
-    };
+    }
 
-    auto issame = [&](int i, int j)
+    // 拓扑
+    queue<int> que;
+    for (int i = 1; i <= n; i++)
     {
-        return ffind(i) == ffind(j);
-    };
+        // 入度为0 可以作为开头 假如队列
+        if (indegree[i] == 0)
+        {
+            que.push(i);
+        }
+    }
 
-    // FU end
-    init(n);
-    int a, b, c;
-    while (m--)
+    while (que.size())
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        auto cur = que.front();
+        que.pop();
+        result.push_back(cur);
+
+        if (adj[cur].size())
         {
-            funion(b, c);
+            for (auto &&i : adj[cur])
+            {
+                indegree[i]--;
+                if (indegree[i] == 0)
+                {
+                    que.push(i);
+                }
+            }
         }
-        else
-        {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
-        }
+    }
+    
+    for (auto &&i : result)
+    {
+        cout << i << ' ';
     }
 }
 

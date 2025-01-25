@@ -57,49 +57,63 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    // FU begin
-    vector<int> father;
-    auto init = [&](int n)
-    {
-        father.resize(n);
-        iota(all(father), 0);
-    };
+    // 单源最短路 with dijkstra
 
-    function<int(int)> ffind = [&](int i)
-    {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
-    };
+    int n, m, s, v1, v2, val;
+    cin >> n >> m >> s;
+    s--;
+    unordered_map<int, unordered_map<int, int>> adj;
 
-    auto funion = [&](int i, int j)
-    {
-        auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
-        {
-            father[ri] = rj;
-        }
-    };
-
-    auto issame = [&](int i, int j)
-    {
-        return ffind(i) == ffind(j);
-    };
-
-    // FU end
-    init(n);
-    int a, b, c;
     while (m--)
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        cin >> v1 >> v2 >> val;
+        v1--, v2--;
+        if (adj[v1][v2])
         {
-            funion(b, c);
+            adj[v1][v2] = min(adj[v1][v2], val);
         }
         else
         {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
+            adj[v1][v2] = val;
+        }
+    }
+
+    vector<int> minDist(n, INT_MAX);
+    vector<int> visited(n, 0);
+    minDist[s] = 0;
+
+    auto _ = n;
+    while (_--)
+    {
+        int cur, minval = INT_MAX;
+        for (int i = 0; i < n; i++)
+        {
+            if (!visited[i] and minval > minDist[i])
+            {
+                minval = minDist[i], cur = i;
+            }
+        }
+
+        visited[cur] = 1;
+
+        for (auto &&[next, w] : adj[cur])
+        {
+            if (!visited[next])
+            {
+                minDist[next] = min(minDist[next], minDist[cur] + w);
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (minDist[i] == INT_MAX)
+        {
+            cout << 0x3f3f3f << ' ';
+        }
+        else
+        {
+            cout << minDist[i] << ' ';
         }
     }
 }

@@ -59,49 +59,50 @@ void solve()
 {
     int n, m;
     cin >> n >> m;
-    // FU begin
-    vector<int> father;
-    auto init = [&](int n)
-    {
-        father.resize(n);
-        iota(all(father), 0);
-    };
-
-    function<int(int)> ffind = [&](int i)
-    {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
-    };
-
-    auto funion = [&](int i, int j)
-    {
-        auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
-        {
-            father[ri] = rj;
-        }
-    };
-
-    auto issame = [&](int i, int j)
-    {
-        return ffind(i) == ffind(j);
-    };
-
-    // FU end
-    init(n);
-    int a, b, c;
+    unordered_map<int, unordered_map<int, int>> adj; // 邻接表
+    int s, e, v;
     while (m--)
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        cin >> s >> e >> v;
+        adj[s][e] = v;
+    }
+
+    /*
+    第一步，选源点到哪个节点近且该节点未被访问过
+    第二步，该最近节点被标记访问过
+    第三步，更新非访问节点到源点的距离（即更新minDist数组）
+    */
+
+    vector<int> minDist(n + 1, INT_MAX); // 每一个节点到源点的最小距离
+
+    vector<bool> visited(n + 1, false);
+
+    int start = 1, en = n;
+    minDist[start] = 0;
+
+  for (int i = 1; i <= n; i++) // 遍历所有节点
+    {
+        int cur = 1, minval = INT_MAX;
+        for (int v = 1; v <= n; v++) // 选择距离源点最近而且未被访问的点
         {
-            funion(b, c);
+            if (!visited[v] and minDist[v] < minval)
+            {
+                minval = minDist[v], cur = v;
+            }
         }
-        else
+
+        visited[cur] = 1; // 标记该节点已经被访问
+
+        for (auto &&[next, val] : adj[cur])
         {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
+            if (!visited[next])
+            {
+                minDist[next] = min(minDist[next], minDist[cur] + val);
+            }
         }
     }
+
+    cout << (minDist[en] == INT_MAX ? -1 : minDist[en]);
 }
 
 signed main()

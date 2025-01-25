@@ -1,4 +1,9 @@
-// #pragma GCC optimize(2)
+#pragma GCC optimize(2)
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("inline", "fast-math", "unroll-loops", "no-stack-protector")
+#pragma GCC diagnostic error "-fwhole-program"
+#pragma GCC diagnostic error "-fcse-skip-blocks"
+#pragma GCC diagnostic error "-funsafe-loop-optimizations"
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -52,51 +57,7 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vpii dots;
-    char c;
-    bool found = 0;
-    vi row(n, 0), rol(m, 0);
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> c;
-            if (c == '.')
-            {
-                dots.push_back({i, j});
-            }
-            else if (c == '#')
-            {
-                row[i] = 1, rol[j] = 1;
-            }
-            else
-            {
-                found = 1;
-            }
-        }
-    }
-    if (dots.empty())
-    {
-        cout << "Yes";
-        return;
-    }
-
-    if (ranges::find(row, 1) == row.end() and ranges::find(rol, 1) == rol.end())
-    {
-        cout << (found ? "Yes" : "No");
-        return;
-    }
-    for (auto &&[x, y] : dots)
-    {
-        if (row[x] and rol[y])
-        {
-            cout << "No";
-            return;
-        }
-    }
-    cout << "Yes";
+    
 }
 
 signed main()

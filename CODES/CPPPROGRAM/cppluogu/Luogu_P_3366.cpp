@@ -57,8 +57,26 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
+    int n, m, v1, v2, val;
     cin >> n >> m;
+
+    struct Data
+    {
+        int v1, v2, val;
+    };
+    vector<Data> datas;
+    while (m--)
+    {
+        cin >> v1 >> v2 >> val;
+        v1--, v2--;
+        if (v1 != v2)
+        {
+            datas.push_back({v1, v2, val});
+        }
+    }
+
+    // kruskal
+
     // FU begin
     vector<int> father;
     auto init = [&](int n)
@@ -75,32 +93,44 @@ void solve()
     auto funion = [&](int i, int j)
     {
         auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
+        if (ri - rj)
         {
             father[ri] = rj;
         }
     };
 
-    auto issame = [&](int i, int j)
+    auto issame = [&](int i, int j) -> bool
     {
         return ffind(i) == ffind(j);
     };
 
     // FU end
-    init(n);
-    int a, b, c;
-    while (m--)
+
+    ranges::sort(datas, [](Data &a, Data &b)
+                 { return a.val < b.val; });
+
+    init(5001);
+    int ans = 0, count = 0;
+
+    vector<bool> visited(n, 0);
+    for (auto &&[v1, v2, val] : datas)
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        if (!issame(v1, v2))
         {
-            funion(b, c);
+            visited[v1] = visited[v2] = 1;
+            ans += val;
+            funion(v1, v2);
+            count++;
         }
-        else
-        {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
-        }
+    }
+
+    if (count == n - 1)
+    {
+        cout << ans;
+    }
+    else
+    {
+        cout << "orz";
     }
 }
 

@@ -58,19 +58,28 @@ void solve()
     for (auto &&i : v)
     {
         cin >> i;
-        if (i <= 0)
+        if (!i)
         {
             cout << "No";
             return;
         }
     }
-    map<double, int> mp;
-    for (int i = 1; i < n; i++)
+    if (n == 2)
     {
-        mp[v[i] / v[i - 1]]++;
+        cout << "Yes";
+        return;
     }
-
-    cout << (mp.size() == 1 ? "Yes" : "No");
+    double x = v[1] / v[0];
+    for (int i = 1; i + 1 < n; i++)
+    {
+        if (v[i+ 1] * x != v[i + 1])
+        {
+            // cout << v[i] << ' ' << x << ' ' << v[i + 1] << endl;
+            cout << "No";
+            return;
+        }
+    }
+    cout << "Yes";
 }
 
 signed main()

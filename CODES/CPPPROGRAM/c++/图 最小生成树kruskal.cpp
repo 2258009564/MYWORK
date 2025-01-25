@@ -1,9 +1,9 @@
-// #pragma GCC optimize(2)
-// #pragma GCC optimize("Ofast")
-// #pragma GCC optimize("inline", "fast-math", "unroll-loops", "no-stack-protector")
-// #pragma GCC diagnostic error "-fwhole-program"
-// #pragma GCC diagnostic error "-fcse-skip-blocks"
-// #pragma GCC diagnostic error "-funsafe-loop-optimizations"
+#pragma GCC optimize(2)
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("inline", "fast-math", "unroll-loops", "no-stack-protector")
+#pragma GCC diagnostic error "-fwhole-program"
+#pragma GCC diagnostic error "-fcse-skip-blocks"
+#pragma GCC diagnostic error "-funsafe-loop-optimizations"
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -57,51 +57,71 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    // FU begin
+    // FU
     vector<int> father;
+
     auto init = [&](int n)
     {
         father.resize(n);
-        iota(all(father), 0);
+        iota(father.begin(), father.end(), 0);
     };
 
-    function<int(int)> ffind = [&](int i)
+    function<int(int)> ffind = [&](int n)
     {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
+        return n == father[n] ? n : father[n] = ffind(father[n]);
     };
 
     auto funion = [&](int i, int j)
     {
         auto ri = ffind(i), rj = ffind(j);
-        if (ri != rj)
+        if (ri - rj)
         {
             father[ri] = rj;
         }
     };
 
-    auto issame = [&](int i, int j)
+    auto issame = [&](int i, int j) -> bool
     {
         return ffind(i) == ffind(j);
     };
 
     // FU end
-    init(n);
-    int a, b, c;
-    while (m--)
+
+    int v, e;
+    int v1, v2, val;
+    struct Edge
     {
-        cin >> a >> b >> c;
-        b--, c--; // 0 based
-        if (a == 1)
+        int l, r, val;
+    };
+    vector<Edge> edges;
+    int ans = 0;
+    cin >> v >> e;
+    while (e--)
+    {
+        cin >> v1 >> v2 >> val;
+        edges.push_back({v1, v2, val});
+    }
+
+    // 执行Kruskal算法
+    // 按边的权值对边进行从小到大排序
+
+    ranges::sort(edges, [](Edge &a, Edge &b)
+                 { return a.val < b.val; });
+
+    init(10001);
+
+    for (auto &&[l, r, val] : edges)
+    {
+        // 并查集，搜出两个节点的祖先
+
+        // 如果祖先不同 那么不在同一个集合
+        if (!issame(l, r))
         {
-            funion(b, c);
-        }
-        else
-        {
-            cout << (issame(b, c) ? 'Y' : 'N') << endl;
+            ans += val;
+            funion(l, r);
         }
     }
+    cout << ans;
 }
 
 signed main()

@@ -66,7 +66,7 @@ void solve()
     while (e--)
     {
         int a, b, w;
-        std::cin >> a >> b >> w;
+        cin >> a >> b >> w;
         a--, b--;
         grid[a][b] = w;
         grid[b][a] = w;
@@ -87,6 +87,8 @@ void solve()
             if (!isInTree[i] and minDist[i] < minval)
             {
                 minval = minDist[i], cur = i;
+                // 是否需要break？
+                // 不需要，因为我们只需要找到最小的 minDist[i] 即可，不需要找到所有的 minDist[i]，所以不需要 break
             }
         }
 
@@ -109,7 +111,7 @@ void solve()
             }
         }
     }
-
+    cout << accumulate(all(minDist), 0LL) - minDist[0] << endl;
     for (int i = 0; i < parent.size(); i++)
     {
         cout << i << "->" << parent[i] << "->" << minDist[i] << endl;

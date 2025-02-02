@@ -10,26 +10,27 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    struct Edge
+    int a, b;
+    cin >> a >> b;
+    struct Data
     {
         int v1, v2, val;
-        Edge(int v1, int v2, int val) : v1(v1), v2(v2), val(val) {};
+        Data(int v1, int v2, int val) : v1(v1), v2(v2), val(val) {};
     };
-    vector<Edge> edges;
-
+    vector<Data> datas;
     int v1, v2, val;
-    while (m--)
+    while (b--)
     {
         cin >> v1 >> v2 >> val;
-        auto [a, b] = minmax(v1, v2);
-        edges.emplace_back(a, b, val);
+        datas.emplace_back(min(v1, v2), max(v1, v2), val);
     }
-    ranges::sort(edges, [](Edge &a, Edge &b)
-                 { return a.val < b.val; });
 
-    // FU begin
+    // K
+    ranges::sort(datas, [](Data &a, Data &b)
+                 { return a.val < b.val; });
+    vector<int> minDist(a + 1, INF);
+    int MSTnode = 0, MSTweight = 0;
+    // FU
     vector<int> father;
     auto init = [&](int n)
     {
@@ -38,7 +39,7 @@ void solve()
     };
     function<int(int)> ffind = [&](int i)
     {
-        return i == father[i] ? i : ffind(father[i]);
+        return i == father[i] ? i : father[i] = ffind(father[i]);
     };
     auto funion = [&](int i, int j)
     {
@@ -48,32 +49,26 @@ void solve()
             father[ri] = rj;
         }
     };
-
     auto issame = [&](int i, int j) -> bool
     {
         return ffind(i) == ffind(j);
     };
     // FU end
-    init(n);
-
-    int MSTweight = 0, MSTnode = 0;
-
-    for (auto &&[v1, v2, val] :edges)
+    init(a);
+    for (auto &&[v1, v2, val] : datas)
     {
         if (!issame(v1, v2))
         {
             funion(v1, v2);
-            MSTweight += val;
             MSTnode++;
+            MSTweight += val;
         }
-        if (MSTnode == n - 1)
+        if (MSTnode == a - 1)
         {
-            cout << MSTnode;
+            cout << MSTweight;
             return;
         }
     }
-    cout << -1;
-    return;
 }
 
 signed main()

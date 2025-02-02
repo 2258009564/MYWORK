@@ -1,136 +1,66 @@
 // #pragma GCC optimize(2)
-// #pragma GCC optimize("Ofast")
-// #pragma GCC optimize("inline", "fast-math", "unroll-loops", "no-stack-protector")
-// #pragma GCC diagnostic error "-fwhole-program"
-// #pragma GCC diagnostic error "-fcse-skip-blocks"
-// #pragma GCC diagnostic error "-funsafe-loop-optimizations"
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-typedef pair<int, int> pii;
-typedef pair<double, double> pdd;
-typedef vector<string> vs;
-typedef vector<vs> vvs;
-typedef vector<vvs> vvvs;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef vector<vvi> vvvi;
-typedef vector<pii> vpii;
-typedef vector<vpii> vvpii;
-typedef vector<pdd> vpdd;
-typedef vector<double> vd;
-typedef vector<vd> vvd;
-typedef vector<char> vc;
-typedef vector<vc> vvc;
-typedef vector<vvc> vvvc;
-typedef map<int, int> mii;
-typedef map<char, int> mci;
 #define endl '\n'
-#define all(v) v.begin(), v.end()
-#define sall(v, x) sort(all(v), x)
-
-// 通用版本的 >> 重载，用于任意类型的 std::vector<T>
-template <typename T>
-istream &operator>>(istream &in, vector<T> &v)
-{
-    for (auto &x : v)
-    {
-        in >> x;
-    }
-    return in;
-}
-
-// 通用版本的 << 重载，用于任意类型的 std::vector<T>
-template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v)
-{
-    for (const auto &x : v)
-    {
-        out << x << ' ';
-    }
-    return out;
-}
 
 const int INF = 1e9;     // 无穷大
-const int INF_LL = 1e18; // 长整型无穷大
+const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m, v1, v2, val;
+    int n, m; // n为顶点数，m为边数
     cin >> n >> m;
+    // prim
+    set<int> nodes; // 存储已访问的节点
 
-    struct Data
-    {
-        int v1, v2, val;
-    };
-    vector<Data> datas;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq; // 小顶堆，存储边{权重,目标顶点}
+
+    int MSTweight = 0; // 最小生成树的总权重
+
+    int v1, v2, val; // v1,v2为边的两个顶点，val为边的权重
+
+    vector<vector<pair<int, int>>> adj(n + 1); // 邻接表存储图，adj[u]存储u的所有邻边{顶点,权重}
     while (m--)
     {
         cin >> v1 >> v2 >> val;
-        v1--, v2--;
-        if (v1 != v2)
-        {
-            datas.push_back({v1, v2, val});
-        }
+        // 无向图需要添加两条边
+        adj[v1].emplace_back(v2, val);
+        adj[v2].emplace_back(v1, val);
     }
 
-    // kruskal
+    pq.push({0, 1}); // 从顶点1开始，初始权重为0
 
-    // FU begin
-    vector<int> father;
-    auto init = [&](int n)
+    while (pq.size())
     {
-        father.resize(n);
-        iota(all(father), 0);
-    };
+        auto [curw, cur] = pq.top(); // curw为当前边的权重，cur为当前顶点
+        pq.pop();
 
-    function<int(int)> ffind = [&](int i)
-    {
-        return i == father[i] ? i : father[i] = ffind(father[i]);
-    };
-
-    auto funion = [&](int i, int j)
-    {
-        auto ri = ffind(i), rj = ffind(j);
-        if (ri - rj)
+        if (nodes.count(cur)) // 如果当前顶点已访问，跳过
         {
-            father[ri] = rj;
+            continue;
         }
-    };
 
-    auto issame = [&](int i, int j) -> bool
-    {
-        return ffind(i) == ffind(j);
-    };
+        nodes.insert(cur); // 将当前顶点标记为已访问
+        MSTweight += curw; // 将当前边的权重加入最小生成树的总权重
 
-    // FU end
-
-    ranges::sort(datas, [](Data &a, Data &b)
-                 { return a.val < b.val; });
-
-    init(5001);
-    int ans = 0, count = 0;
-
-    vector<bool> visited(n, 0);
-    for (auto &&[v1, v2, val] : datas)
-    {
-        if (!issame(v1, v2))
+        // 遍历当前顶点的所有邻边
+        for (auto &&[next, nextw] : adj[cur]) // next为邻接顶点，nextw为边权重
         {
-            visited[v1] = visited[v2] = 1;
-            ans += val;
-            funion(v1, v2);
-            count++;
+            if (!nodes.count(next)) // 如果邻接顶点未访问
+            {
+                pq.push({nextw, next}); // 将边加入优先队列
+            }
         }
     }
-
-    if (count == n - 1)
+    if (nodes.size() != n) // 如果访问的顶点数不等于总顶点数，说明图不连通
     {
-        cout << ans;
+        cout << "orz"; // 输出无解
     }
     else
     {
-        cout << "orz";
+        cout << MSTweight; // 输出最小生成树的总权重
     }
 }
 

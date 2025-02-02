@@ -7,34 +7,39 @@ using namespace std;
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
-
+const int N = 5e3 + 1;
 void solve()
 {
-    int v, e;
-    cin >> v >> e;
-    int vsz = v + 1;
+    int n, m;
+    cin >> n >> m;
 
-    vector<vector<pair<int, int>>> adj(vsz + 1);
-    int v1, v2, val;
-    while (e--)
+    // 刚刚添加的
+    if (n == 1)
     {
-        cin >> v1 >> v2 >> val;
-        adj[v1].emplace_back(v2, val);
-        adj[v2].emplace_back(v1, val);
+        cout << 0;
+        return;
     }
 
-    // prim begin
-    vector<int> visited(vsz, 0), minDist(vsz, INFLL);
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+    vector<vector<pair<int, int>>> adj(N);
+    int v1, v2;
+    while (m--)
+    {
+        cin >> v1 >> v2;
+        adj[v1].push_back({v2, 1});
+        adj[v2].push_back({v1, 1});
+    }
 
+    vector<int> minDist(N, INF);
+    vector<bool> visited(N, 0);
     minDist[1] = 0;
-    pq.push({0, 1});
 
-    int totalweight = 0, nodeInMST = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    pq.push({0, 1});
 
     while (pq.size())
     {
-        auto [w, cur] = pq.top();
+        auto [_, cur] = pq.top();
         pq.pop();
 
         if (visited[cur])
@@ -43,29 +48,23 @@ void solve()
         }
 
         visited[cur] = 1;
-        totalweight += w;
-        nodeInMST++;
 
-        for (auto &&[next, nextw] : adj[cur])
+        for (auto &&[next, w] : adj[cur])
         {
             if (visited[next])
             {
                 continue;
             }
 
-            if (nextw < minDist[next])
+            if (minDist[cur] + w < minDist[next])
             {
-                minDist[next] = nextw;
+                minDist[next] = minDist[cur] + w;
                 pq.push({minDist[next], next});
             }
         }
     }
-    if (nodeInMST != v)
-    {
-        cout << -1;
-        return;
-    }
-    cout << totalweight;
+
+    cout << (minDist[n] == INF ? -1 : minDist[n]);
 }
 
 signed main()

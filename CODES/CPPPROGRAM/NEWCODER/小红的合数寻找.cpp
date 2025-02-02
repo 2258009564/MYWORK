@@ -12,10 +12,12 @@ void solve()
 {
     int n;
     cin >> n;
-    for (int i = 0; i < n; i++)
+    if (n == 1)
     {
-        cout << i << ' ';
+        cout << -1;
+        return;
     }
+    cout << 2 * n;
 }
 
 signed main()

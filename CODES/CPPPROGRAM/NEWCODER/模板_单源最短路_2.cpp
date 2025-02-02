@@ -10,62 +10,50 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int v, e;
-    cin >> v >> e;
-    int vsz = v + 1;
 
-    vector<vector<pair<int, int>>> adj(vsz + 1);
+    int n, m;
+    cin >> n >> m;
+    unordered_map<int, unordered_map<int, int>> adj;
     int v1, v2, val;
-    while (e--)
+    while (m--)
     {
         cin >> v1 >> v2 >> val;
-        adj[v1].emplace_back(v2, val);
-        adj[v2].emplace_back(v1, val);
+        adj[v1][v2] = val;
+        adj[v2][v1] = val;
     }
 
-    // prim begin
-    vector<int> visited(vsz, 0), minDist(vsz, INFLL);
+    // dijkstra begin
+    vector<int> visited(5001, 0), minDist(5001, INF);
+    int Start = 1, End = n;
+    minDist[Start] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
-
-    minDist[1] = 0;
-    pq.push({0, 1});
-
-    int totalweight = 0, nodeInMST = 0;
-
+    pq.push({minDist[Start], Start});
     while (pq.size())
     {
-        auto [w, cur] = pq.top();
+        auto [v, cur] = pq.top();
         pq.pop();
 
         if (visited[cur])
         {
             continue;
         }
-
         visited[cur] = 1;
-        totalweight += w;
-        nodeInMST++;
 
-        for (auto &&[next, nextw] : adj[cur])
+        for (auto &&[next, w] : adj[cur])
         {
             if (visited[next])
             {
                 continue;
             }
 
-            if (nextw < minDist[next])
+            if (minDist[next] > minDist[cur] + w)
             {
-                minDist[next] = nextw;
+                minDist[next] = minDist[cur] + w;
                 pq.push({minDist[next], next});
             }
         }
     }
-    if (nodeInMST != v)
-    {
-        cout << -1;
-        return;
-    }
-    cout << totalweight;
+    cout << (minDist[End] == INF ? -1 : minDist[End]);
 }
 
 signed main()

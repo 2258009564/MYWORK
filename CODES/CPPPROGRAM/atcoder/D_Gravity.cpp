@@ -10,19 +10,26 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<string> v(n);
-    for (auto &&i : v)
-    {
-        cin >> i;
-    }
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
+    int n, w;
+    cin >> n >> w;
 
-        ranges::sort(v);
+    set<int> st;
+    vector<vector<int>> v(w + 1, vector<int>(1e9 + 1));
+    unordered_map<int, int> mp;
+
+    for (int i = 1; i <= n; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+
+        st.insert(i);
+        v[x - 1][y - 1] = i;
+    }
+
+    int q;
+    cin >> q;
+    while (q--)
+    {
         
     }
 }

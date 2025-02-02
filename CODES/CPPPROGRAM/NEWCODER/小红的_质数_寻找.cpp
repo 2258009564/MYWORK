@@ -10,28 +10,17 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<string> v(n);
-    for (auto &&i : v)
-    {
-        cin >> i;
-    }
-    while (m--)
-    {
-        int l, r;
-        cin >> l >> r;
-
-        ranges::sort(v);
-        
-    }
+    string s;
+    cin >> s;
+    
+    
 }
 
 signed main()
 {
     cin.tie(nullptr)->sync_with_stdio(false);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

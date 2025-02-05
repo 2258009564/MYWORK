@@ -10,9 +10,8 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    string s;
-    cin >> s;
-    
+    int n;
+    cin >> n;
     
 }
 
@@ -20,7 +19,7 @@ signed main()
 {
     cin.tie(nullptr)->sync_with_stdio(false);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

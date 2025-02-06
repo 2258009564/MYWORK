@@ -10,28 +10,33 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    string s;
-    cin >> s;
-    auto s1 = "ab";
-    while (1)
+    int n, m;
+    cin >> n >> m;
+    vector v(n + 1, vector<int>(m + 1, 0)), dp(n + 1, vector<int>(m + 1, 0));
+    for (int i = 1; i <= n; i++)
     {
-        auto pos = s.find(s1);
-        if (pos == string::npos)
+        for (int j = 1; j <= m; j++)
         {
-            break;
+            cin >> v[i][j];
         }
-
-        s.erase(pos, 2);
     }
 
-    cout << (s.empty() ? "Good" : "Bad");
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            dp[i][j] = v[i][j] + max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+
+    cout << dp[n][m];
 }
 
 signed main()
 {
     cin.tie(nullptr)->sync_with_stdio(false);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

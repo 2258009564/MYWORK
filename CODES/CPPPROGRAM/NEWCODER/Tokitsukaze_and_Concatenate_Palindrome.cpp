@@ -8,7 +8,7 @@ const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 
-void solve()
+void solve() // d
 {
     int n, m;
     cin >> n >> m;
@@ -55,7 +55,8 @@ void solve()
     }
 
     // 剩下的都是长度不等 并且小的在前面
-    auto rest = sb.size() - sa.size();
+    int rest = sb.size() - sa.size();
+    // cout << "rest =" << rest << endl;
     // rest 记录的是sb多出去的部分
     // 如果长度是奇数那可太好了 随便丢一个放到最中间就行
     // 放完之后长度一定会变成偶数 这时候要找sb有没有成双成对的
@@ -69,8 +70,13 @@ void solve()
     {
         even += v / 2; // even 记录sb有多少个成双成对的(乃至更多)
     }
+    
+    while (rest > 1 and even > 0)
+    {
+        rest -= 2;
+        even--;
+    }
 
-    rest -= even * 2;
     // 现在所有上面应该都被消除了————除非couple不够
     cout << sa.size() + rest / 2;
 }

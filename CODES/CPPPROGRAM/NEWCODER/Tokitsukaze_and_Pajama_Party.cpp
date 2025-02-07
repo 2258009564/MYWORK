@@ -8,7 +8,7 @@ const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 
-void solve()
+void solve() // i
 {
     int n;
     cin >> n;

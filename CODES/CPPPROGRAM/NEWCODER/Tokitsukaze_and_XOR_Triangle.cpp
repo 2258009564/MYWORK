@@ -12,41 +12,35 @@ void solve()
 {
     int n, q;
     cin >> n >> q;
+
     vector<int> a(n), b(n);
-
-    // 读取数组 a 和 b
-    for (int i = 0; i < n; i++)
+    for (auto &&i : a)
     {
-        cin >> a[i];
+        cin >> i;
     }
-    for (int i = 0; i < n; i++)
+    for (auto &&i : b)
     {
-        cin >> b[i];
+        cin >> i;
     }
 
-    vector<int> prefix_sum(n + 1, 0);
-
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = i; j < n; j++)
-        {
-            prefix_sum[i + 1] += (a[i] ^ b[j]);
-            prefix_sum[i + 1] %= MOD;
-        }
-    }
+    vector<int> pre(n + 1, 0);
 
     while (q--)
     {
         int l, r;
         cin >> l >> r;
+        --l;
+        --r; // 0-indexed
 
-        int sum = 0;
-        for (int i = l; i <= r; i++)
+        long long result = 0;
+        for (int i = l; i <= r; ++i)
         {
-            sum = (sum + prefix_sum[i]) % MOD;
+            for (int j = i; j <= r; ++j)
+            {
+                result = (result + (a[i] ^ b[j])) % MOD;
+            }
         }
-
-        cout << sum << endl;
+        cout << result << endl;
     }
 }
 
@@ -59,5 +53,6 @@ signed main()
     while (TT--)
     {
         solve();
+        // cout << endl;
     }
 }

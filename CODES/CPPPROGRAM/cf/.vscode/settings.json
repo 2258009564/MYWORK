@@ -118,5 +118,5 @@
     "editor.suggestSelection": "recentlyUsed",
     "window.dialogStyle": "custom",
     "debug.showBreakpointsInOverviewRuler": true,
-    "Codegeex.RepoIndex": true,
+    "terminal.integrated.gpuAcceleration": "on"
 }

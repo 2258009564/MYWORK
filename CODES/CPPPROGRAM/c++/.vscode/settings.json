@@ -1,5 +1,5 @@
 {
-    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.errorSquiggles": "enabled",
     "files.associations": {
         "any": "cpp",
         "array": "cpp",
@@ -118,5 +118,5 @@
     "editor.suggestSelection": "recentlyUsed",
     "window.dialogStyle": "custom",
     "debug.showBreakpointsInOverviewRuler": true,
-    "Codegeex.RepoIndex": true,
+    "terminal.integrated.gpuAcceleration": "on"
 }

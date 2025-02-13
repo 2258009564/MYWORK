@@ -11,15 +11,14 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    int n, m;
+    vector<int> v(n + 1, 0);
+    for (int i = 1; i <= n; i++)
     {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
+        cin >> v[i];
     }
+
+    
 }
 
 signed main()

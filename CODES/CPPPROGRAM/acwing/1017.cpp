@@ -19,29 +19,34 @@ void solve()
         cin >> v[i];
     }
 
-    ranges::sort(v);
+    // 其实是一个最长上升子序列模型
+    vector<int> dp(n, 1); // 表示以dp[i]结尾 最长的上升子序列
 
-    int num1 = v[n / 4], num2 = v[3 * n / 4];
-    int res = 1e18;
-    for (auto &&x : {num1 - 1, num1})
+    for (int i = 1; i < n; i++)
     {
-        for (auto &&y : {num2, num2 + 1})
+        for (int j = 0; j < i; j++)
         {
-            if (x == y)
+            if (v[i] > v[j])
             {
-                continue;
+                dp[i] = max(dp[i], dp[j] + 1);
             }
-            int ans = 0;
-            for (int i = 0; i < n / 2; i++)
-            {
-                ans += abs(x - v[i]);
-                ans += abs(y - v[n / 2 + i]);
-            }
-            res = min(ans, res);
         }
     }
-
-    cout << res;
+    auto ans = ranges::max(dp);
+    ranges::reverse(v);
+    ranges::fill(dp, 1ll);
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (v[i] > v[j])
+            {
+                dp[i] = max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+    ans = max(ans, ranges::max(dp));
+    cout << ans;
 }
 
 signed main()

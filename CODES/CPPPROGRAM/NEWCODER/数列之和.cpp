@@ -13,13 +13,19 @@ void solve()
 {
     int n;
     cin >> n;
-    for (int i = 0; i < n; i++)
+    if (n == 1)
     {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
+        cout << 2;
+        return;
     }
+
+    int base = 2;
+    while (n >= base)
+    {
+        base *= 2;
+        n++;
+    }
+    cout << 2 * n;
 }
 
 signed main()
@@ -27,7 +33,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

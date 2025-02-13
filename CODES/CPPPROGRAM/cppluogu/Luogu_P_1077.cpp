@@ -6,34 +6,33 @@ using namespace std;
 
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
-const int MOD = 1e9 + 7; // 模数
+const int MOD = 1e6 + 7; // 模数
 // -9.2e18 ~ 9.2e18
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n + 1, 0);
-
-    int v1, v2;
-    while (cin >> v1 >> v2)
-    {
-        degree[v1]++, degree[v2]++;
-    }
-    vector<int> ans;
+    int n, m;
+    cin >> n >> m;
+    vector<int> v(n + 1);
     for (int i = 1; i <= n; i++)
     {
-        if (degree[i] > 2 or degree[i] <= 0)
+        cin >> v[i];
+    }
+
+    vector dp(n + 1, vector<int>(m + 1, 0));
+    dp[0][0] = 1;
+    for (int i = 1; i <= n; i++) // 每一个物品
+    {
+        for (int j = 0; j <= m; j++) // 每一个容量
         {
-            cout << -1;
-            return;
-        }
-        if (degree[i] == 1)
-        {
-            ans.emplace_back(i);
+            for (int k = 0; k <= min(v[i], j); k++)
+            {
+                dp[i][j] += dp[i - 1][j - k];
+                dp[i][j] %= MOD;
+            }
         }
     }
-    cout << ans[0] << ' ' << ans[1];
+    cout << dp[n][m];
 }
 
 signed main()

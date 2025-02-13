@@ -19,29 +19,14 @@ void solve()
         cin >> v[i];
     }
 
-    ranges::sort(v);
+    // hint: 如果只有两种元素 如何求解
+    // 把 一个元素赋值成1 另一个元素赋值成-1 利用前缀和求解即可
 
-    int num1 = v[n / 4], num2 = v[3 * n / 4];
-    int res = 1e18;
-    for (auto &&x : {num1 - 1, num1})
+    vector<int> R(n);
+    for (int i = 0; i < n; i++)
     {
-        for (auto &&y : {num2, num2 + 1})
-        {
-            if (x == y)
-            {
-                continue;
-            }
-            int ans = 0;
-            for (int i = 0; i < n / 2; i++)
-            {
-                ans += abs(x - v[i]);
-                ans += abs(y - v[n / 2 + i]);
-            }
-            res = min(ans, res);
-        }
+        
     }
-
-    cout << res;
 }
 
 signed main()

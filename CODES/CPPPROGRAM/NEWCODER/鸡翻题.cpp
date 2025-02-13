@@ -11,15 +11,18 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    int x, y;
+    cin >> x >> y;
+    // y / 2   y / 2 + 1
+    // y 加起来一定是偶数
+    if (y % 2 == 0)
     {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
+        cout << "NO";
+        return;
     }
+
+    y /= 2;
+    cout << (abs(y - x) % 2 == 0 ? "YES" : "NO");
 }
 
 signed main()
@@ -27,7 +30,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

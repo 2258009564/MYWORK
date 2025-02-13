@@ -11,15 +11,9 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
-    {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
-    }
+    string s1, s2;
+    cin >> s1 >> s2;
+    
 }
 
 signed main()

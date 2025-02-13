@@ -19,29 +19,35 @@ void solve()
         cin >> v[i];
     }
 
-    ranges::sort(v);
-
-    int num1 = v[n / 4], num2 = v[3 * n / 4];
-    int res = 1e18;
-    for (auto &&x : {num1 - 1, num1})
+    vector<int> dp1(n, 1ll), dp2(n, 1ll);
+    for (int i = 0; i < n; i++)
     {
-        for (auto &&y : {num2, num2 + 1})
+        for (int j = 0; j < i; j++)
         {
-            if (x == y)
+            if (v[i] > v[j])
             {
-                continue;
+                dp1[i] = max(dp1[i], dp1[j] + 1);
             }
-            int ans = 0;
-            for (int i = 0; i < n / 2; i++)
+        }
+    }
+    
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = n - 1; j > i; j--)
+        {
+            if (v[i] > v[j])
             {
-                ans += abs(x - v[i]);
-                ans += abs(y - v[n / 2 + i]);
+                dp2[i] = max(dp2[i], dp2[j] + 1);
             }
-            res = min(ans, res);
         }
     }
 
-    cout << res;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        ans = max(ans, dp1[i] + dp2[i] - 1);
+    }
+    cout << ans;
 }
 
 signed main()
@@ -49,7 +55,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

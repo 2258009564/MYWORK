@@ -11,15 +11,21 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+
+    string s;
+    cin >> s;
+
+    bool canReduce = 0;
+    for (int i = 0; i + 1 < s.size(); i++)
     {
-        if (i & 1)
+        if (s[i] == s[i + 1])
         {
-            cout << i << ' ';
+            canReduce = 1;
+            break;
         }
     }
+
+    cout << (canReduce ? 1 : (int)s.size());
 }
 
 signed main()
@@ -27,7 +33,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

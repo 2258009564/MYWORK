@@ -11,37 +11,35 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> v(n);
+    int num;
+    vector<int> v;
+    while (cin >> num)
+    {
+        v.emplace_back(num);
+    }
+    int n = v.size();
+
+    ranges::reverse(v);
+
+    vector<int> dp(n, 1ll);  // dp[i] 以i结尾 最多能拦截多少枚导弹
+    vector<int> dp1(n, 1ll); //
+
     for (int i = 0; i < n; i++)
     {
-        cin >> v[i];
-    }
-
-    ranges::sort(v);
-
-    int num1 = v[n / 4], num2 = v[3 * n / 4];
-    int res = 1e18;
-    for (auto &&x : {num1 - 1, num1})
-    {
-        for (auto &&y : {num2, num2 + 1})
+        for (int j = 0; j < i; j++)
         {
-            if (x == y)
+            if (v[i] >= v[j])
             {
-                continue;
+                dp[i] = max(dp[i], dp[j] + 1);
             }
-            int ans = 0;
-            for (int i = 0; i < n / 2; i++)
+            else
             {
-                ans += abs(x - v[i]);
-                ans += abs(y - v[n / 2 + i]);
+                dp1[i] = max(dp1[i], dp1[j] + 1);
             }
-            res = min(ans, res);
         }
     }
-
-    cout << res;
+    cout << ranges::max(dp) << endl
+         << ranges::max(dp1);
 }
 
 signed main()
@@ -49,7 +47,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

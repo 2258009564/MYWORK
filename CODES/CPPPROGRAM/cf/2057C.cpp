@@ -11,15 +11,15 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    int l, r;
+    cin >> l >> r;
+    if (r - l == 2)
     {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
+        cout << l << ' ' << l + 1 << ' ' << r;
+        return;
     }
+
+    
 }
 
 signed main()
@@ -27,7 +27,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

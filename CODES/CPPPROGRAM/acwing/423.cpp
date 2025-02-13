@@ -11,15 +11,23 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    int n, m;
+    cin >> n >> m;
+    // n 总共容量 m 物品个数
+    vector<int> cos(m + 1, 0), val(m + 1, 0), dp(n + 1, 0);
+    for (int i = 0; i <= m; i++)
     {
-        if (i & 1)
+        cin >> cos[i] >> val[i];
+    }
+    dp[0] = 0;
+    for (int i = 1; i <= m; i++) // 枚举物品
+    {
+        for (int j = n; j >= cos[i]; j--) // 背包容量倒退
         {
-            cout << i << ' ';
+            dp[j] = max(dp[j], dp[j - cos[i]] + val[i]);
         }
     }
+    cout << dp[n];
 }
 
 signed main()

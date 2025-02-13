@@ -13,13 +13,17 @@ void solve()
 {
     int n;
     cin >> n;
-    for (int i = 0; i < n; i++)
+    vector<int> a(n), b(n);
+    for (auto &&i : a)
     {
-        if (i & 1)
-        {
-            cout << i << ' ';
-        }
+        cin >> i;
     }
+    for (auto &&i : b)
+    {
+        cin >> i;
+    }
+
+    
 }
 
 signed main()

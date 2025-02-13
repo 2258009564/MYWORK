@@ -19,29 +19,20 @@ void solve()
         cin >> v[i];
     }
 
-    ranges::sort(v);
+    vector dp = v; // dp[i] 表示 以i结尾的最大上升子序列和
 
-    int num1 = v[n / 4], num2 = v[3 * n / 4];
-    int res = 1e18;
-    for (auto &&x : {num1 - 1, num1})
+    for (int i = 0; i < n; i++)
     {
-        for (auto &&y : {num2, num2 + 1})
+        for (int j = 0; j < i; j++)
         {
-            if (x == y)
+            if (v[i] > v[j])
             {
-                continue;
+                dp[i] = max(dp[i], dp[j] + v[i]);
             }
-            int ans = 0;
-            for (int i = 0; i < n / 2; i++)
-            {
-                ans += abs(x - v[i]);
-                ans += abs(y - v[n / 2 + i]);
-            }
-            res = min(ans, res);
         }
     }
 
-    cout << res;
+    cout << ranges::max(dp);
 }
 
 signed main()
@@ -49,7 +40,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

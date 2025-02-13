@@ -13,13 +13,16 @@ void solve()
 {
     int n;
     cin >> n;
-    for (int i = 0; i < n; i++)
+    vector<int> v(n);
+    iota(v.begin(), v.end(), 1ll);
+    do
     {
-        if (i & 1)
+        for (auto &&i : v)
         {
             cout << i << ' ';
         }
-    }
+        cout << endl;
+    } while (next_permutation(v.begin(), v.end()));
 }
 
 signed main()

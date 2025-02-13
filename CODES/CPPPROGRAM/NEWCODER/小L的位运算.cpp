@@ -35,15 +35,17 @@ void solve()
         return;
     }
 
-    auto maxnum = (*ranges::max_element(mp, [](auto &a, auto &b) {return a.second < b.second;})).second;
-    // cnt 是全部的 maxnum 是最大的 cnt - maxnum - cnt 是剩下的
-    if (cnt - maxnum >= 0)
+    auto maxnum = (*ranges::max_element(mp, [](auto &a, auto &b)
+                                        { return a.second < b.second; }))
+                      .second;
+    // cnt 是全部的 maxnum 是最大的 cnt - maxnum 是剩下的
+    if (cnt / 2 < maxnum)
     {
-        std::cout << y * (cnt - maxnum) + x * (cnt - maxnum);
+        cout << y * (cnt - maxnum) / 2 + x * (2 * maxnum - cnt);
     }
     else
     {
-        std::cout << cnt / 2 * y + cnt % 2 * x;
+        cout << cnt / 2 * y + cnt % 2 * x;
     }
 }
 

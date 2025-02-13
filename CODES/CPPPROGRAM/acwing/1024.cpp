@@ -11,15 +11,23 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    int v, n; // v 容量 n 个数
+    cin >> v >> n;
+    vector<int> val(n + 1, 0);
+    for (int i = 1; i <= n; i++)
     {
-        if (i & 1)
+        cin >> val[i];
+    }
+
+    vector<int> dp(v + 1, 0);    // dp[i] 容量为i 能装大价值的物品
+    for (int i = 1; i <= n; i++) // 枚举物品
+    {
+        for (int j = v; j >= val[i]; j--)
         {
-            cout << i << ' ';
+            dp[j] = max(dp[j], dp[j - val[i]] + val[i]);
         }
     }
+    cout << v - dp[v];
 }
 
 signed main()

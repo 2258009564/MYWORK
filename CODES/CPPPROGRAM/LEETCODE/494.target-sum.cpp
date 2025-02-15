@@ -19,24 +19,21 @@ class Solution
 public:
     int findTargetSumWays(vector<int> &nums, int target)
     {
-        int sum = 0;
-        for (int i = 0; i < nums.size(); i++)
-            sum += nums[i];
-        if ((abs(target) > sum) or ((target + sum) % 2 == 1))
-        {
-            return 0;
-        }
-        int bagSize = (target + sum) / 2;
-        vector<int> dp(bagSize + 1, 0);
-        dp[0] = 1;
+        int sum = accumulate(nums.begin(), nums.end(), 0ll);
+        // left - right = target
+        // left + right = sum
+        // right = sum - left
+        // left = (target + sum) / 2
+        // 转化为01背包
+        vector<int> dp((target + sum) / 2 + 1, 0ll); // dp[i] 背包容量为i的时候能装的方法总数
         for (int i = 0; i < nums.size(); i++)
         {
-            for (int j = bagSize; j >= nums[i]; j--)
+            for (int j = (target + sum) / 2; j >= nums[i]; j--)
             {
-                dp[j] += dp[j - nums[i]];
+                dp[j] += dp[j - nums[i]] + nums[i];
             }
         }
-        return dp[bagSize];
+        return dp.back();
     }
 };
 // @lc code=end

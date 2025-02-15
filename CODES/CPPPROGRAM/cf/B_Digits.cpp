@@ -47,7 +47,12 @@ ostream &operator<<(ostream &out, const vector<T> &v)
 
 void solve()
 {
-    
+
+    int n, d;
+    cin >> n >> d;
+
+    int total = 0;
+}
 
 signed main()
 {

@@ -3,6 +3,7 @@
 using namespace std;
 #define int long long
 #define endl '\n'
+#define all(x) (x).begin(), (x).end()
 
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
@@ -27,64 +28,36 @@ void solve()
         adj2[min(v1, v2)].emplace_back(max(v1, v2));
     }
 
-    // FUg
-    vector<int> fag(n + 1);
-    iota(fag.begin(), fag.end(), 0ll);
+    vector<int> father(n + 1, 0);
+    iota(all(father), 0ll);
 
-    function<int(int)> ffindg = [&](int i)
+    function<int(int)> ffind = [&](int i)
     {
-        return i == fag[i] ? i : fag[i] = ffindg(fag[i]);
+        return i == father[i] ? i : father[i] = ffind(father[i]);
     };
 
-    auto funiong = [&](int i, int j)
+    auto funion = [&](int i, int j)
     {
-        auto ri = ffindg(i), rj = ffindg(j);
-
+        auto ri = ffind(i), rj = ffind(j);
         if (ri != rj)
         {
-            fag[ri] = rj;
+            father[ri] = rj;
             tot2--;
         }
     };
 
-    auto issameg = [&](int i, int j) -> bool
+    auto issame = [&](int i, int j) -> bool
     {
-        return ffindg(i) == ffindg(j);
+        return ffind(i) == ffind(j);
     };
-    // FUg end
-
-    // FUf
-    vector<int> faf(n + 1);
-    iota(faf.begin(), faf.end(), 0ll);
-
-    function<int(int)> ffindf = [&](int i)
-    {
-        return i == faf[i] ? i : faf[i] = ffindf(faf[i]);
-    };
-
-    auto funionf = [&](int i, int j)
-    {
-        auto ri = ffindf(i), rj = ffindf(j);
-
-        if (ri != rj)
-        {
-            faf[ri] = rj;
-            tot1--;
-        }
-    };
-
-    auto issamef = [&](int i, int j) -> bool
-    {
-        return ffindf(i) == ffindf(j);
-    };
-    // FUf end
 
     int ans = 0;
+
     for (int v1 = 1; v1 <= n; v1++)
     {
         for (auto &&v2 : adj2[v1])
         {
-            funiong(v1, v2); // 对所有g的都合并
+            funion(v1, v2); // 对所有g的都合并
         }
     }
 
@@ -92,19 +65,18 @@ void solve()
     {
         for (auto &&v2 : adj1[v1])
         {
-            if (!issameg(v1, v2)) // 如果在g中没有 说明要删掉
+            if (!issame(v1, v2)) // 如果在g中没有 说明要删掉
             {
                 ans++;
             }
             else
             {
-                funionf(v1, v2); // 否则 就合并
+                tot1--; // 否则 就合并
             }
         }
     }
 
-    ans += (tot1 - tot2);
-    cout << ans;
+    cout << ans + tot1 - tot2;
 }
 
 signed main()
@@ -119,3 +91,4 @@ signed main()
         cout << endl;
     }
 }
+

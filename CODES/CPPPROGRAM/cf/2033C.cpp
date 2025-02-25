@@ -14,17 +14,25 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<string> v(n);
-    for (int i = 0; i < n; i++)
-    {
+    vector<int> v(n + 1, 0);
+    for (int i = 1; i <= n; i++)
         cin >> v[i];
-    }
-    ranges::sort(v, [](auto a, auto b)
-                 { return a + b < b + a; });
-    for (int i = 0; i < n; i++)
+
+    // 固定v[1] 和 v[n]  这样我们第一步处理就是处理 v[1] v[2] 以及 v[n - 1] v[n] 之间的关系 不需要考虑他们之后的结构 达到贪心的目的
+
+    for (int i = 2; i <= n / 2; i++)
     {
-        cout << v[i];
+        if (v[i] == v[i - 1] or v[n + 1 - i] == v[n + 2 - i])
+        {
+            swap(v[i], v[n + 1 - i]);
+        }
     }
+
+    int ans = 0;
+    for (int i = 1; i + 1 <= n; i++)
+        ans += v[i] == v[i + 1];
+
+    cout << ans;
 }
 
 signed main()
@@ -32,7 +40,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

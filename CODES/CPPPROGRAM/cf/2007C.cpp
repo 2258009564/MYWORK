@@ -3,6 +3,7 @@
 using namespace std;
 #define int long long
 #define endl '\n'
+#define all(x) (x).begin(), (x).end()
 
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
@@ -11,19 +12,24 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int l, r;
-    cin >> l >> r;
-
-    // 100 1
-    auto x = l ^ r;
-    int k = 0;
-    while (x > 1)
+    int n, a, b;
+    cin >> n >> a >> b;
+    vector<int> v(n);
+    auto d = gcd(a, b);
+    for (int i = 0; i < n; i++)
     {
-        k++;
-        x >>= 1;
+        cin >> v[i];
+        v[i] %= d;
     }
-    int b = l | (1 << k) - 1, a = b + 1, c = (b == l ? r : l);
-    cout << a << ' ' << b << ' ' << c;
+    // 2 3 4 5    2 4 gcd(2, 4) = 2
+    // 6 3 4 5
+    ranges::sort(v);
+    int ans = v.back() - v.front();
+    for (int i = 1; i < n; i++)
+    {
+        ans = min(ans, v[i - 1] + d - v[i]);
+    }
+    cout << ans;
 }
 
 signed main()

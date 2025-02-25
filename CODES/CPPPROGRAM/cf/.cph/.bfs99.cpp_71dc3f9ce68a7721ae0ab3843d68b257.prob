@@ -1,1 +1,0 @@
-{"name":"Local: bfs99","url":"d:\\Desktop\\c++\\bfs99.cpp","tests":[{"id":1733214453141,"input":"4 5\n1 1 0 0 0\n1 1 0 0 0\n0 0 1 0 0\n0 0 0 1 1","output":"3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\c++\\bfs99.cpp","group":"local","local":true}

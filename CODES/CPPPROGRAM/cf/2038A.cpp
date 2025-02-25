@@ -12,18 +12,35 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<string> v(n);
-    for (int i = 0; i < n; i++)
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n), b(n), c(n);
+    for (auto &&i : a) // a 奖金
     {
-        cin >> v[i];
+        cin >> i;
     }
-    ranges::sort(v, [](auto a, auto b)
-                 { return a + b < b + a; });
-    for (int i = 0; i < n; i++)
+    for (auto &&i : b) // b 工作单位成本
     {
-        cout << v[i];
+        cin >> i;
+    }
+
+    // si = ai − c * bi
+    // ai − c * bi > 0
+    // ai > c * bi
+
+    // 每个工程师都会尝试让这个数字最大化
+    // si = 0  ai / bi = c
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int w = min(k, a[i] / b[i]);
+        k -= w;
+        c[i] = w;
+    }
+
+    for (auto &&i : c)
+    {
+        cout << (k ? 0 : i) << ' ';
     }
 }
 

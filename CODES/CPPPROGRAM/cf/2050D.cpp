@@ -12,19 +12,33 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<string> v(n);
-    for (int i = 0; i < n; i++)
+    string s;
+    cin >> s;
+    if (count(s.begin(), s.end(), '1') + count(s.begin(), s.end(), '2') == s.size())
     {
-        cin >> v[i];
+        cout << s;
+        return;
     }
-    ranges::sort(v, [](auto a, auto b)
-                 { return a + b < b + a; });
-    for (int i = 0; i < n; i++)
+    
+    int n = s.size();
+    while (1)
     {
-        cout << v[i];
+        int tot = 0;
+        for (int i = 0; i + 1 < n; i++)
+        {
+            if (s[i] < s[i + 1] - 1)
+            {
+                swap(s[i], s[i + 1]);
+                s[i]--;
+                tot++;
+            }
+        }
+        if (tot == 0)
+        {
+            break;
+        }
     }
+    cout << s;
 }
 
 signed main()
@@ -32,7 +46,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

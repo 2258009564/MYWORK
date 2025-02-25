@@ -3,6 +3,7 @@
 using namespace std;
 #define int long long
 #define endl '\n'
+#define all(x) (x).begin(), (x).end()
 
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
@@ -11,19 +12,21 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int l, r;
-    cin >> l >> r;
-
-    // 100 1
-    auto x = l ^ r;
-    int k = 0;
-    while (x > 1)
+    int n, k;
+    cin >> n >> k;
+    int n1 = n + 1;
+    int sum = 0, cur = 1;
+    while (n >= k)
     {
-        k++;
-        x >>= 1;
+        if (n & 1)
+        {
+            sum += cur;
+        }
+        n >>= 1;
+        cur <<= 1;
     }
-    int b = l | (1 << k) - 1, a = b + 1, c = (b == l ? r : l);
-    cout << a << ' ' << b << ' ' << c;
+    // cout << n1 << ' ' << sum << ' ' << sum / 2 << endl;
+    cout << n1 * sum / 2;
 }
 
 signed main()

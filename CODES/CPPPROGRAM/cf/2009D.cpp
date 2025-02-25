@@ -14,17 +14,40 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<string> v(n);
+    map<int, int> mp0, mp1;
+    vector<int> y0, y1;
     for (int i = 0; i < n; i++)
     {
-        cin >> v[i];
+        int x, y;
+        cin >> x >> y;
+        if (y == 0)
+        {
+            mp0[x]++;
+            y0.emplace_back(x);
+        }
+        else
+        {
+            mp1[x]++;
+            y1.emplace_back(x);
+        }
     }
-    ranges::sort(v, [](auto a, auto b)
-                 { return a + b < b + a; });
-    for (int i = 0; i < n; i++)
+    int ans = 0;
+    for (auto &&x : y0)
     {
-        cout << v[i];
+        if (mp0[x] and mp1[x])
+        {
+            ans += n - 2;
+        }
     }
+    for (auto &&x : y0)
+    {
+        ans += (mp1[x - 1] and mp1[x + 1]);
+    }
+    for (auto &&x : y1)
+    {
+        ans += (mp0[x - 1] and mp0[x + 1]);
+    }
+    cout << ans;
 }
 
 signed main()
@@ -32,7 +55,7 @@ signed main()
     cin.tie(nullptr)->ios::sync_with_stdio(false);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

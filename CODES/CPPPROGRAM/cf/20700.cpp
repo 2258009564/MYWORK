@@ -12,7 +12,24 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    if (n == 0)
+    {
+        cout << 1;
+    }
+    else if (n == 1)
+    {
+        cout << 2;
+    }
+    else if (n < 15)
+    {
+        cout << 3;
+    }
+    else
+    {
+        cout << n / 15 + (n - 1) / 15 + (n - 2) / 15 + 3;
+    }
 }
 
 signed main()
@@ -20,7 +37,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

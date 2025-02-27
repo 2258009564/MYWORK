@@ -12,7 +12,30 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n, x;
+    cin >> n >> x;
+    int count = 0;
+    vector<int> ans(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        if ((x | i) == x)
+        {
+            ans[i] = i, count |= i;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (count != x)
+    {
+        ans[n - 1] = x;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << ans[i] << ' ';
+    }
 }
 
 signed main()
@@ -20,7 +43,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

@@ -12,6 +12,17 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+
+    // v[i] 记录了 i 物品的数量 
+    // 当 i != j 的时候 可以让
+    priority_queue<int, vector<int>, greater<int>> pq;
     
 }
 

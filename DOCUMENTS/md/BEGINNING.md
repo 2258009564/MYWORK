@@ -20,7 +20,7 @@ tags:
 1. no.1
 2. no.2
 
-[[from newbie to expert quickly]]  
+[[学习笔记]]
 [link text](https://www.google.com) 
 
 ==Highlight Text==

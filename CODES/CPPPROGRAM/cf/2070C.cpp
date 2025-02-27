@@ -12,7 +12,22 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    
+    int n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+
+    int l = 0, r = ranges::max(v), m, ans;
+    while (l <= r)
+    {
+        m = l + (r - l) / 2;
+        
+    }
 }
 
 signed main()
@@ -20,7 +35,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

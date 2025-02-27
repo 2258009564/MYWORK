@@ -167,3 +167,5 @@ else // b != 0
 # [2014D](https://codeforces.com/problemset/problem/2014/D)
 
 感觉一天十道题写不完也吸收不完 决定降低一点 一天五道题如何？
+
+# [[DAY 3]] 

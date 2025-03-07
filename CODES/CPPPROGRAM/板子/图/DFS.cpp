@@ -12,29 +12,28 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
-    {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
-    {
-        if (degree[i] > 2 or degree[i] < 1)
+    int n, m;
+    cin >> n >> m;
+    vector v(n, vector<int>(m, 0)), vis = v;
+
+    // dfs
+
+    vector<pair<int, int>> d = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    function<void(int, int)> dfs = [&](int i, int j) {
+        if (i < 0 or i >= n or j < 0 or j >= m or vis[i][j] or v[i][j] == 0)
         {
-            cout << -1;
             return;
         }
-        if (degree[i] == 1)
+
+        vis[i][j] = 1;
+        
+        for (auto &&[dx, dy] : d)
         {
-            v.emplace_back(i);
+            dfs(i + dx, j + dy);
         }
-    }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+    };
+    // dfs end
 }
 
 signed main()

@@ -14,27 +14,7 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
-    {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
-    {
-        if (degree[i] > 2 or degree[i] < 1)
-        {
-            cout << -1;
-            return;
-        }
-        if (degree[i] == 1)
-        {
-            v.emplace_back(i);
-        }
-    }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+    cout << (n % 3 == 1 ? "YES" : "NO");
 }
 
 signed main()
@@ -42,7 +22,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

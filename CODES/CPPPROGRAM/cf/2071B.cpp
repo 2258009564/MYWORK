@@ -14,27 +14,36 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+
+    auto check = [&](int i) -> bool
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
+        int j = sqrt(i);
+        return j * j == i;
+    };
+
+    if (check((n + 1) * n / 2))
     {
-        if (degree[i] > 2 or degree[i] < 1)
+        cout << -1;
+        return;
+    }
+
+    vector<int> v(n + 1);
+    iota(all(v), 0ll);
+    int sum = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (check(sum + i))
         {
-            cout << -1;
-            return;
+            sum += i + i + 1;
+            cout << i + 1 << ' ' << i << ' ';
+            i++;
         }
-        if (degree[i] == 1)
+        else
         {
-            v.emplace_back(i);
+            cout << i << ' ' ;
+            sum += i;
         }
     }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
 }
 
 signed main()
@@ -42,7 +51,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

@@ -12,29 +12,17 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+    int l, r;
+    cin >> l >> r;
+    for (int i = l; i <= r; i++)
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
-    {
-        if (degree[i] > 2 or degree[i] < 1)
+        if (i % 3 == 0)
         {
-            cout << -1;
+            cout << "YES";
             return;
         }
-        if (degree[i] == 1)
-        {
-            v.emplace_back(i);
-        }
     }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+    cout << "NO";
 }
 
 signed main()
@@ -42,7 +30,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

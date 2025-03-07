@@ -12,29 +12,23 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+    int l = 0, r = INF, m, ans;
+    while (l <= r)
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
-    {
-        if (degree[i] > 2 or degree[i] < 1)
+        m = l + (r - l) / 2;
+        auto check = [&]() -> bool {
+
+        };
+        if (check())
         {
-            cout << -1;
-            return;
+            r = (ans = m) - 1;
         }
-        if (degree[i] == 1)
+        else
         {
-            v.emplace_back(i);
+            l = m + 1;
         }
     }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+    cout << ans;
 }
 
 signed main()

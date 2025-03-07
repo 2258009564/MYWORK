@@ -14,42 +14,46 @@ void solve()
 {
     int n;
     cin >> n;
-    struct datas
-    {
-        int l, r, i;
-    };
-    vector<datas> v(n);
+    vector<string> v(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> v[i].l >> v[i].r;
-        v[i].i = i;
+        cin >> v[i];
     }
 
-    set<int> st;
-    for (int i = 1; i <= n; i++)
+    int k;
+    cin >> k;
+    cin.ignore();
+    string s;
+    getline(cin, s);
+    int ans = 0;
+    for (int i = 0; i < s.size(); i++)
     {
-        st.insert(i);
-    }
-    vector<int> ans(n);
-    ranges::sort(v, [](auto a, auto b)
-                 { return a.r == b.r ? a.l < b.l : a.r < b.r; });
-    for (int i = 0; i < n; i++)
-    {
-        auto it = st.lower_bound(v[i].l);
-        if (it != st.end() and *it <= v[i].r)
+        for (auto &&ss : v)
         {
-            ans[v[i].i] = *it;
-            st.erase(*it);
+
+            if (s.substr(i, ss.size()) == ss)
+            {
+                ans++;
+                s = s.substr(0, i) + '-' + s.substr(i + ss.size());
+            }
+        }
+    }
+    if (ans >= k)
+    {
+        cout << ans << endl
+             << "He Xie Ni Quan Jia!";
+        return;
+    }
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == '-')
+        {
+            cout << "<censored>";
         }
         else
         {
-            cout << -1;
-            return;
+            cout << s[i];
         }
-    }
-    for (int i = 0; i < n; i++)
-    {
-        cout << ans[i] << ' ';
     }
 }
 

@@ -12,29 +12,22 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+    // KSM
+    auto ksm = [&](int base, int exp) -> int
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
-    {
-        if (degree[i] > 2 or degree[i] < 1)
+        int ans = 0; 
+        while (exp)
         {
-            cout << -1;
-            return;
+            if (exp & 1)
+            {
+                ans = ans * base % MOD;
+            }
+            base = base * base % MOD;
+            exp >>= 1;
         }
-        if (degree[i] == 1)
-        {
-            v.emplace_back(i);
-        }
-    }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+        return ans;
+    };
+    // KSM end
 }
 
 signed main()

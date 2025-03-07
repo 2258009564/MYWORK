@@ -12,29 +12,34 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+    // FU
+    vector<int> father;
+    auto init = [&](int n)
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
+        father.resize(n);
+        iota(all(father), 0ll);
+    };
+
+    function<int(int)> ffind = [&](int i)
     {
-        if (degree[i] > 2 or degree[i] < 1)
+        return i == father[i] ? i : father[i] = ffind(father[i]);
+    };
+
+    auto funion = [&](int i, int j) -> void
+    {
+        auto ri = ffind(i), rj = ffind(j);
+        if (ri != rj)
         {
-            cout << -1;
-            return;
+            father[ri] = rj;
         }
-        if (degree[i] == 1)
-        {
-            v.emplace_back(i);
-        }
-    }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+    };
+
+    auto issame = [&](int i, int j) -> bool
+    {
+        return ffind(i) == ffind(j);
+    };
+    // FU end
+    // init(n);
 }
 
 signed main()

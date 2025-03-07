@@ -3,6 +3,7 @@
 using namespace std;
 #define int long long
 #define endl '\n'
+#define all(x) (x).begin(), (x).end()
 
 const int INF = 1e9;     // 无穷大
 const int INFLL = 1e18;  // 长整型无穷大
@@ -13,23 +14,17 @@ void solve()
 {
     int n;
     cin >> n;
-    int num;
-    bool ok = 0;
-    while (n--)
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
     {
-        cin >> num;
-        if (num == 1)
-        {
-            ok = 1;
-        }
+        cin >> v[i];
     }
-
-    cout << (ok ? -1 : MOD);
+    cout << (find(all(v), 1) == v.end() ? MOD : -1);
 }
 
 signed main()
 {
-    cin.tie(nullptr)->ios::sync_with_stdio(false);
+    cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
     cin >> TT;

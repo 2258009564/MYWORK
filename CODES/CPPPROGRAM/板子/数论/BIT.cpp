@@ -14,27 +14,33 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> degree(n, 0);
-    int v1, v2;
-    while (cin >> v1 >> v2)
+    vector<int> c(n + 1, 0);
+    // BIT
+    auto lowbit = [&](int x)
     {
-        degree[--v1]++;
-        degree[--v2]++;
-    }
-    vector<int> v;
-    for (int i = 0; i < n; i++)
+        return x & -x;
+    };
+
+    auto add = [&](int val, int x) -> void
     {
-        if (degree[i] > 2 or degree[i] < 1)
+        while (x <= n)
         {
-            cout << -1;
-            return;
+            c[x] = val;
+            x += lowbit(x);
         }
-        if (degree[i] == 1)
+    };
+
+    auto sum = [&](int x) -> int
+    {
+        int ans = 0;
+        while (x >= 0)
         {
-            v.emplace_back(i);
+            ans += c[x];
+            x -= lowbit(x);
         }
-    }
-    cout << v[0] + 1 << ' ' << v[1] + 1;
+        return ans;
+    };
+    // BIT end
 }
 
 signed main()

@@ -12,34 +12,35 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
+    int l1, n, k;
+    cin >> l1 >> n >> k;
+
     vector<int> v(n);
     for (int i = 0; i < n; i++)
     {
         cin >> v[i];
     }
 
-    int l = 1, r = ranges::max(v), m, ans = 0;
+    int l = 1, r = l1, m, ans;
     while (l <= r)
     {
         m = l + (r - l) / 2;
         auto check = [&]() -> bool
         {
             int ans = 0;
-            for (int i = 0; i < n; i++)
+            for (int i = 1; i < n; i++)
             {
-                ans += v[i] / m;
+                ans += ((v[i] - v[i - 1]) + m - 1) / m - 1;
             }
-            return ans >= k;
+            return ans <= k;
         };
         if (check())
         {
-            l = (ans = m) + 1;
+            r = (ans = m) - 1;
         }
         else
         {
-            r = m - 1;
+            l = m + 1;
         }
     }
     cout << ans;

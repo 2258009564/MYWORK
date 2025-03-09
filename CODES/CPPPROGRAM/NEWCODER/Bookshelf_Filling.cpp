@@ -12,37 +12,31 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i];
-    }
+    int a, b, n, m, h;
+    cin >> a >> b >> n >> m >> h;
 
-    int l = 1, r = ranges::max(v), m, ans = 0;
+    int l = 0, r = m - 1, mid, ans;
     while (l <= r)
     {
-        m = l + (r - l) / 2;
+        mid = l + (r - l) / 2;
         auto check = [&]() -> bool
         {
-            int ans = 0;
-            for (int i = 0; i < n; i++)
-            {
-                ans += v[i] / m;
-            }
-            return ans >= k;
+            auto wa = n, wb = m - mid, ans = mid;
+            ans -= (h - a) * (wa / b);
+            wa %= b;
+            ans -= (h - b) * ((wa + wb) / b);
+            return ans <= 0ll;
         };
         if (check())
         {
-            l = (ans = m) + 1;
+            l = (ans = mid) + 1;
         }
         else
         {
-            r = m - 1;
+            r = mid - 1;
         }
     }
-    cout << ans;
+    cout << n + m - ans;
 }
 
 signed main()
@@ -50,7 +44,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    // cin >> TT;
+    cin >> TT;
     while (TT--)
     {
         solve();

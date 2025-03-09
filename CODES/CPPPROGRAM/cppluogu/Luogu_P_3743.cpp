@@ -12,26 +12,40 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> v(n);
-    for (int i = 0; i < n; i++)
+    int n, p;
+    cin >> n >> p;
+    vector<pair<int, int>> v(n);
+    int sum = 0;
+    for (auto &&[a, b] : v)
     {
-        cin >> v[i];
+        cin >> a >> b;
+        sum += a;
     }
-
-    int l = 1, r = ranges::max(v), m, ans = 0;
+    if (sum <= p )
+    {
+        cout << -1.0000000000;
+        return;
+    }
+    int l = 0, r = 1e9, m, ans = -1;
     while (l <= r)
     {
         m = l + (r - l) / 2;
         auto check = [&]() -> bool
         {
-            int ans = 0;
-            for (int i = 0; i < n; i++)
+            int ans = 0, rest = 0;
+            for (auto &&[a, b] : v)
             {
-                ans += v[i] / m;
+                if (b - m * a >= 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    rest = m * a - b;
+                }
             }
-            return ans >= k;
+            // rs记录了 需要充电的总数量
+            return m * p >= rest;
         };
         if (check())
         {
@@ -43,6 +57,7 @@ void solve()
         }
     }
     cout << ans;
+    
 }
 
 signed main()

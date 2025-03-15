@@ -12,49 +12,45 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vector<string> v(n);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> v[i];
-    }
+    int l, n;
+    cin >> l >> n;
 
-    int k;
-    cin >> k;
-    cin.ignore();
-    string s;
-    getline(cin, s);
     int ans = 0;
-    for (int i = 0; i < s.size(); i++)
-    {
-        for (auto &&ss : v)
-        {
+    vector<int> row(n), col(n);
 
-            if (s.substr(i, ss.size()) == ss)
+    function<void(int)> dfs = [&](int pos) -> void
+    {
+        if (pos == n * n)
+        {
+            ans++;
+            return;
+        }
+
+        int x = pos / n;
+        int y = pos % n;
+
+        for (int i = 0; i <= l; i++)
+        {
+            row[x] += i;
+            col[y] += i;
+            if (row[x] <= l && col[y] <= l)
             {
-                ans++;
-                s = s.substr(0, i) + '-' + s.substr(i + ss.size());
+                if ((x == n - 1 && col[y] != l) or (y == n - 1 && row[x] != l))
+                {
+                }
+                else
+                {
+                    dfs(pos + 1);
+                }
             }
+            row[x] -= i;
+            col[y] -= i;
         }
-    }
-    if (ans >= k)
-    {
-        cout << ans << endl
-             << "He Xie Ni Quan Jia!";
-        return;
-    }
-    for (int i = 0; i < s.size(); i++)
-    {
-        if (s[i] == '-')
-        {
-            cout << "<censored>";
-        }
-        else
-        {
-            cout << s[i];
-        }
-    }
+    };
+
+    dfs(0);
+
+    cout << ans;
 }
 
 signed main()

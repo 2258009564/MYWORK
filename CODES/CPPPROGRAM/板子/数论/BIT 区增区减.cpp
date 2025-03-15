@@ -14,14 +14,15 @@ void solve()
 {
     int n;
     cin >> n;
+
     // BIT
-    vector<int> c(n + 2, 0);
+    vector<int> c(n + 2, 0), c1 = c;
     auto lowbit = [&](int x) -> int
     {
         return x & -x;
     };
 
-    auto add = [&](int i, int val) -> void
+    auto add = [&](vector<int> &c, int i, int val) -> void
     {
         while (i <= n)
         {
@@ -30,7 +31,7 @@ void solve()
         }
     };
 
-    auto sum = [&](int i) -> int
+    auto sum = [&](vector<int> &c, int i) -> int
     {
         int ans = 0;
         while (i)
@@ -40,6 +41,20 @@ void solve()
         }
         return ans;
     };
+
+    auto radd = [&](int x, int y, int val) -> void
+    {
+        add(c, x, val);
+        add(c, y + 1, -val);
+        add(c1, x, val * (x - 1));
+        add(c1, y + 1, -val * (y));
+    };
+
+    auto rsum = [&](int x, int y) -> int
+    {
+        return y * sum(c, y) - (x - 1) * sum(c, x - 1) - (sum(c1, y) - sum(c1, x - 1));
+    };
+
     // BIT end
 }
 

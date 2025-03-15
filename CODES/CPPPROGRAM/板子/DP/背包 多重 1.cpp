@@ -12,31 +12,29 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
+    /*
+    有N种物品和一个容量是V的背包。
+    第i种物品最多有S,件，每件体积是v,价值是w.
+    求解将哪些物品装入背包，可使物品体积总和不超过背包容量，且价值总和最大。
+    输出最大价值。
+    */
+
     int n, m;
     cin >> n >> m;
-
-    int num = pow(2, n);
-
-    while (m--)
+    vector<int> dp(m + 1, 0);
+    for (int i = 1; i <= n; i++)
     {
-        string s;
-        cin >> s;
-
-        int flag = 0;
-        int ans = 0;
-
-        for (int i = 0; i < s.size() - 1; i++)
+        int k, v, w;
+        cin >> v >> w >> k;
+        for (int j = m; j >= v; j--)
         {
-            if (s[i] == 'n')
+            for (int kk = 0; kk <= k and kk * v <= j; kk++)
             {
-                flag = num / pow(2, i + 1);
-                ans += flag;
+                dp[j] = max(dp[j - kk * v] + kk * w, dp[j]);
             }
         }
-
-        ans += (s.back() == 'n' ? 2 : 1);
-        cout << ans << endl;
     }
+    cout << dp[m];
 }
 
 signed main()
@@ -48,5 +46,6 @@ signed main()
     while (TT--)
     {
         solve();
+        cout << endl;
     }
 }

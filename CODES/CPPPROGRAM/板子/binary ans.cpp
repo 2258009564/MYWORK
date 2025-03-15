@@ -16,8 +16,9 @@ void solve()
     while (l <= r)
     {
         m = l + (r - l) / 2;
-        auto check = [&]() -> bool {
-
+        auto check = [&]() -> bool
+        {
+            // ...
         };
         if (check())
         {

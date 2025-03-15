@@ -17,7 +17,6 @@ void solve()
     vector v(n, vector<int>(m, 0)), vis = v;
 
     // dfs
-
     vector<pair<int, int>> d = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 
     function<void(int, int)> dfs = [&](int i, int j) {

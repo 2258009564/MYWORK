@@ -1,99 +1,53 @@
 // #pragma GCC optimize(2)
 #include <bits/stdc++.h>
 using namespace std;
-#define BUFF ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 #define int long long
-typedef pair<int, int> pii;
-typedef pair<double, double> pdd;
-typedef vector<string> vs;
-typedef vector<vs> vvs;
-typedef vector<vvs> vvvs;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef vector<vvi> vvvi;
-typedef vector<pii> vpii;
-typedef vector<vpii> vvpii;
-typedef vector<pdd> vpdd;
-typedef vector<double> vd;
-typedef vector<vd> vvd;
-typedef vector<char> vc;
-typedef vector<vc> vvc;
-typedef vector<vvc> vvvc;
-typedef vector<bool> vb;
-typedef vector<vb> vvb;
-typedef vector<vvb> vvvb;
-typedef map<int, int> mii;
-typedef map<char, int> mci;
 #define endl '\n'
-#define ts    \
-    int T;    \
-    cin >> T; \
-    while (T--)
-#define all(v) v.begin(), v.end()
-#define sall(x) sort(all(x))
-#define re(v) reverse(all(v))
+#define all(x) (x).begin(), (x).end()
 
-// 通用版本的 >> 重载，用于任意类型的 std::vector<T>
-template <typename T>
-istream &operator>>(istream &in, vector<T> &v)
+const int INF = 1e9;     // 无穷大
+const int INFLL = 1e18;  // 长整型无穷大
+const int MOD = 1e9 + 7; // 模数
+// -9.2e18 ~ 9.2e18
+
+void solve()
 {
-    for (auto &x : v)
+    int n, r;
+    cin >> n >> r;
+    vector<int> v(n, 0), path;
+    iota(all(v), 1ll);
+
+    function<void(int)> dfs = [&](int startindex)
     {
-        in >> x;
-    }
-    return in;
-}
+        if (startindex == n or path.size() == r) // 如果下标到达n 活着path合格了
+        {
+            if (path.size() == r) // 判断path是否合格
+            {
+                // 输出 path
+            }
+            return;
+        }
 
-// 通用版本的 << 重载，用于任意类型的 std::vector<T>
-template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v)
-{
-    for (const auto &x : v)
-    {
-        out << x << ' ';
-    }
-    return out;
-}
-
-vector<vector<int>> result;
-vector<int> path;
-
-/*
-组合 需要startindex 不需要used
-对于 只有一个超集的题目 考虑使用startindex
-
-排列 不需要startindex 需要used
-*/
-
-void backtracking(int startindex, int k, int n)
-{
-    // 到达底部 到达终止条件
-    if (path.size() == k)
-    {
-        result.push_back(path);
-        return;
-    }
-
-    // father : startindex ~ n
-    // son : i
-    for (int i = startindex; i <= n; i++)
-    {
-        path.push_back(i);
-        backtracking(i + 1, k, n);
-        path.pop_back();
-    }
+        for (int i = startindex; i < n; i++) // 对于每一个数
+        {
+            path.push_back(v[i]); // 选择
+            dfs(i + 1);
+            path.pop_back(); // 不选
+            dfs(i + 1);
+        }
+    };
+    dfs(0);
 }
 
 signed main()
 {
-    BUFF;
-    int n, k;
-    n = 5, k = 3;
-    backtracking(1, k, n);
-
-    for (auto &&i : result)
+    cin.tie(0)->ios::sync_with_stdio(0);
+    cout << setiosflags(ios::fixed) << setprecision(2);
+    int TT = 1;
+    // cin >> TT;
+    while (TT--)
     {
-        cout << i;
+        solve();
         cout << endl;
     }
 }

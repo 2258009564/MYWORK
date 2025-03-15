@@ -14,67 +14,74 @@ void solve()
 {
     int n, m;
     cin >> n >> m;
-    vector<int> v(n + 1, 0), c(n + 1, 0);
+
+    vector<int> v(n + 1, 0);
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> v[i];
+    }
+
     // bit
-    auto lb = [&](int x) -> int
+    vector<int> c(n + 2, 0);
+    auto lowbit = [&](int x) -> int
     {
         return x & -x;
     };
+
     auto add = [&](int i, int val) -> void
     {
         while (i <= n)
         {
             c[i] += val;
-            i += lb(i);
+            i += lowbit(i);
         }
     };
+
     auto sum = [&](int i) -> int
     {
         int ans = 0;
         while (i)
         {
             ans += c[i];
-            i -= lb(i);
+            i -= lowbit(i);
         }
         return ans;
     };
-    // bit
+
     for (int i = 1; i <= n; i++)
     {
-        cin >> v[i];
-        add(i, c[i]);
+        add(i, v[i] - v[i - 1]);
     }
 
-    int num;
-    while (cin >> num)
+    while (m--)
     {
+        int num;
+        cin >> num;
         if (num == 1)
         {
             int x, y, k;
             cin >> x >> y >> k;
-            for (int i = x; i <= y; i++)
-            {
-                add(i, k);
-            }
+            add(x, k);
+            add(y + 1, -k);
         }
         else
         {
             int x;
             cin >> x;
-            cout << sum(x) - sum(x - 1) << endl;
+            cout << sum(x) << endl;
         }
     }
 }
 
 signed main()
 {
-    cin.tie(nullptr)->ios::sync_with_stdio(false);
+    cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
     // cin >> TT;
     while (TT--)
     {
         solve();
-        cout << endl;
+        // cout << endl;
     }
 }

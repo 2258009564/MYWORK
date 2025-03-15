@@ -12,20 +12,54 @@ const int MOD = 1e9 + 7; // 模数
 
 void solve()
 {
-    int a, b, c;
-    cin >> a >> b >> c;
-    if (c == a + b)
+    int n;
+    cin >> n;
+
+    map<int, vector<int>> adj;
+
+    for (int i = 1; i <= n; i++)
     {
-        cout << "Tu Dou";
+        int num;
+        cin >> num;
+        adj[num].emplace_back(i);
     }
-    else if (c == a * b)
+
+    int maxnum = 0;
+
+    for (auto &&[_, v] : adj)
     {
-        cout << "Lv Yan";
+        int num = v.size();
+        maxnum = max(maxnum, num);
     }
-    else
+    int ok = 1;
+    for (int i = 1; i <= n; i++)
     {
-        cout << "zhe du shi sha ya!";
+        if (!adj[i].empty())
+        {
+            if (maxnum != adj[i].size())
+            {
+                ok = 0;
+                break;
+            }
         }
+    }
+    cout << maxnum << ' ' << (ok ? "yes" : "no") << endl;
+    vector<int> v;
+    function<void(int)> dfs = [&](int i) -> void
+    {
+        v.emplace_back(i);
+        for (auto &&x : adj[i])
+        {
+            dfs(x);
+        }
+    };
+
+    dfs(adj[0].front());
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        cout << v[i] << ' ';
+    }
 }
 
 signed main()
@@ -33,7 +67,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    cin >> TT;
+    // cin >> TT;
     while (TT--)
     {
         solve();

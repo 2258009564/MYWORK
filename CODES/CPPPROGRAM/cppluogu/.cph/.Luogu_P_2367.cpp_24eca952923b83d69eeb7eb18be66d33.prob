@@ -1,1 +1,0 @@
-{"name":"Luogu - P2367","url":"https://www.luogu.com.cn/problem/P2367","memoryLimit":128000,"timeLimit":1000,"tests":[{"id":1736524580834,"input":"3 2\n1 1 1\n1 2 1\n2 3 1","output":"2\n"}],"group":"luogu","srcPath":"d:\\MYWORK\\CODES\\CPPPROGRAM\\cppluogu\\Luogu_P_2367.cpp"}

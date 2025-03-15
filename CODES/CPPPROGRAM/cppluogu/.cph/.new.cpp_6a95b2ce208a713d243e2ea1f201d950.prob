@@ -1,1 +1,0 @@
-{"name":"Local: new","url":"d:\\Desktop\\c++\\new.cpp","tests":[{"id":1730179331533,"input":"9\n3 0.5 4 2 2 2 1 5 3\n3.0 4.5 4.5 3 3 3 2.5 4.5 2.9\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\c++\\new.cpp","group":"local","local":true}

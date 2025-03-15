@@ -1,1 +1,0 @@
-{"name":"Luogu - B3627","url":"https://www.luogu.com.cn/problem/B3627","memoryLimit":131072,"timeLimit":1000,"tests":[{"input":"27","output":"3","id":1735404906961},{"input":"100000","output":"46","id":1735404906956},{"id":1735404907015,"input":"1000000000000000","output":"100000"}],"group":"luogu","srcPath":"d:\\MYWORK\\CODES\\CPPPROGRAM\\cppluogu\\Luogu_B_3627.cpp"}

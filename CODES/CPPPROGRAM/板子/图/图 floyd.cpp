@@ -5,31 +5,35 @@ using namespace std;
 #define endl '\n'
 #define all(x) (x).begin(), (x).end()
 
-const int INF = 1e9;     // 无穷大
-const int INFLL = 1e18;  // 长整型无穷大
-const int MOD = 1e9 + 7; // 模数
+constexpr int MOD = 1e9 + 7;
 // -9.2e18 ~ 9.2e18
 
 void solve()
 {
-    int l = 0, r = INF, m, ans;
-    while (l <= r)
+    int n;
+    cin >> n;
+    vector v(n + 1, vector<int>(n + 1, INT_MAX));
+    for (int i = 1; i <= n; i++)
     {
-        m = l + (r - l) / 2;
-        auto check = [&]() -> bool
+        for (int j = 1; j <= n; j++)
         {
-            
-        };
-        if (check())
-        {
-            r = (ans = m) - 1;
-        }
-        else
-        {
-            l = m + 1;
+            cin >> v[i][j];
         }
     }
-    cout << ans;
+
+    // floyd
+    for (int k = 1; k <= n; k++)
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                v[i][j] = min(v[i][j], v[i][k] + v[k][j]);
+            }
+        }
+    }
+
+    
 }
 
 signed main()

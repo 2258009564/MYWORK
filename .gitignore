@@ -5,12 +5,23 @@ CODES/python practice/激活码+视频教程
 DOCUMENTS/程序设计
 DOCUMENTS/课件
 DOCUMENTS/md/匠心精作C++从0到1入门编程-学习编程不再难资料
-CODES/CPPPROGRAM/hello-algo-1.1.0
-CODES/CPPPROGRAM/NEWCODER/.cph
+
+DOCUMENTS/【文档包】VScode配置C语言【发布】
+DOCUMENTS/程序设计
+DOCUMENTS/课件
+DOCUMENTS/md/git & md 的简单使用教程.md
+DOCUMENTS/md/knowledge.md
+DOCUMENTS/md/离散.md
+DOCUMENTS/md/恋爱一千天有感.md
+DOCUMENTS/md/文案.md
+DOCUMENTS/md/游戏大纲？.md
+DOCUMENTS/md/.obsidian 
+
 .cph/
 coin
-node_modules
-DOCUMENTS/md/.obsidian 
+
+CODES/CPPPROGRAM/hello-algo-1.1.0
+CODES/CPPPROGRAM/NEWCODER/.cph
 CODES/CPPPROGRAM/acwing
 CODES/CPPPROGRAM/atcoder
 CODES/CPPPROGRAM/c++
@@ -21,13 +32,6 @@ CODES/CPPPROGRAM/LEETCODE
 CODES/CPPPROGRAM/NEWCODER
 CODES/CPPPROGRAM/fornt end practice
 
-DOCUMENTS/md/git & md 的简单使用教程.md
-DOCUMENTS/md/knowledge.md
-DOCUMENTS/md/离散.md
-DOCUMENTS/md/恋爱一千天有感.md
-DOCUMENTS/md/文案.md
-DOCUMENTS/md/游戏大纲？.md
-
-DOCUMENTS/【文档包】VScode配置C语言【发布】
-DOCUMENTS/程序设计
-DOCUMENTS/课件
+node_modules
+package.json
+package-lock.json

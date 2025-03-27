@@ -65,7 +65,6 @@ int comb(int n, int k)
 
     return f[n] * invf[k] % MOD * invf[n - k] % MOD;
 }
-
 // comb end ----
 
 void solve()

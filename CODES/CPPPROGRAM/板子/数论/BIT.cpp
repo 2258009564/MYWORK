@@ -10,27 +10,42 @@ const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 // -9.2e18 ~ 9.2e18
 
-void solve()
+class BIT
 {
+private:
+    vector<int> c;
     int n;
-    cin >> n;
-    // BIT
-    vector<int> c(n + 2, 0);
-    auto lowbit = [&](int x) -> int
+
+    int lowbit(int x)
     {
         return x & -x;
-    };
+    }
 
-    auto add = [&](int i, int val) -> void
+public:
+    BIT(int size) : n(size)
+    {
+        c.resize(n + 1, 0);
+    }
+
+    BIT(vector<int> &arr) : n(arr.size())
+    {
+        c.resize(n + 1, 0);
+        for (int i = 1; i <= n; i++)
+        {
+            add(i, arr[i - 1]);
+        }
+    }
+
+    void add(int i, int val)
     {
         while (i <= n)
         {
             c[i] += val;
             i += lowbit(i);
         }
-    };
+    }
 
-    auto sum = [&](int i) -> int
+    int sum(int i)
     {
         int ans = 0;
         while (i)
@@ -39,8 +54,40 @@ void solve()
             i -= lowbit(i);
         }
         return ans;
-    };
-    // BIT end
+    }
+
+    int query(int l, int r)
+    {
+        return sum(r) - sum(l - 1);
+    }
+
+    int get(int i)
+    {
+        return query(i, i);
+    }
+
+    int update(int i, int val)
+    {
+        auto delta = val = get(i);
+        add(i, delta);
+    }
+
+    void clear()
+    {
+        fill(all(c), 0);
+    }
+
+    // 获取树状数组的大小
+    int size()
+    {
+        return n;
+    }
+};
+
+void solve()
+{
+    int n;
+    cin >> n;
 }
 
 signed main()

@@ -10,24 +10,24 @@ const int INFLL = 1e18;  // 长整型无穷大
 const int MOD = 1e9 + 7; // 模数
 // -9.2e18 ~ 9.2e18
 
+int ksm(int base, int exp)
+{
+    int ans = 1;
+    while (exp)
+    {
+        if (exp & 1)
+        {
+            ans = ans * base % MOD;
+        }
+        base = base * base % MOD;
+        exp >>= 1;
+    }
+    return ans;
+}
+
 void solve()
 {
-    // KSM
-    auto ksm = [&](int base, int exp) -> int
-    {
-        int ans = 1; 
-        while (exp)
-        {
-            if (exp & 1)
-            {
-                ans = ans * base % MOD;
-            }
-            base = base * base % MOD;
-            exp >>= 1;
-        }
-        return ans;
-    };
-    // KSM end
+    
 }
 
 signed main()

@@ -1,2 +1,3 @@
-for a in range(5):
-    print(a)
+print(1)
+exit()
+print(2)

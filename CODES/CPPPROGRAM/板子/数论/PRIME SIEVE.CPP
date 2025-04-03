@@ -8,24 +8,35 @@ using namespace std;
 constexpr int MOD = 1e9 + 7;
 // -9.2e18 ~ 9.2e18
 
-int ksm(int base, int exp)
+const int N = 1e7;
+
+vector<int> primes, isp(N + 1, 1);
+void pre()
 {
-    int ans = 1;
-    while (exp)
+    isp[0] = isp[1] = 0;
+    for (int i = 2; i <= N; i++)
     {
-        if (exp & 1)
+        if (isp[i])
         {
-            ans = ans * base % MOD;
+            for (int j = i; j <= N; j += i)
+            {
+                isp[j] = 0;
+            }
         }
-        base = base * base % MOD;
-        exp >>= 1;
     }
-    return ans;
+
+    for (int i = 2; i <= N; i++)
+    {
+        if (isp[i])
+        {
+            primes.emplace_back(i);
+        }
+    }
 }
 
 void solve()
 {
-    
+
 }
 
 signed main()

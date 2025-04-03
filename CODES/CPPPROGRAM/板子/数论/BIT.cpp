@@ -5,9 +5,7 @@ using namespace std;
 #define endl '\n'
 #define all(x) (x).begin(), (x).end()
 
-const int INF = 1e9;     // 无穷大
-const int INFLL = 1e18;  // 长整型无穷大
-const int MOD = 1e9 + 7; // 模数
+constexpr int MOD = 1e9 + 7;
 // -9.2e18 ~ 9.2e18
 
 class BIT
@@ -86,8 +84,7 @@ public:
 
 void solve()
 {
-    int n;
-    cin >> n;
+    
 }
 
 signed main()
@@ -99,6 +96,6 @@ signed main()
     while (TT--)
     {
         solve();
-        cout << endl;
+        // cout << endl;
     }
 }

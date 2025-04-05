@@ -18,7 +18,7 @@ void solve()
         m = l + (r - l) / 2;
         auto check = [&]() -> bool
         {
-            
+            ...
         };
         if (check())
         {

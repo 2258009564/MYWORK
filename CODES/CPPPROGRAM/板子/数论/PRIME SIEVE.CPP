@@ -18,7 +18,7 @@ void pre()
     {
         if (isp[i])
         {
-            for (int j = i; j <= N; j += i)
+            for (int j = i * i; j <= N; j += i)
             {
                 isp[j] = 0;
             }

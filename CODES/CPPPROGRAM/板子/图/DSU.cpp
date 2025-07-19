@@ -17,7 +17,7 @@ private:
     int count;
 
 public:
-    DSU(int n) : parent(n + 1), rank(n + 1, 0), size(n + 1, 1), count(n)
+    DSU(int n) : parent(n + 1), rank(n + 1, 0), size(n + 1, 1)
     {
         iota(all(parent), 0ll);
     }

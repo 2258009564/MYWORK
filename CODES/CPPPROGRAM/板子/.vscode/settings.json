@@ -118,5 +118,12 @@
     "editor.suggestSelection": "recentlyUsed",
     "window.dialogStyle": "custom",
     "debug.showBreakpointsInOverviewRuler": true,
-    "Codegeex.RepoIndex": true,
+    "terminal.integrated.gpuAcceleration": "on",
+    "terminal.integrated.profiles.windows": {
+        "MySystemPowerShell": {
+            "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "MySystemPowerShell",
+    "terminal.integrated.fontFamily": "MesloLGM Nerd Font"
 }

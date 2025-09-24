@@ -20,9 +20,8 @@ private:
     }
 
 public:
-    BIT(int size) : n(size)
+    BIT(int size) : n(size), c(n + 1)
     {
-        c.resize(n + 1, 0);
     }
 
     BIT(vector<int> &arr) : n(arr.size())
@@ -84,7 +83,6 @@ public:
 
 void solve()
 {
-    
 }
 
 signed main()

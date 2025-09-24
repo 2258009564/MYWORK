@@ -25,5 +25,5 @@
         }
     },
     "terminal.integrated.defaultProfile.windows": "MySystemPowerShell",
-    "terminal.integrated.fontFamily": "JetBrains Mono"
+    "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font Mono"
 }

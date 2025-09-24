@@ -10,24 +10,24 @@ constexpr int MOD = 1e9 + 7;
 
 const int N = 1e7;
 
-vector<int> primes, isp(N + 1, 1);
+vector<int> primes, isprime(N + 1, 1);
 void pre()
 {
-    isp[0] = isp[1] = 0;
+    isprime[0] = isprime[1] = 0;
     for (int i = 2; i <= N; i++)
     {
-        if (isp[i])
+        if (isprime[i])
         {
             for (int j = i * i; j <= N; j += i)
             {
-                isp[j] = 0;
+                isprime[j] = 0;
             }
         }
     }
 
     for (int i = 2; i <= N; i++)
     {
-        if (isp[i])
+        if (isprime[i])
         {
             primes.emplace_back(i);
         }
@@ -36,7 +36,6 @@ void pre()
 
 void solve()
 {
-
 }
 
 signed main()
@@ -44,6 +43,7 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
+    pre();
     // cin >> TT;
     while (TT--)
     {

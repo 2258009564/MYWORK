@@ -1,0 +1,36 @@
+struct DoubleHash
+{
+    const int P = 13331;
+    const int MOD1 = 998244353;
+    const int MOD2 = 1000000007;
+    
+    int n = 0;
+    vector<long long> p1, p2, hs1, hs2;
+
+    void init(const string &s_in)
+    {
+        n = (int)s_in.size();
+        p1.assign(n + 1, 0);
+        p2.assign(n + 1, 0);
+        hs1.assign(n + 1, 0);
+        hs2.assign(n + 1, 0);
+
+        p1[0] = p2[0] = 1;
+        for (int i = 1; i <= n; i++)
+        {
+            p1[i] = p1[i - 1] * P % MOD1;
+            p2[i] = p2[i - 1] * P % MOD2;
+            int ch = (unsigned char)s_in[i - 1];
+            hs1[i] = (hs1[i - 1] * P + ch) % MOD1;
+            hs2[i] = (hs2[i - 1] * P + ch) % MOD2;
+        }
+    }
+
+    pair<long long, long long> get_s(int l, int r) const
+    {
+        long long x1 = (hs1[r] - hs1[l - 1] * p1[r - l + 1] % MOD1 + MOD1) % MOD1;
+        long long x2 = (hs2[r] - hs2[l - 1] * p2[r - l + 1] % MOD2 + MOD2) % MOD2;
+        return {x1, x2};
+    }
+};
+ 

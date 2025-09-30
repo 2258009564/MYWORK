@@ -1,0 +1,96 @@
+class SegTree
+{
+private:
+    int n;
+    vector<int> sum, ad;
+
+public:
+    void build(int l, int r, int i)
+    {
+        ad[i] = 0;
+        if (l == r)
+        {
+            sum[i] = 0;
+            return;
+        }
+
+        auto mid = (l + r) >> 1;
+        build(l, mid, i << 1);
+        build(mid + 1, r, i << 1 | 1);
+        up(i);
+    }
+
+    SegTree(int n) : n(n), sum(n << 2), ad(n << 2)
+    {
+        build(1, n, 1);
+    };
+
+    void lazy(int i, int v, int len)
+    {
+        sum[i] += v * len;
+        ad[i] += v;
+    }
+
+    void up(int i)
+    {
+        sum[i] = sum[i << 1] + sum[i << 1 | 1];
+    }
+
+    void down(int i, int ln, int rn)
+    {
+        if (ad[i])
+        {
+            lazy(i << 1, ad[i], ln);
+            lazy(i << 1 | 1, ad[i], rn);
+            ad[i] = 0;
+        }
+    }
+
+    void update(int jobl, int jobr, int v, int l, int r, int i)
+    {
+        if (jobl <= l and jobr >= r)
+        {
+            lazy(i, v, r - l + 1);
+            return;
+        }
+
+        auto mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+
+        if (jobl <= mid)
+        {
+            update(jobl, jobr, v, l, mid, i << 1);
+        }
+        if (jobr > mid)
+        {
+            update(jobl, jobr, v, mid + 1, r, i << 1 | 1);
+        }
+        up(i);
+    }
+
+    int query(int jobl, int jobr, int l, int r, int i)
+    {
+        if (jobl <= l and jobr >= r)
+        {
+            return sum[i];
+        }
+        auto mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int res = 0;
+        if (jobl <= mid)
+        {
+            res += query(jobl, jobr, l, mid, i << 1);
+        }
+        if (jobr > mid)
+        {
+            res += query(jobl, jobr, mid + 1, r, i << 1 | 1);
+        }
+        return res;
+    }
+
+    int query(int jobl, int jobr)
+    {
+        return query(jobl, jobr, 1, n, 1);
+    }
+};
+ 

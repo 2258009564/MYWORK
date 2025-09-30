@@ -8,34 +8,34 @@ using namespace std;
 constexpr int MOD = 1e9 + 7;
 // -9.2e18 ~ 9.2e18
 
-const int N = 1e7;
-
-vector<int> primes, isprime(N + 1, 1);
-void pre()
+vector<int> Z(const string &s)
 {
-    isprime[0] = isprime[1] = 0;
-    for (int i = 2; i <= N; i++)
+    int n = s.size();
+    vector<int> z(n);
+    z[0] = n;
+    int l = 0, r = 0;
+    for (int i = 1; i < n; i++)
     {
-        if (isprime[i])
+        if (i <= r)
         {
-            for (int j = i * i; j <= N; j += i)
-            {
-                isprime[j] = 0;
-            }
+            z[i] = min(r - i + 1, z[i - l]);
+        }
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+        {
+            z[i]++;
+        }
+        if (i + z[i] - 1 > r)
+        {
+            l = i;
+            r = i + z[i] - 1;
         }
     }
-
-    for (int i = 2; i <= N; i++)
-    {
-        if (isprime[i])
-        {
-            primes.emplace_back(i);
-        }
-    }
+    return z;
 }
 
 void solve()
 {
+    
 }
 
 signed main()
@@ -43,7 +43,6 @@ signed main()
     cin.tie(0)->ios::sync_with_stdio(0);
     cout << setiosflags(ios::fixed) << setprecision(2);
     int TT = 1;
-    pre();
     // cin >> TT;
     while (TT--)
     {

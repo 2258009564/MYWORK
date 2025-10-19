@@ -12,4 +12,3 @@ int ksm(int base, int exp)
     }
     return ans;
 }
- 

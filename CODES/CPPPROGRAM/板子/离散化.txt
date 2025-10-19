@@ -1,0 +1,9 @@
+vector<int> vals = a;
+sort(all(vals));
+vals.erase(unique(all(vals)), vals.end());
+int C = vals.size();
+vector<int> b(n);
+for (int i = 0; i < n; i++)
+{
+    b[i] = lower_bound(all(vals), a[i]) - vals.begin();
+}

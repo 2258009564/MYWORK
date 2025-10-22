@@ -1,0 +1,80 @@
+class LCA
+{
+private:
+    int n, LOGN;
+    vector<vector<int>> &adj, fa;
+    vector<int> depth;
+    void dfs(int u, int p, int d)
+    {
+        fa[u][0] = p;
+        depth[u] = d;
+        for (auto nxt : adj[u])
+        {
+            if (nxt == p)
+            {
+                continue;
+            }
+            dfs(nxt, u, d + 1);
+        }
+    }
+
+public:
+    LCA(int _n, vector<vector<int>> &adj, int root = 1) : n(_n), adj(adj), LOGN(__lg(_n) + 1), depth(_n + 1), fa(_n + 1, vector<int>(LOGN, 0))
+    {
+        dfs(root, 0, 0);
+
+        for (int j = 1; j < LOGN; j++)
+        {
+            for (int i = 1; i <= n; i++)
+            {
+                fa[i][j] = fa[fa[i][j - 1]][j - 1];
+            }
+        }
+    };
+    int get_lca(int u, int to)
+    {
+        if (u == to)
+        {
+            return u;
+        }
+
+        if (depth[u] < depth[to])
+        {
+            swap(u, to);
+        }
+
+        for (int j = LOGN - 1; j >= 0; j--)
+        {
+            if (depth[u] - (1ll << j) >= depth[to])
+            {
+                u = fa[u][j];
+            }
+        }
+
+        if (u == to)
+        {
+            return u;
+        }
+
+        for (int j = LOGN - 1; j >= 0; j--)
+        {
+            if (fa[u][j] and fa[u][j] != fa[to][j])
+            {
+                u = fa[u][j];
+                to = fa[to][j];
+            }
+        }
+
+        return max(1ll, fa[u][0]);
+    }
+
+    int get_depth(int i)
+    {
+        return depth[i];
+    }
+
+    int getdist(int i, int j)
+    {
+        return abs(depth[i] - depth[j]);
+    }
+};

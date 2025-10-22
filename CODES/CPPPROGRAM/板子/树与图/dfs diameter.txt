@@ -1,0 +1,25 @@
+vector<int> dist(n + 1, 0);
+vector<int> vis(n + 1);
+auto f = [&](auto &&self, int u, int p) -> void
+{
+    for (auto &&nxt : adj[u])
+    {
+        if (nxt == p)
+        {
+            continue;
+        }
+        vis[nxt] = 1;
+        dist[nxt] = dist[u] + 1;
+        self(self, nxt, u);
+    }
+};
+
+auto get_diameter = [&](int start) -> int
+{
+    fill(all(dist), 0);
+    f(f, start, -1);
+    int farthest = max_element(all(dist)) - dist.begin();
+    fill(all(dist), 0);
+    f(f, farthest, -1);
+    return *max_element(all(dist));
+};

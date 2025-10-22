@@ -1,0 +1,30 @@
+vector<int> max_dist(n + 1);
+vector<int> vis(n + 1);
+auto dp = [&](auto &&self, int u, int p) -> int
+{
+    int ans = 0;
+    vector<int> k;
+    for (auto &&nxt : adj[u])
+    {
+        if (nxt == p)
+        {
+            continue;
+        }
+        vis[nxt] = 1;
+        ans = max(ans, self(self, nxt, u));
+
+        max_dist[u] = max(max_dist[u], max_dist[nxt] + 1);
+        k.emplace_back(max_dist[nxt]);
+    }
+    sort(all(k), greater<int>());
+    if (k.size() >= 2)
+    {
+        ans = max(ans, k[0] + k[1] + 2);
+    }
+    if (k.size() == 1)
+    {
+        ans = max(ans, k[0] + 1);
+    }
+
+    return ans;
+};

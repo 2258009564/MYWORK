@@ -1,0 +1,32 @@
+vector<int> ans;
+vector<int> size(n + 1);
+int minnum = LLONG_MAX;
+auto dfs = [&](auto &&self, int u, int p) -> void
+{
+    size[u] = 1;
+    int maxnum = 0;
+    for (auto nxt : adj[u])
+    {
+        if (nxt == p)
+        {
+            continue;
+        }
+
+        self(self, nxt, u);
+        size[u] += size[nxt];
+        maxnum = max(maxnum, size[nxt]);
+    }
+
+    maxnum = max(maxnum, n - size[u]);
+    if (maxnum < minnum)
+    {
+        minnum = maxnum;
+        ans.clear();
+        ans.emplace_back(u);
+    }
+    else if (maxnum == minnum)
+    {
+        ans.emplace_back(u);
+    }
+};
+dfs(dfs, 1, 0);

@@ -1,80 +1,67 @@
-class LCA
-{
-private:
-    int n, LOGN;
-    vector<vector<int>> &adj, fa;
-    vector<int> depth;
-    void dfs(int u, int p, int d)
+    auto LOGN = __lg(n) + 1;
+    vector stdist(n + 1, vector<int>(LOGN, 0));
+    vector<int> depth(n + 1, 0);
+    // 预处理st表
+    auto dfs = [&](auto &&self, int u, int p) -> void
     {
-        fa[u][0] = p;
-        depth[u] = d;
         for (auto nxt : adj[u])
         {
             if (nxt == p)
             {
                 continue;
             }
-            dfs(nxt, u, d + 1);
-        }
-    }
-
-public:
-    LCA(int _n, vector<vector<int>> &adj, int root = 1) : n(_n), adj(adj), LOGN(__lg(_n) + 1), depth(_n + 1), fa(_n + 1, vector<int>(LOGN, 0))
-    {
-        dfs(root, 0, 0);
-
-        for (int j = 1; j < LOGN; j++)
-        {
-            for (int i = 1; i <= n; i++)
-            {
-                fa[i][j] = fa[fa[i][j - 1]][j - 1];
-            }
+            depth[nxt] = depth[u] + 1;
+            stdist[nxt][0] = u;
+            self(self, nxt, u);
         }
     };
-    int get_lca(int u, int to)
+
+    dfs(dfs, root, 0);
+    for (int j = 1; j < LOGN; j++)
     {
-        if (u == to)
+        for (int i = 1; i <= n; i++)
         {
-            return u;
+            int mid = stdist[i][j - 1];
+            stdist[i][j] = stdist[mid][j - 1];
+        }
+    }
+
+    // 查询lca
+
+    auto getlca = [&](int x, int y) -> int
+    {
+        if (depth[x] < depth[y])
+        {
+            swap(x, y);
         }
 
-        if (depth[u] < depth[to])
+        // 到达同一个高度
+        for (int j = LOGN - 1; j >= 0; j--)
         {
-            swap(u, to);
+            if (depth[x] - (1ll << j) >= depth[y])
+            {
+                x = stdist[x][j];
+            }
+        }
+
+        if (x == y)
+        {
+            return x;
         }
 
         for (int j = LOGN - 1; j >= 0; j--)
         {
-            if (depth[u] - (1ll << j) >= depth[to])
+            if (stdist[x][j] != stdist[y][j])
             {
-                u = fa[u][j];
+                x = stdist[x][j];
+                y = stdist[y][j];
             }
         }
+        return stdist[x][0];
+    };
 
-        if (u == to)
-        {
-            return u;
-        }
-
-        for (int j = LOGN - 1; j >= 0; j--)
-        {
-            if (fa[u][j] and fa[u][j] != fa[to][j])
-            {
-                u = fa[u][j];
-                to = fa[to][j];
-            }
-        }
-
-        return max(1ll, fa[u][0]);
-    }
-
-    int get_depth(int i)
+    // 这是一道点差分 所以我需要预处理每一个节点的父亲
+    auto getfa = [&](int x) -> int
     {
-        return depth[i];
-    }
-
-    int getdist(int i, int j)
-    {
-        return abs(depth[i] - depth[j]);
-    }
-};
+        return stdist[x][0];
+    };

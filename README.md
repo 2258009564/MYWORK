@@ -1,2 +1,9 @@
-u can see lots of fxxking useless codes and documents;
-never try to find out why did i push such a shit to github
+2026-03-20T19:28:20Z
+
+各种ide、代码编辑器的配置文件、插件文件等
+
+一些很基础的板子
+
+时间过得很快，所有人都在变，我对算法竞赛热爱的那颗心也不知不觉间消失了，我想留住生命中很重要的那些东西，但是什么都没能做到。
+
+我把这些板子放在这里，或许是为了纪念，或许是为了回忆，或许是为了不忘记，或许是为了不丢失，或许是为了 偶尔看看曾经的自己。

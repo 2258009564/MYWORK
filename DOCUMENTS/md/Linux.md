@@ -5,7 +5,7 @@ command [-options] [parameter]
 语法中的 `[]` 表示可选的意思，也就是非必填
 - command 命令本身
 - -options 通过该选项控制命令的执行细节
-- parameter 多数用于命令的指向目标
+- parameter 多数用于命令的指向目标 
 
 
 ## ls

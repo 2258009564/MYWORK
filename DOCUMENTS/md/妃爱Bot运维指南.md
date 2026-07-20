@@ -138,6 +138,12 @@ curl -s -X POST http://127.0.0.1:18011/api/send \
 
 ### 4.2 检查 DeepSeek API 是否正常
 
+先通过环境变量提供 API Key，避免把密钥写入命令、文档或 Git 历史：
+
+```bash
+export DEEPSEEK_API_KEY="请在本机填写，不要提交到 Git"
+```
+
 ```bash
 curl -s https://api.deepseek.com/v1/chat/completions \
   -H "Content-Type: application/json" \

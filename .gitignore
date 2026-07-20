@@ -13,3 +13,8 @@ CODES/
 node_modules
 package.json
 package-lock.json
+
+# Local environment secrets
+.env
+.env.*
+!.env.example

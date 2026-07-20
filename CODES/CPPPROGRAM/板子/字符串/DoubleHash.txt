@@ -1,3 +1,8 @@
+// 双哈希。get_s(l, r) 使用 0 下标闭区间，equal/lcp 使用的也是 0 下标。
+// 哈希只能把冲突概率降得很低，不能从数学上保证绝对无冲突。
+// 如果题目区间是 1 下标，推荐调用 get_s(l - 1, r - 1)。
+// 也可以先写 s = ' ' + s，此时原字符位于 1..原长度，直接传题目的 l、r 也能查询；
+// 但 size() 会比原长度多 1，使用 lcp() 时也要记得这个占位字符属于字符串的一部分。
 struct DoubleHash
 {
     const int P = 13331;
@@ -6,16 +11,19 @@ struct DoubleHash
 
     int n = 0;
     vector<int> p1, p2, hs1, hs2;
+
     DoubleHash()
     {
     }
-    DoubleHash(string s)
+
+    DoubleHash(const string &s)
     {
         init(s);
     }
-    void init(const string &s_in)
+
+    void init(const string &s)
     {
-        n = (int)s_in.size();
+        n = s.size();
         p1.assign(n + 1, 0);
         p2.assign(n + 1, 0);
         hs1.assign(n + 1, 0);
@@ -26,7 +34,7 @@ struct DoubleHash
         {
             p1[i] = p1[i - 1] * P % MOD1;
             p2[i] = p2[i - 1] * P % MOD2;
-            int ch = (unsigned char)s_in[i - 1];
+            int ch = (unsigned char)s[i - 1] + 1;
             hs1[i] = (hs1[i - 1] * P + ch) % MOD1;
             hs2[i] = (hs2[i - 1] * P + ch) % MOD2;
         }
@@ -34,8 +42,46 @@ struct DoubleHash
 
     pair<int, int> get_s(int l, int r) const
     {
-        int x1 = (hs1[r] - hs1[l - 1] * p1[r - l + 1] % MOD1 + MOD1) % MOD1;
-        int x2 = (hs2[r] - hs2[l - 1] * p2[r - l + 1] % MOD2 + MOD2) % MOD2;
+        if (l > r)
+        {
+            return {0, 0};
+        }
+        int x1 = (hs1[r + 1] - hs1[l] * p1[r - l + 1] % MOD1 + MOD1) % MOD1;
+        int x2 = (hs2[r + 1] - hs2[l] * p2[r - l + 1] % MOD2 + MOD2) % MOD2;
         return {x1, x2};
+    }
+
+    bool equal(int l1, int r1, int l2, int r2) const
+    {
+        if (r1 - l1 != r2 - l2)
+        {
+            return false;
+        }
+        return get_s(l1, r1) == get_s(l2, r2);
+    }
+
+    // 返回两个后缀从 l1、l2 开始的最长公共前缀长度，最多比较 limit 个字符。
+    int lcp(int l1, int l2, int limit) const
+    {
+        limit = min({limit, n - l1, n - l2});
+        int l = 0, r = limit;
+        while (l < r)
+        {
+            int mid = (l + r + 1) >> 1;
+            if (get_s(l1, l1 + mid - 1) == get_s(l2, l2 + mid - 1))
+            {
+                l = mid;
+            }
+            else
+            {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+
+    int size() const
+    {
+        return n;
     }
 };

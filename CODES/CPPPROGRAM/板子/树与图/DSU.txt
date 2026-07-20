@@ -1,12 +1,22 @@
- class DSU
+// 普通并查集：路径压缩 + 按秩合并，点编号默认是 1..n。
+class DSU
 {
 private:
     vector<int> parent, rank, size;
     int count;
 
 public:
-    DSU(int n) : parent(n + 1), rank(n + 1, 0), size(n + 1, 1), count(n)
+    DSU(int n = 0)
     {
+        init(n);
+    }
+
+    void init(int n)
+    {
+        parent.resize(n + 1);
+        rank.assign(n + 1, 0);
+        size.assign(n + 1, 1);
+        count = n;
         iota(all(parent), 0ll);
     }
 
@@ -15,30 +25,32 @@ public:
         return parent[x] == x ? x : parent[x] = find(parent[x]);
     }
 
-    void merge(int i, int j)
+    // 返回是否真的合并了两个原本不同的集合。
+    bool merge(int x, int y)
     {
-        int ri = find(i), rj = find(j);
-        if (ri == rj)
+        int rx = find(x), ry = find(y);
+        if (rx == ry)
         {
-            return;
+            return false;
         }
 
-        if (rank[ri] < rank[rj])
+        if (rank[rx] < rank[ry])
         {
-            swap(ri, rj);
+            swap(rx, ry);
         }
-        parent[rj] = ri;
-        size[ri] += size[rj];
-        if (rank[ri] == rank[rj])
+        parent[ry] = rx;
+        size[rx] += size[ry];
+        if (rank[rx] == rank[ry])
         {
-            rank[ri]++;
+            rank[rx]++;
         }
         count--;
+        return true;
     }
 
-    bool issame(int i, int j)
+    bool issame(int x, int y)
     {
-        return find(i) == find(j);
+        return find(x) == find(y);
     }
 
     int getsize(int x)
@@ -51,5 +63,3 @@ public:
         return count;
     }
 };
-
- 

@@ -1,107 +1,367 @@
+// ============================================================
+// 通用线段树（数组使用 1 下标）
+// ============================================================
+// 当前支持：
+//   1. 区间加：add(l, r, val)
+//   2. 区间赋值：change(l, r, val)
+//   3. 区间和：getsum(l, r)
+//   4. 区间最小值：getmin(l, r)
+//   5. 区间最大值：getmax(l, r)
+//   6. 单点赋值：modify(pos, val)
+//   7. 单点查询：get(pos)
+//   8. 在区间内寻找第一个/最后一个值 >= val 的位置
+//
+// 默认语义：
+//   change 是“覆盖”，add 是“在当前值上增加”。
+//   若同一节点先 change 再 add，下传时也必须先下传 change，再下传 add。
+//   这是 down() 中两个懒标记顺序不能交换的原因。
+//
+// 换题时常见改动：
+//   1. 只需要 add + getsum：可以删除 mmin、mmax、ch、has_ch 相关代码。
+//   2. 只需要 add + getmax/getmin：可以删除 sum；lazy_add 不再需要 len。
+//   3. 只需要 change：可以删除 ad 和 lazy_add。
+//   4. 求区间乘积、gcd 等：重点修改 up() 和查询时的合并方式；
+//      但区间 add 通常不能直接维护 gcd/乘积，不能只改变量名。
+//   5. 找第一个满足条件的位置：find_first_ge 依赖“区间最大值”。
+//      如果改成寻找 <= val，应改用 mmin 剪枝。
+//
+// 注意：
+//   - 构造函数 SegTree(vector<int> &v) 要求 v 的有效元素是 v[1..n]。
+//   - n 必须至少为 1。
+//   - 若题目中的值和区间和可能超过 long long，需要改成 __int128。
+// ============================================================
+
 class SegTree
 {
 private:
     int n;
-    vector<int> sum, ad;
+    // sum[i]、mmin[i]、mmax[i] 分别记录节点 i 所管区间的和、最小值、最大值。
+    vector<int> sum, mmin, mmax;
+    // ad[i]：节点 i 所管区间整体还要增加多少，尚未下传给儿子。
+    // ch[i]：节点 i 所管区间整体要被赋成什么值。
+    // has_ch[i]：不能用 ch[i] 是否为 0 判断赋值标记，因为“赋值为 0”也是合法操作。
+    vector<int> ad, ch;
+    vector<int> has_ch;
+    // 保存建树时使用的原数组，有效范围是 v[1..n]。
     vector<int> v;
 
-public:
+    // 把“整个节点 i 所管区间增加 val”直接作用到节点信息上。
+    // len 是该节点所管区间长度：区间和增加 val * len，最值只增加 val。
+    // 这里只更新当前节点并累计懒标记，不立刻递归修改它的儿子。
+    void lazy_add(int i, int val, int len)
+    {
+        sum[i] += val * len;
+        mmin[i] += val;
+        mmax[i] += val;
+        ad[i] += val;
+    }
+
+    // 把“整个节点 i 所管区间赋值为 val”直接作用到节点信息上。
+    // 赋值会覆盖此前尚未下传的加法，所以必须把 ad[i] 清零。
+    // has_ch[i] 设为 1，表示以后 down() 时需要把赋值继续传给两个儿子。
+    void lazy_change(int i, int val, int len)
+    {
+        sum[i] = val * len;
+        mmin[i] = mmax[i] = val;
+        ch[i] = val;
+        ad[i] = 0;
+        has_ch[i] = 1;
+    }
+
+    // 用两个儿子的信息重新计算父节点 i。
+    // 每次对子区间递归修改完成后，都要调用 up(i)。
+    void up(int i)
+    {
+        sum[i] = sum[i << 1] + sum[i << 1 | 1];
+        mmin[i] = min(mmin[i << 1], mmin[i << 1 | 1]);
+        mmax[i] = max(mmax[i << 1], mmax[i << 1 | 1]);
+    }
+
+    // 把节点 i 上尚未下传的懒标记传给左右儿子。
+    // ln、rn 分别是左儿子、右儿子所管区间的长度。
+    // 必须先传 change 再传 add，因为赋值会覆盖旧值，加法是在赋值后的新值上继续增加。
+    void down(int i, int ln, int rn)
+    {
+        if (has_ch[i])
+        {
+            lazy_change(i << 1, ch[i], ln);
+            lazy_change(i << 1 | 1, ch[i], rn);
+            has_ch[i] = 0;
+        }
+
+        if (ad[i])
+        {
+            lazy_add(i << 1, ad[i], ln);
+            lazy_add(i << 1 | 1, ad[i], rn);
+            ad[i] = 0;
+        }
+    }
+
+    // 建立当前节点 i，它负责原数组区间 [l, r]。
+    // 到达叶子时，直接读取 v[l]；否则递归建立两个儿子后调用 up(i)。
     void build(int l, int r, int i)
     {
-        ad[i] = 0;
+        ad[i] = ch[i] = has_ch[i] = 0;
         if (l == r)
         {
-            sum[i] = v[l];
+            sum[i] = mmin[i] = mmax[i] = v[l];
             return;
         }
 
-        auto mid = (l + r) >> 1;
+        int mid = (l + r) >> 1;
         build(l, mid, i << 1);
         build(mid + 1, r, i << 1 | 1);
         up(i);
     }
 
-    SegTree(int n) : n(n), sum(n << 2), ad(n << 2), v(n + 1)
+    // 递归执行区间加。
+    // jobl、jobr：本次真正想修改的目标区间。
+    // l、r      ：当前节点 i 所管的区间。
+    // i         ：当前线段树节点编号，左儿子 i<<1，右儿子 i<<1|1。
+    void add(int jobl, int jobr, int val, int l, int r, int i)
     {
-        build(1, n, 1);
-    };
-
-    SegTree(vector<int> &v) : n(v.size() - 1), sum(n << 2), ad(n << 2), v(v)
-    {
-        build(1, n, 1);
-    }
-
-    void
-    lazy(int i, int v, int len)
-    {
-        sum[i] += v * len;
-        ad[i] += v;
-    }
-
-    void up(int i)
-    {
-        sum[i] = sum[i << 1] + sum[i << 1 | 1];
-    }
-
-    void down(int i, int ln, int rn)
-    {
-        if (ad[i])
+        if (jobl <= l and r <= jobr)
         {
-            lazy(i << 1, ad[i], ln);
-            lazy(i << 1 | 1, ad[i], rn);
-            ad[i] = 0;
-        }
-    }
-
-    void update(int jobl, int jobr, int v, int l, int r, int i)
-    {
-        if (jobl <= l and jobr >= r)
-        {
-            lazy(i, v, r - l + 1);
+            lazy_add(i, val, r - l + 1);
             return;
         }
 
-        auto mid = (l + r) >> 1;
+        int mid = (l + r) >> 1;
         down(i, mid - l + 1, r - mid);
-
         if (jobl <= mid)
         {
-            update(jobl, jobr, v, l, mid, i << 1);
+            add(jobl, jobr, val, l, mid, i << 1);
         }
         if (jobr > mid)
         {
-            update(jobl, jobr, v, mid + 1, r, i << 1 | 1);
+            add(jobl, jobr, val, mid + 1, r, i << 1 | 1);
         }
         up(i);
     }
 
-    void update(int jobl, int jobr, int v)
+    // 递归执行区间赋值，参数含义与上面的 add 相同。
+    // 如果当前区间被目标区间完整覆盖，就打 change 懒标记，不再继续向下递归。
+    void change(int jobl, int jobr, int val, int l, int r, int i)
     {
-        update(jobl, jobr, v, 1, n, 1);
-    }
-
-    int query(int jobl, int jobr, int l, int r, int i)
-    {
-        if (jobl <= l and jobr >= r)
+        if (jobl <= l and r <= jobr)
         {
-            return sum[i];
+            lazy_change(i, val, r - l + 1);
+            return;
         }
-        auto mid = (l + r) >> 1;
+
+        int mid = (l + r) >> 1;
         down(i, mid - l + 1, r - mid);
-        int res = 0;
         if (jobl <= mid)
         {
-            res += query(jobl, jobr, l, mid, i << 1);
+            change(jobl, jobr, val, l, mid, i << 1);
         }
         if (jobr > mid)
         {
-            res += query(jobl, jobr, mid + 1, r, i << 1 | 1);
+            change(jobl, jobr, val, mid + 1, r, i << 1 | 1);
         }
-        return res;
+        up(i);
     }
 
-    int query(int jobl, int jobr)
+    // 递归查询目标区间 [jobl, jobr] 的区间和。
+    // 查询前调用 down()，保证儿子的信息包含父节点此前积累的懒标记。
+    int getsum(int jobl, int jobr, int l, int r, int i)
     {
-        return query(jobl, jobr, 1, n, 1);
+        if (jobl <= l and r <= jobr)
+        {
+            return sum[i];
+        }
+
+        int mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int ans = 0;
+        if (jobl <= mid)
+        {
+            ans += getsum(jobl, jobr, l, mid, i << 1);
+        }
+        if (jobr > mid)
+        {
+            ans += getsum(jobl, jobr, mid + 1, r, i << 1 | 1);
+        }
+        return ans;
+    }
+
+    // 递归查询目标区间 [jobl, jobr] 的最小值。
+    // ans 初始为正无穷，因为 min(正无穷, 合法答案) 仍是合法答案。
+    int getmin(int jobl, int jobr, int l, int r, int i)
+    {
+        if (jobl <= l and r <= jobr)
+        {
+            return mmin[i];
+        }
+
+        int mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int ans = LLONG_MAX;
+        if (jobl <= mid)
+        {
+            ans = min(ans, getmin(jobl, jobr, l, mid, i << 1));
+        }
+        if (jobr > mid)
+        {
+            ans = min(ans, getmin(jobl, jobr, mid + 1, r, i << 1 | 1));
+        }
+        return ans;
+    }
+
+    // 递归查询目标区间 [jobl, jobr] 的最大值。
+    // ans 初始为负无穷，因为 max(负无穷, 合法答案) 仍是合法答案。
+    int getmax(int jobl, int jobr, int l, int r, int i)
+    {
+        if (jobl <= l and r <= jobr)
+        {
+            return mmax[i];
+        }
+
+        int mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int ans = LLONG_MIN;
+        if (jobl <= mid)
+        {
+            ans = max(ans, getmax(jobl, jobr, l, mid, i << 1));
+        }
+        if (jobr > mid)
+        {
+            ans = max(ans, getmax(jobl, jobr, mid + 1, r, i << 1 | 1));
+        }
+        return ans;
+    }
+
+    // 在 [jobl, jobr] 中寻找最靠左且数组值 >= val 的位置，不存在返回 -1。
+    // 如果当前区间与目标区间无交集，或者当前区间最大值都小于 val，可以直接剪枝。
+    // 先递归左儿子，只有左边找不到时才找右边，因此得到的是“第一个位置”。
+    int find_first_ge(int jobl, int jobr, int val, int l, int r, int i)
+    {
+        if (r < jobl or jobr < l or mmax[i] < val)
+        {
+            return -1;
+        }
+        if (l == r)
+        {
+            return l;
+        }
+
+        int mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int ans = find_first_ge(jobl, jobr, val, l, mid, i << 1);
+        if (ans == -1)
+        {
+            ans = find_first_ge(jobl, jobr, val, mid + 1, r, i << 1 | 1);
+        }
+        return ans;
+    }
+
+    // 在 [jobl, jobr] 中寻找最靠右且数组值 >= val 的位置，不存在返回 -1。
+    // 与 find_first_ge 相同，只是优先递归右儿子，因此得到的是“最后一个位置”。
+    int find_last_ge(int jobl, int jobr, int val, int l, int r, int i)
+    {
+        if (r < jobl or jobr < l or mmax[i] < val)
+        {
+            return -1;
+        }
+        if (l == r)
+        {
+            return l;
+        }
+
+        int mid = (l + r) >> 1;
+        down(i, mid - l + 1, r - mid);
+        int ans = find_last_ge(jobl, jobr, val, mid + 1, r, i << 1 | 1);
+        if (ans == -1)
+        {
+            ans = find_last_ge(jobl, jobr, val, l, mid, i << 1);
+        }
+        return ans;
+    }
+
+public:
+    // 建立一个长度为 n、初始值全部为 0 的线段树。
+    SegTree(int n) : n(n), sum(n << 2), mmin(n << 2), mmax(n << 2),
+                     ad(n << 2), ch(n << 2), has_ch(n << 2), v(n + 1)
+    {
+        build(1, n, 1);
+    }
+
+    // 根据 1 下标数组 v 建树：v[0] 空置，有效元素为 v[1..n]。
+    SegTree(vector<int> &v) : n(v.size() - 1), sum(n << 2), mmin(n << 2),
+                              mmax(n << 2), ad(n << 2), ch(n << 2),
+                              has_ch(n << 2), v(v)
+    {
+        build(1, n, 1);
+    }
+
+    // 对闭区间 [l, r] 的每个数增加 val。
+    void add(int l, int r, int val)
+    {
+        add(l, r, val, 1, n, 1);
+    }
+
+    // 把闭区间 [l, r] 的每个数全部赋值为 val。
+    void change(int l, int r, int val)
+    {
+        change(l, r, val, 1, n, 1);
+    }
+
+    // 单点赋值：把下标 pos 的值改成 val。
+    void modify(int pos, int val)
+    {
+        change(pos, pos, val);
+    }
+
+    // 返回闭区间 [l, r] 的元素和。
+    int getsum(int l, int r)
+    {
+        return getsum(l, r, 1, n, 1);
+    }
+
+    // 返回闭区间 [l, r] 的最小值。
+    int getmin(int l, int r)
+    {
+        return getmin(l, r, 1, n, 1);
+    }
+
+    // 返回闭区间 [l, r] 的最大值。
+    int getmax(int l, int r)
+    {
+        return getmax(l, r, 1, n, 1);
+    }
+
+    // 返回下标 pos 当前的值。
+    int get(int pos)
+    {
+        return getsum(pos, pos);
+    }
+
+    // 返回 [l, r] 内第一个值 >= val 的下标，不存在返回 -1。
+    int find_first_ge(int l, int r, int val)
+    {
+        return find_first_ge(l, r, val, 1, n, 1);
+    }
+
+    // 返回 [l, r] 内最后一个值 >= val 的下标，不存在返回 -1。
+    int find_last_ge(int l, int r, int val)
+    {
+        return find_last_ge(l, r, val, 1, n, 1);
+    }
+
+    // 兼容旧模板：update 表示区间加，query 表示区间和。
+    void update(int l, int r, int val)
+    {
+        add(l, r, val);
+    }
+
+    int query(int l, int r)
+    {
+        return getsum(l, r);
+    }
+
+    // 返回当前维护的数组长度。
+    int size()
+    {
+        return n;
     }
 };

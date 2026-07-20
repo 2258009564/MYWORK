@@ -1,6 +1,6 @@
 const int N = 1e7;
 
-vector<int> primes, isprime(N + 1, 1);
+vector<int> primes, isprime(N + 1, 1), minfactor(N + 1);
 void init()
 {
     isprime[0] = isprime[1] = 0;
@@ -8,9 +8,14 @@ void init()
     {
         if (isprime[i])
         {
+            minfactor[i] = i;
             for (int j = i * i; j <= N; j += i)
             {
                 isprime[j] = 0;
+                if (!minfactor[j])
+                {
+                    minfactor[j] = i;
+                }
             }
         }
     }
@@ -23,4 +28,10 @@ void init()
         }
     }
 }
- 
+
+// 返回 x 的最小质因数。调用前需要先执行 init()。
+// x 必须满足 2 <= x <= N。
+int getminfactor(int x)
+{
+    return minfactor[x];
+}

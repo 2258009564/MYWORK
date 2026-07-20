@@ -1,8 +1,19 @@
+// ============================================================
+// 树状数组（全部使用 1 下标）
+// ============================================================
+// BIT 支持：单点加、单点赋值、前缀和、区间和、前缀 lower_bound。
+// RangeBIT 支持：区间加、前缀和、区间和、单点查询。
+//
+// kth(target) 返回最小的 pos，使 sum(pos) >= target。
+// 它要求树状数组维护的是非负频次，否则前缀和不单调，不能二分。
+// 若 target > sum(n)，返回 n + 1。
+// ============================================================
+
 class BIT
 {
 private:
-    vector<int> c;
     int n;
+    vector<int> c;
 
     int lowbit(int x)
     {
@@ -10,17 +21,23 @@ private:
     }
 
 public:
-    BIT(int size) : n(size), c(n + 1)
+    BIT(int size = 0) : n(size), c(n + 1)
     {
     }
 
-    BIT(vector<int> &arr) : n(arr.size())
+    // arr 使用 1 下标，有效元素为 arr[1..n]，arr[0] 空置。
+    BIT(const vector<int> &arr) : n(arr.size() - 1), c(n + 1)
     {
-        c.resize(n + 1, 0);
         for (int i = 1; i <= n; i++)
         {
-            add(i, arr[i - 1]);
+            add(i, arr[i]);
         }
+    }
+
+    void init(int size)
+    {
+        n = size;
+        c.assign(n + 1, 0);
     }
 
     void add(int i, int val)
@@ -35,7 +52,7 @@ public:
     int sum(int i)
     {
         int ans = 0;
-        while (i)
+        while (i > 0)
         {
             ans += c[i];
             i -= lowbit(i);
@@ -45,6 +62,10 @@ public:
 
     int query(int l, int r)
     {
+        if (l > r)
+        {
+            return 0;
+        }
         return sum(r) - sum(l - 1);
     }
 
@@ -53,10 +74,37 @@ public:
         return query(i, i);
     }
 
-    int update(int i, int val)
+    void update(int i, int val)
     {
-        auto delta = val = get(i);
+        int delta = val - get(i);
         add(i, delta);
+    }
+
+    int kth(int target)
+    {
+        if (target <= 0)
+        {
+            return 1;
+        }
+
+        int pos = 0;
+        int pre = 0;
+        int step = 1;
+        while ((step << 1) <= n)
+        {
+            step <<= 1;
+        }
+
+        for (; step; step >>= 1)
+        {
+            int nxt = pos + step;
+            if (nxt <= n and pre + c[nxt] < target)
+            {
+                pos = nxt;
+                pre += c[nxt];
+            }
+        }
+        return pos + 1;
     }
 
     void clear()
@@ -64,9 +112,56 @@ public:
         fill(all(c), 0);
     }
 
-    // 获取树状数组的大小
     int size()
     {
         return n;
+    }
+};
+
+class RangeBIT
+{
+private:
+    int n;
+    BIT c1, c2;
+
+    void add(BIT &c, int pos, int val)
+    {
+        if (pos <= n)
+        {
+            c.add(pos, val);
+        }
+    }
+
+public:
+    RangeBIT(int n = 0) : n(n), c1(n), c2(n)
+    {
+    }
+
+    // 在 [l, r] 全部增加 val。
+    void add(int l, int r, int val)
+    {
+        add(c1, l, val);
+        add(c1, r + 1, -val);
+        add(c2, l, val * (l - 1));
+        add(c2, r + 1, -val * r);
+    }
+
+    int sum(int pos)
+    {
+        return c1.sum(pos) * pos - c2.sum(pos);
+    }
+
+    int query(int l, int r)
+    {
+        if (l > r)
+        {
+            return 0;
+        }
+        return sum(r) - sum(l - 1);
+    }
+
+    int get(int pos)
+    {
+        return query(pos, pos);
     }
 };

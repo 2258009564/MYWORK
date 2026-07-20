@@ -1,30 +1,78 @@
-vector<int> max_dist(n + 1);
-vector<int> vis(n + 1);
-auto dp = [&](auto &&self, int u, int p) -> int
+// ============================================================
+// 树形 DP 求直径
+// ============================================================
+// down[u]：从 u 向子树内走的最长链。
+// 对每个 u，取最大的两条子链拼起来更新直径。
+// 这里返回直径长度；如果还需要端点和路径，使用 dfs diameter.txt。
+// 无权树返回边数；带权版本允许非负边权。
+// ============================================================
+
+int tree_diameter_dp(const vector<vector<int>> &adj, int root = 1)
 {
+    int n = adj.size() - 1;
+    vector<int> down(n + 1);
     int ans = 0;
-    vector<int> k;
-    for (auto &&nxt : adj[u])
+
+    auto dfs = [&](auto &&self, int u, int parent) -> void
     {
-        if (nxt == p)
+        int first = 0, second = 0;
+        for (int nxt : adj[u])
         {
-            continue;
+            if (nxt == parent)
+            {
+                continue;
+            }
+            self(self, nxt, u);
+            int cur = down[nxt] + 1;
+            if (cur > first)
+            {
+                second = first;
+                first = cur;
+            }
+            else if (cur > second)
+            {
+                second = cur;
+            }
         }
-        vis[nxt] = 1;
-        ans = max(ans, self(self, nxt, u));
+        down[u] = first;
+        ans = max(ans, first + second);
+    };
 
-        max_dist[u] = max(max_dist[u], max_dist[nxt] + 1);
-        k.emplace_back(max_dist[nxt]);
-    }
-    sort(all(k), greater<int>());
-    if (k.size() >= 2)
-    {
-        ans = max(ans, k[0] + k[1] + 2);
-    }
-    if (k.size() == 1)
-    {
-        ans = max(ans, k[0] + 1);
-    }
-
+    dfs(dfs, root, 0);
     return ans;
-};
+}
+
+int tree_diameter_dp(const vector<vector<pair<int, int>>> &adj, int root = 1)
+{
+    int n = adj.size() - 1;
+    vector<int> down(n + 1);
+    int ans = 0;
+
+    auto dfs = [&](auto &&self, int u, int parent) -> void
+    {
+        int first = 0, second = 0;
+        for (auto [nxt, w] : adj[u])
+        {
+            if (nxt == parent)
+            {
+                continue;
+            }
+            self(self, nxt, u);
+            int cur = down[nxt] + w;
+            if (cur > first)
+            {
+                second = first;
+                first = cur;
+            }
+            else if (cur > second)
+            {
+                second = cur;
+            }
+        }
+        down[u] = first;
+        ans = max(ans, first + second);
+    };
+
+    dfs(dfs, root, 0);
+    return ans;
+}

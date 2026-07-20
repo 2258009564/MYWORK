@@ -1,67 +1,119 @@
-    auto LOGN = __lg(n) + 1;
-    vector stdist(n + 1, vector<int>(LOGN, 0));
-    vector<int> depth(n + 1, 0);
-    // 预处理st表
-    auto dfs = [&](auto &&self, int u, int p) -> void
+// ============================================================
+// 倍增 LCA（无权树，点编号 1..n）
+// ============================================================
+// 支持：LCA、k 级祖先、两点距离、祖先判断、路径上的第 k 个点。
+// kth_on_path(x, y, k) 中 k 从 0 开始：k=0 返回 x。
+// get_kth_ancestor(x, k) 若跳到根上方，返回 0。
+//
+// 如果是带权树：
+//   把 adj 改为 vector<vector<pair<int,int>>>，DFS 时维护 dist[u]；
+//   距离改成 dist[x] + dist[y] - 2 * dist[lca]。
+//   up 表本身不需要改变。
+// ============================================================
+
+class LCA
+{
+private:
+    int n, LOG, root, timer;
+    vector<vector<int>> up;
+    vector<int> depth, tin, tout;
+
+    void dfs(int u, int parent, const vector<vector<int>> &adj)
     {
-        for (auto nxt : adj[u])
+        tin[u] = ++timer;
+        up[u][0] = parent;
+        for (int j = 1; j < LOG; j++)
         {
-            if (nxt == p)
+            up[u][j] = up[up[u][j - 1]][j - 1];
+        }
+
+        for (int nxt : adj[u])
+        {
+            if (nxt == parent)
             {
                 continue;
             }
             depth[nxt] = depth[u] + 1;
-            stdist[nxt][0] = u;
-            self(self, nxt, u);
+            dfs(nxt, u, adj);
         }
-    };
-
-    dfs(dfs, root, 0);
-    for (int j = 1; j < LOGN; j++)
-    {
-        for (int i = 1; i <= n; i++)
-        {
-            int mid = stdist[i][j - 1];
-            stdist[i][j] = stdist[mid][j - 1];
-        }
+        tout[u] = timer;
     }
 
-    // 查询lca
-
-    auto getlca = [&](int x, int y) -> int
+public:
+    LCA(const vector<vector<int>> &adj, int root = 1)
+        : n(adj.size() - 1), LOG(__lg(max(1ll, n)) + 2), root(root), timer(0),
+          up(n + 1, vector<int>(LOG)), depth(n + 1), tin(n + 1), tout(n + 1)
     {
-        if (depth[x] < depth[y])
-        {
-            swap(x, y);
-        }
+        dfs(root, 0, adj);
+    }
 
-        // 到达同一个高度
-        for (int j = LOGN - 1; j >= 0; j--)
+    bool is_ancestor(int x, int y) const
+    {
+        return tin[x] <= tin[y] and tout[y] <= tout[x];
+    }
+
+    int get_kth_ancestor(int x, int k) const
+    {
+        for (int j = 0; j < LOG and x; j++)
         {
-            if (depth[x] - (1ll << j) >= depth[y])
+            if (k >> j & 1)
             {
-                x = stdist[x][j];
+                x = up[x][j];
             }
         }
+        return x;
+    }
 
-        if (x == y)
+    int getlca(int x, int y) const
+    {
+        if (is_ancestor(x, y))
         {
             return x;
         }
-
-        for (int j = LOGN - 1; j >= 0; j--)
+        if (is_ancestor(y, x))
         {
-            if (stdist[x][j] != stdist[y][j])
+            return y;
+        }
+
+        for (int j = LOG - 1; j >= 0; j--)
+        {
+            if (up[x][j] and !is_ancestor(up[x][j], y))
             {
-                x = stdist[x][j];
-                y = stdist[y][j];
+                x = up[x][j];
             }
         }
-        return stdist[x][0];
-    };
+        return up[x][0];
+    }
 
-    // 这是一道点差分 所以我需要预处理每一个节点的父亲
-    auto getfa = [&](int x) -> int
+    int getfa(int x) const
     {
-        return stdist[x][0];
-    };
+        return up[x][0];
+    }
+
+    int getdepth(int x) const
+    {
+        return depth[x];
+    }
+
+    int distance(int x, int y) const
+    {
+        int z = getlca(x, y);
+        return depth[x] + depth[y] - 2 * depth[z];
+    }
+
+    int kth_on_path(int x, int y, int k) const
+    {
+        int z = getlca(x, y);
+        int up_len = depth[x] - depth[z];
+        int total = up_len + depth[y] - depth[z];
+        if (k < 0 or k > total)
+        {
+            return 0;
+        }
+        if (k <= up_len)
+        {
+            return get_kth_ancestor(x, k);
+        }
+        return get_kth_ancestor(y, total - k);
+    }
+};

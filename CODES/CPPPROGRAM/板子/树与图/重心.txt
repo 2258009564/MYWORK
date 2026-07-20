@@ -1,32 +1,46 @@
-vector<int> ans;
-vector<int> size(n + 1);
-int minnum = LLONG_MAX;
-auto dfs = [&](auto &&self, int u, int p) -> void
+// ============================================================
+// 树的重心
+// ============================================================
+// 删除重心后，剩余每个连通块的大小都不超过 n / 2。
+// 一棵树最多有两个重心；如果有两个，它们一定相邻。
+// adj 使用 1 下标。返回全部重心，顺序由 DFS 顺序决定。
+// ============================================================
+
+vector<int> get_centroids(const vector<vector<int>> &adj, int root = 1)
 {
-    size[u] = 1;
-    int maxnum = 0;
-    for (auto nxt : adj[u])
+    int n = adj.size() - 1;
+    vector<int> size(n + 1);
+    vector<int> ans;
+    int best = LLONG_MAX;
+
+    auto dfs = [&](auto &&self, int u, int parent) -> void
     {
-        if (nxt == p)
+        size[u] = 1;
+        int max_part = 0;
+        for (int nxt : adj[u])
         {
-            continue;
+            if (nxt == parent)
+            {
+                continue;
+            }
+            self(self, nxt, u);
+            size[u] += size[nxt];
+            max_part = max(max_part, size[nxt]);
         }
 
-        self(self, nxt, u);
-        size[u] += size[nxt];
-        maxnum = max(maxnum, size[nxt]);
-    }
+        max_part = max(max_part, n - size[u]);
+        if (max_part < best)
+        {
+            best = max_part;
+            ans.clear();
+            ans.emplace_back(u);
+        }
+        else if (max_part == best)
+        {
+            ans.emplace_back(u);
+        }
+    };
 
-    maxnum = max(maxnum, n - size[u]);
-    if (maxnum < minnum)
-    {
-        minnum = maxnum;
-        ans.clear();
-        ans.emplace_back(u);
-    }
-    else if (maxnum == minnum)
-    {
-        ans.emplace_back(u);
-    }
-};
-dfs(dfs, 1, 0);
+    dfs(dfs, root, 0);
+    return ans;
+}

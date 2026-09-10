@@ -40,6 +40,7 @@ void solve()
                     continue;
                 }
 
+                // 更新
                 vis[xx][yy] = 1;
                 q.push({xx, yy});
             }

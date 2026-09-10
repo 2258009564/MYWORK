@@ -1,8 +1,9 @@
 const int N = 1e7;
-
+bool inited = 0;
 vector<int> primes, isprime(N + 1, 1), minfactor(N + 1);
 void init()
 {
+    inited = 1;
     isprime[0] = isprime[1] = 0;
     for (int i = 2; i <= N; i++)
     {
@@ -33,5 +34,9 @@ void init()
 // x 必须满足 2 <= x <= N。
 int getminfactor(int x)
 {
+    if (!inited)
+    {
+        init();
+    }
     return minfactor[x];
 }
